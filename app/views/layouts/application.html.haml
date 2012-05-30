@@ -1,0 +1,27 @@
+!!! 5
+
+%html
+  %head
+    %title Studium - Online Test Prep
+
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+
+  %body{class: controller.controller_name}
+    %div.container
+      - if notice
+          %p#notice= notice
+      - if alert
+        %p#alert= alert
+
+      - if user_signed_in?
+        = link_to "Sign out",destroy_user_session_path
+        %br
+        %p= "Signed in as #{current_user.email}"
+      - else
+        = link_to "Sign in",new_user_session_path
+        %br
+      = link_to "Sign up",new_user_registration_path
+
+      = yield

@@ -9,19 +9,33 @@
     = csrf_meta_tags
 
   %body{class: controller.controller_name}
+    %div.navbar.navbar-fixed-top
+      %div.navbar-inner
+        %div.container
+          %a.btn.btn-navbar{"data-toggle" => "collapse", "data-target"=> ".nav-collapse"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.brand{href: "/"}Studium
+          %div.nav-collapse
+            %ul.nav.pull-right
+              - if user_signed_in?
+                %li= link_to "Sign out",destroy_user_session_path
+              - else
+                %li= link_to "Sign in",new_user_session_path
+                %li= link_to "Sign up",new_user_registration_path
     %div.container
-      - if notice
-          %p#notice= notice
-      - if alert
-        %p#alert= alert
+      %div.row
+        -# Notifications
+        - if notice
+          %p.alert.alert-info= notice
+        - if alert
+          %p.alert.alert-error= alert
 
-      - if user_signed_in?
-        = link_to "Sign out",destroy_user_session_path
-        %br
-        %p= "Signed in as #{current_user.email}"
-      - else
-        = link_to "Sign in",new_user_session_path
-        %br
-      = link_to "Sign up",new_user_registration_path
 
-      = yield
+      %div.row
+        -# Main page and sidebar
+        %div.span9
+          = yield
+        %div.span3 
+          LATEST UPDATES GO HERE

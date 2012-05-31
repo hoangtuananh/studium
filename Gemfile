@@ -40,6 +40,7 @@ group :development,:test do
   gem "email_spec"
   gem "ruby-debug19"
   gem "sqlite3"
+  gem "simplecov"
 end
 
 group :production do

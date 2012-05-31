@@ -42,10 +42,13 @@ group :development,:test do
   gem "sqlite3"
 end
 
+group :production do
+  gem "pg"
+end
+
 gem "haml"
 gem "haml-rails"
 gem "devise"
 gem "cancan"
 gem "will_paginate"
 gem "paperclip"
-gem "rake", "0.8.7"

@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
   
+# Need to put bootstrap outside of assets or else it doesn't work on heroku
 gem 'twitter-bootstrap-rails'
 
 # Bundle edge Rails instead:

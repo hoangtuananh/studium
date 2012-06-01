@@ -10,7 +10,7 @@ Feature: Signing up
 		And I fill in "Password" with "password"
 		And I fill in "Password confirmation" with "password"
 		And I press "Sign up"
-		Then I should be on the home page
+		Then I should be on the dashboard page
 		And I should see "user@ticketee.com"
 		And I should see "Sign out"
 		And I should not see "Sign up"

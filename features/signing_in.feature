@@ -14,7 +14,7 @@ Feature: Signing in
 		And I fill in "Email" with "user@ticketee.com"
 		And I fill in "Password" with "password"
 		And I press "Sign in"
-		Then I should be on the home page
+		Then I should be on the dashboard page
 		And I should see "user@ticketee.com"
 		And I should see "Sign out"
 		And I should not see "Sign up"

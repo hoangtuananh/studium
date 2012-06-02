@@ -3,3 +3,12 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      user:
+        profile:
+          first_name: "First name"
+          last_name: "Last name"
+          school: "School"
+          date_of_birth: "Date of birth"

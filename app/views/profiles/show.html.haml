@@ -9,7 +9,7 @@
   %div.tab-pane#activities
   %div.tab-pane.active#profile
     - if current_user==@user
-      %i.icon-edit Edit
+      %i.icon-edit= link_to "Edit",edit_user_profile_path(@user)
     %br
     %table.table.table-striped
       %tr
@@ -18,7 +18,8 @@
       %tr
         %td School
         %td= @profile.school
-      %tr
-        %td Date of Birth
-        %td= @profile.date_of_birth.strftime '%m/%d/%Y'
+      - if @profile.date_of_birth
+        %tr
+          %td Date of Birth
+          %td= @profile.date_of_birth.strftime '%m/%d/%Y'
   %div.tab-pane#statistics

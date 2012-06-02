@@ -12,13 +12,14 @@ Feature: Edit User Profile
 			| Kien			 | Hoang		 | Lafayette College |
 		And I am signed in as "user@ticketee.com" with password "password"
 		And I follow "user@ticketee.com"
+		And I follow "Edit"
 
 	Scenario: Update Profile with Valid Info
 		When I fill in "First name" with "Chau"
 		And I fill in "Last name" with "Tran"
 		And I fill in "School" with "Brown University"
-		And I follow "Update Profile"
-		Then I should be on the profile page for "user@ticketee.com"
+		And I press "Update Profile"
+		Then I should be on the profile page for user "user@ticketee.com"
 		And I should see "Profile has been updated."
 		And I should not see "Kien Hoang"
 		And I should not see "Lafayette College"
@@ -29,8 +30,8 @@ Feature: Edit User Profile
 		When I fill in "First name" with ""
 		And I fill in "Last name" with ""
 		And I fill in "School" with ""
-		And I follow "Update Profile"
+		And I press "Update Profile"
 		Then I should see "Profile has not been updated."
-		And I should see "First name" can't be blank
-		And I should see "Last name" can't be blank
-		And I should see "School" can't be blank
+		And I should see "First name can't be blank"
+		And I should see "Last name can't be blank"
+		And I should see "School can't be blank"

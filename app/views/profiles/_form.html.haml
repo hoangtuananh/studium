@@ -1,0 +1,22 @@
+%div.form
+  - if @profile.errors.any?
+    %fieldset.errors
+      %ul
+        - @profile.errors.full_messages.each do |msg|
+          %li= msg
+
+  %fieldset.form_fields
+    = form_for [@user,@profile] do |f|
+      = f.label :first_name
+      = f.text_field :first_name
+
+      = f.label :last_name
+      = f.text_field :last_name
+
+      = f.label :school
+      = f.text_field :school
+
+      = f.label :date_of_birth
+      = f.date_select :date_of_birth
+
+      = f.submit

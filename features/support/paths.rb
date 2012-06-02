@@ -17,6 +17,8 @@ module NavigationHelpers
       '/'
     when /^the dashboard page$/
       '/dashboard'
+    when /^the profile page for user "(.+)"$/
+      "/users/#{User.find_by_email!($1).id}/profile"
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -1,4 +1,24 @@
-%h1 User Profile
-
-%p#full_name= @profile.first_name+" #{@profile.last_name}"
-%p#school= @profile.school
+%ul.nav.nav-tabs
+  %li
+    %a{"href" => "#activities", "data-toggle" => "tab"} Recent Activities
+  %li.active
+    %a{"href" => "#profile", "data-toggle" => "tab"} Profile
+  %li
+    %a{"href" => "#statistics", "data-toggle" => "tab"} Statistics
+%div.tab-content
+  %div.tab-pane#activities
+  %div.tab-pane.active#profile
+    - if current_user==@user
+      %i.icon-edit Edit
+    %br
+    %table.table.table-striped
+      %tr
+        %td Full name
+        %td= @profile.first_name + " " + @profile.last_name
+      %tr
+        %td School
+        %td= @profile.school
+      %tr
+        %td Date of Birth
+        %td= @profile.date_of_birth.strftime '%m/%d/%Y'
+  %div.tab-pane#statistics

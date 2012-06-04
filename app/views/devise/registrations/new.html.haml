@@ -24,7 +24,7 @@
       = profile_f.text_field :school
     %div.control-group
       = profile_f.label :date_of_birth
-      = profile_f.text_field :date_of_birth
+      = profile_f.date_select :date_of_birth
 
   %div
     = f.submit "Sign up", class: "btn btn-primary"

@@ -8,6 +8,8 @@ Studium::Application.routes.draw do
   get "/users/:user_id/profile/edit", to: "profiles#edit",as: "edit_user_profile"
   put "/users/:user_id/profile",to: "profiles#update"
 
+  get "/admin",to: "homepage#admin",as: "admin_index"
+
   devise_for :users,controllers: {registrations: "registrations"}
 
   root to: "homepage#index",as: :index

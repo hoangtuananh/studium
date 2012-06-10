@@ -27,12 +27,15 @@
             %ul.nav.pull-right
               - if user_signed_in?
                 %li= link_to current_user.email,"/users/#{current_user.id}/profile"
+                - if current_user.admin?
+                  %li= link_to "Admin Page",admin_index_path
+
                 %li= link_to "Sign out",destroy_user_session_path, method: :delete
               - else
                 %li= link_to "Sign in",new_user_session_path
                 %li= link_to "Sign up",new_user_registration_path
-    %div.container
-      %div.row
+    %div.container-fluid
+      %div.row-fluid
         -# Notifications
         - if notice
           %div.alert.alert-success
@@ -44,8 +47,5 @@
             %p= alert
 
 
-      %div.row
-        -# Main page and sidebar
-        %div.span9
-          = yield
-        %div.span3 
+      %div.row-fluid
+        = yield

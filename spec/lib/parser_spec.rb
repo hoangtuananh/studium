@@ -1,6 +1,7 @@
 require "spec_helper"
 require_relative "../../lib/parser.rb"
 describe String do
+  ######### Highlight ############
   it "should parse single hl tags" do
     test="<hl 90>Testing highlight markup</hl 90>"
     test.highlight(90).should eql("<b>Testing highlight markup</b>")
@@ -31,5 +32,24 @@ describe String do
     test6 = "<hl 1>This<hl 2> is one and two</hl 1> he he </hl 2>"
     test6.highlight(1).should eql("<b>This is one and two</b> he he ")
     test6.highlight(2).should eql("This<b> is one and two he he </b>")
+  end
+  ######### Blank ############
+  
+
+  ######### Linebreak ############
+  indent = "        "
+  it "should parse single line break" do
+    test = "This is a line<br />This is a second line"
+    test.linebreak(true).should eql(indent+"This is a line<br />"+indent+"This is a second line<br />")
+  end
+
+  it "should parse multiple line breaks" do
+    test = "This is a line<br />This is a second line<br />Hehe"
+    test.linebreak(true).should eql(indent+"This is a line<br />"+indent+"This is a second line<br />"+indent+"Hehe<br />")
+  end
+
+  it "should parse line breaks and add line numbers" do
+    test = "Line 1<br />Line 2<br />Line 3<br />Line 4<br />Line 5<br />Line 6<br />Line 7<br />Line 8<br />Line 9<br />Line 10<br />"
+    test.linebreak(true).should eql(indent+"Line 1<br />"+indent+"Line 2<br />"+indent+"Line 3<br />"+indent+"Line 4<br />  (5)  Line 5<br />"+indent+"Line 6<br />"+indent+"Line 7<br />"+indent+"Line 8<br />"+indent+"Line 9<br />"+"  (10)  "+"Line 10<br />")
   end
 end

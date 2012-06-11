@@ -1,14 +1,9 @@
 require "spec_helper"
-<<<<<<< HEAD
-
-describe Parser do
-  it "should parse texts containing highlight markup tags" do
-=======
 require_relative "../../lib/parser.rb"
+
 describe String do
   ######### Highlight ############
   it "should parse single hl tags" do
->>>>>>> 5d6c67013d3fe084126d4e085c615e5980f02ded
     test="<hl 90>Testing highlight markup</hl 90>"
     test.highlight(90).should eql("<b>Testing highlight markup</b>")
   end

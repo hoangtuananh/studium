@@ -1,29 +1,31 @@
-class String
-  def parse(content,options={})
-    content.highlight(options[:question_id])
-           .blank(options[:question_id])
-           .linebreak
-           .clue(options[:choice_id])
-           .underline(options[:choice_id])
-  end
+class Parser
+  class<<Parser
+    def parse(content,options={})
+      content=Parser.highlight(options[:question_id])
+      content=Parser.blank(options[:question_id])
+      content=Parser.linebreak
+      content=Parser.clue(options[:choice_id])
+      content=Parser.underline(options[:choice_id])
+    end
 
-  def highlight(question_id)
+    def highlight(content,question_id)
+      content
+    end
 
-  end
+    def blank(content,question_id)
 
-  def blank(question_id)
+    end
 
-  end
+    def linebreak(content)
 
-  def linebreak
+    end
 
-  end
+    def clue(content,choice_id)
 
-  def clue(choice_id)
+    end
 
-  end
+    def underline(content,choice_id)
 
-  def underline(choice_id)
-
+    end
   end
 end

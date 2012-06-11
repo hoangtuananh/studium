@@ -3,7 +3,7 @@ class String
 		if question_id
 			result=self
 			while result=~/(.*)<hl #{question_id}>(.*?)<\/hl #{question_id}>(.*)/m
-				result=$1+"<hl>"+$2+"</hl>"+$3
+				result=$1+"<b>"+$2+"</b>"+$3
 			end
 
 			result

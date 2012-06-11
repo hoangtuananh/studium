@@ -1,5 +1,6 @@
 class String
   def parse(options={})
+    # Parse all the markups
     self.highlight(options[:question_id])
         .blank(options[:question_id])
         .linebreak(options[:is_passage])
@@ -8,12 +9,16 @@ class String
   end
 
   def highlight(question_id)
+    # If question_id is not nil, parse the highlight markup
     if question_id
       result = self
+
+      # Parse all the highlight markups that match question_id
       while result=~/(.*)<hl #{question_id}>(.*?)<\/hl #{question_id}>(.*)/
         result = $1 + "<b>" + $2 + "</b>" + $3
       end
-
+      
+      # Remove all other highlight markups that don't match question_id
       while result=~/(.*)<hl (\d+)>(.*?)<\/hl (\d+)>(.*)/
         result = $1 + $3 + $5
       end
@@ -26,8 +31,12 @@ class String
   end
 
   def linebreak(is_passage)
+    # Linebreaks within passage
     if is_passage
+      # Split the string with the br tag as the delimiter
       array = self.split("<br />")
+
+      # Add line numbers
       (1..array.length).each do |ln|
         if ln%5==0
           array[ln-1]="  ("+ln.to_s+")  "+array[ln-1]+"<br />"
@@ -35,6 +44,7 @@ class String
           array[ln-1]="        "+array[ln-1]+"<br />"
         end
       end
+
       array.join
     end
   end

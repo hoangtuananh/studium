@@ -1,5 +1,6 @@
 require "spec_helper"
 require_relative "../../lib/parser.rb"
+
 describe String do
   ######### Highlight ############
   it "should parse single hl tags" do

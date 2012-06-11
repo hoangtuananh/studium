@@ -5,6 +5,11 @@ class String
       while result=~/(.*)<hl #{question_id}>(.*?)<\/hl #{question_id}>(.*)/
         result = $1 + "<b>" + $2 + "</b>" + $3
       end
+
+      while result=~/(.*)<hl (\d+)>(.*?)<\/hl (\d+)>(.*)/
+        result = $1 + $3 + $5
+      end
+
       result
     end
   end

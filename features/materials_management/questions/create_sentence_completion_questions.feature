@@ -32,8 +32,7 @@ Feature: Create Questions
 		And I press "Add Question"
 		Then I should be on the index page for materials/questions
 		And I should see "Testing SC Question"
-		And I should see "There had been a"
-		And I should see "improvement as a result of John's lessons, even though individual questions did not seem to improve his studies."
+		And I should see "There had been a..."
 		
 	Scenario: Create setence completion questions with invalid attributes
 		When I select "CR" from "Category"
@@ -42,7 +41,6 @@ Feature: Create Questions
 		When I fill in "Question Title" with ""
 		And I fill in "Question Prompt" with "" 
 		And I fill in "A" with ""
-		And I check "question_choice_a_checkbox"
 		And I fill in "B" with ""
 		And I fill in "C" with ""
 		And I fill in "D" with ""
@@ -57,3 +55,4 @@ Feature: Create Questions
 		And I should see "Choice D can't be blank"
 		And I should see "Choice E can't be blank"
 		And I should see "Experience can't be blank"
+		And I should see "You haven't selected the correct choice"

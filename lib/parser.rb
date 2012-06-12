@@ -69,11 +69,14 @@ class String
     if question_id and choice_id
       count=1
       result=self
+
+      #Underline tags associated with specific choices, used in error identification questions
       while result=~/(.*?)<ul #{choice_id}>(.*)<\/ul #{choice_id}>(.*)/m
         result=$1+%Q[<span id="question_#{question_id}_underline_#{choice_id}"><ul>]+$2+%Q[</ul></span>]+$3
         count+=1
       end
       
+      #Ordinary underline tags, used in sentence improvement questions
       while result=~/(.*?)<ul 0>(.*)<\/ul 0>(.*)/m
         result=$1+%Q[<span id="question_#{question_id}_underline"><ul>]+$2+"</ul></span>"+$3
       end

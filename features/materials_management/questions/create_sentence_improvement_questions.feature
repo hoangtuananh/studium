@@ -1,7 +1,7 @@
 Feature: Create Questions
-	In order to create new sentence completion questions
+	In order to create new sentence improvement questions
 	As an admin
-	I want to be able to create new sentence completion questions in my material ms page
+	I want to be able to create new sentence improvement questions in my material ms page
 
 	Background:
 		Given the following users exist:
@@ -15,34 +15,32 @@ Feature: Create Questions
 		Then I should be on the index page for materials/questions
 		Given I follow "Add Question"
 
-	################## Sentence Completion questions ###################
-	Scenario: Create sentence completion questions with valid attributes
+	################## Sentence Improvement questions #################
+	Scenario: Create sentence improvement questions with valid attributes
 		When I select "CR" from "Category"
-		And I select "Sentence Completion" from "Question Type"
+		And I select "Sentence improvement" from "Question Type"
 		And I press "Proceed"
-		When I fill in "Question Title" with "Testing SC Question"
-		And I fill in "Question Prompt" with "There had been a <bl /> improvement as a result of John's lessons, even though individual questions did not seem to improve his studies." 
-		And I fill in "A" with "cumulative"
-		And I check "question_choice_a_checkbox"
-		And I fill in "B" with "digressive"
-		And I fill in "C" with "restive"
-		And I fill in "D" with "superlative"
-		And I fill in "E" with "innovative"
+		When I fill in "Question Title" with "Testing SI Question"
+		And I fill in "Question Prompt" with "Research has shown that <ul 0>chilren, born with the ability to learn</ul 0> any human language, even several laguages at the same time." 
+		And I fill in "A" with "children, born with the ability to learn"
+		And I fill in "B" with "chilren, when born with the ability for learning"
+		And I fill in "C" with "children, they are born with the ability to learn"
+		And I fill in "D" with "children born with the ability to be learning"
+		And I fill in "E" with "children are born with the ability to learn"
+		And I check "question_choice_e_checkbox"
 		And I fill in "Experience" with "100"
 		And I press "Add Question"
 		Then I should be on the index page for materials/questions
-		And I should see "Testing SC Question"
-		And I should see "There had been a"
-		And I should see "improvement as a result of John's lessons, even though individual questions did not seem to improve his studies."
+		And I should see "Testing SI Question"
+		And I should see "Research has shown that..."
 		
-	Scenario: Create setence completion questions with invalid attributes
+	Scenario: Create Sentence Improvement questions with invalid attributes
 		When I select "CR" from "Category"
-		And I select "Sentence Completion" from "Question Type"
+		And I select "Sentence improvement" from "Question Type"
 		And I press "Proceed"
 		When I fill in "Question Title" with ""
 		And I fill in "Question Prompt" with "" 
 		And I fill in "A" with ""
-		And I check "question_choice_a_checkbox"
 		And I fill in "B" with ""
 		And I fill in "C" with ""
 		And I fill in "D" with ""
@@ -57,3 +55,4 @@ Feature: Create Questions
 		And I should see "Choice D can't be blank"
 		And I should see "Choice E can't be blank"
 		And I should see "Experience can't be blank"
+		And I should see "You haven't selected the correct choice"

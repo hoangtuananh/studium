@@ -10,6 +10,12 @@ Studium::Application.routes.draw do
 
   get "/admin",to: "homepage#admin",as: "admin_index"
 
+  namespace :admin do
+    namespace :materials do
+      resources :questions
+    end
+  end
+
   devise_for :users,controllers: {registrations: "registrations"}
 
   root to: "homepage#index",as: :index

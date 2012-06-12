@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604170452) do
+ActiveRecord::Schema.define(:version => 20120612141838) do
 
   create_table "permissions", :force => true do |t|
     t.string   "action"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(:version => 20120604170452) do
     t.datetime "date_of_birth"
     t.string   "school"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "questions", :force => true do |t|
+    t.text     "prompt"
+    t.integer  "correct_choice_id"
+    t.integer  "exp"
+    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

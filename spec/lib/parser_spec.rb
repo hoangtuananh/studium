@@ -68,6 +68,7 @@ describe String do
 
   ######### Linebreak ############
   indent = "        "
+
   it "should parse single line break" do
     test = "This is a line<br />This is a second line"
     test.linebreak(true).should eql(indent+"This is a line<br />"+indent+"This is a second line<br />")
@@ -81,5 +82,21 @@ describe String do
   it "should parse line breaks and add line numbers" do
     test = "Line 1<br />Line 2<br />Line 3<br />Line 4<br />Line 5<br />Line 6<br />Line 7<br />Line 8<br />Line 9<br />Line 10<br />"
     test.linebreak(true).should eql(indent+"Line 1<br />"+indent+"Line 2<br />"+indent+"Line 3<br />"+indent+"Line 4<br />  (5)  Line 5<br />"+indent+"Line 6<br />"+indent+"Line 7<br />"+indent+"Line 8<br />"+indent+"Line 9<br />"+"  (10)  "+"Line 10<br />")
+  end
+
+  ######### Underline ############
+  it "should parse ordinary underline markups" do
+    test = "This text contains some <ul 0> ordinary underline markup. </ul 0>"
+    test.underline(1,1).should eql(%Q[This text contains some <span id="question_1_underline"><ul> ordinary underline markup. </ul></span>])
+  end 
+
+  it "should parse a single underline markup" do
+    test = "This text contains an <ul 5> underline markup. </ul 5>"
+    test.underline(1,5).should eql(%Q[This text contains an <span id="question_1_underline_5"><ul> underline markup. </ul></span>])
+  end
+
+  it "should parse multiple underline markups" do
+    test = "This <ul 1>contains</ul 1> <ul 2>multiple</ul 2> <ul 3>underline</ul 3> <ul 4>markups.</ul 4>"
+    test.underline(1,1).underline(1,2).underline(1,3).underline(1,4).should eql(%Q[This <span id="question_1_underline_1"><ul>contains</ul></span> <span id="question_1_underline_2"><ul>multiple</ul></span> <span id="question_1_underline_3"><ul>underline</ul></span> <span id="question_1_underline_4"><ul>markups.</ul></span>])
   end
 end

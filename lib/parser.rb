@@ -28,6 +28,24 @@ class String
   end
 
   def blank(question_id)
+    # If question_id is not nil
+    if question_id
+      result=self
+
+      # Parse all the blank markups that match question_id
+      count=0
+      while result=~/(.*?)<bl #{question_id}>(.*)/
+        count+=1
+        result=$1+%Q[<input type="text" id="question_#{question_id}_blank_#{count}" class="span1 focused" />]+$2
+      end
+
+      # Parse all the ordinary blanks
+      while result=~/(.*)<bl \/>(.*)/
+        result=$1+%Q[<input type="text" class="span1 focused" />]+$2
+      end
+
+      result
+    end
   end
 
   def linebreak(is_passage)

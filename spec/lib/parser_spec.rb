@@ -34,8 +34,37 @@ describe String do
     test6.highlight(1).should eql("<b>This is one and two</b> he he ")
     test6.highlight(2).should eql("This<b> is one and two he he </b>")
   end
+
   ######### Blank ############
+  it "should parse texts that contain no blanks" do
+    test = "This is some text without blank markup."
+    test.blank(1).should eql("This is some text without blank markup.")
+  end
+
+  it "should parse texts that contain an ordinary blank without question_id" do
+    test = "This is some text that contains <bl /> some ordinary blank."
+    test.blank(1).should eql %Q[This is some text that contains <input type="text" class="span1 focused" /> some ordinary blank.]
+  end
+
+  it "should parse some text that contains a blank associated with a question" do
+    test = "This is some text that contains <bl 1> a blank associated with a question."
+    test.blank(1).should eql(%Q[This is some text that contains <input type="text" id="question_1_blank_1" class="span1 focused" /> a blank associated with a question.])
+  end
+
+  it "should parse some text that contains multiple blanks associated with a question" do
+    test = "This is some text that contains <bl 1> multiple blanks <bl 1> associated with one question."   
+    test.blank(1).should eql(%Q[This is some text that contains <input type="text" id="question_1_blank_1" class="span1 focused" /> multiple blanks <input type="text" id="question_1_blank_2" class="span1 focused" /> associated with one question.])
+  end
+
+  it "should parse some text that contains multiple blanks associated with two questions" do
+    test="This is some text that contains <bl 1> multiple blanks <bl 2> associated with two questions."
+    test.blank(1).should eql(%Q[This is some text that contains <input type="text" id="question_1_blank_1" class="span1 focused" /> multiple blanks <bl 2> associated with two questions.])
+  end
   
+  it "should parse some text that contains multiple blanks associated with a question" do
+    test = "This is some text that contains <bl 1> multiple blanks <bl 1> associated with <bl 2> two questions."   
+    test.blank(1).should eql(%Q[This is some text that contains <input type="text" id="question_1_blank_1" class="span1 focused" /> multiple blanks <input type="text" id="question_1_blank_2" class="span1 focused" /> associated with <bl 2> two questions.])
+  end
 
   ######### Linebreak ############
   indent = "        "

@@ -1,6 +1,8 @@
 Given /^the following users exist:$/ do |table|
   table.hashes.each do |user|
     @user=User.create! user
+    @user.admin=user[:admin] || false
+    @user.save
   end
 end
 

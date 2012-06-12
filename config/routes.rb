@@ -13,6 +13,7 @@ Studium::Application.routes.draw do
   namespace :admin do
     namespace :materials do
       resources :questions
+      resources :paragraphs
     end
   end
 

@@ -34,14 +34,9 @@ class String
 
       # Parse all the blank markups that match question_id
       count=0
-      while result=~/(.*?)<bl #{question_id}>(.*)/m
+      while result=~/(.*?)<bl \/>(.*)/m
         count+=1
         result=$1+%Q[<input type="text" id="question_#{question_id}_blank_#{count}" class="span1 focused" />]+$2
-      end
-
-      # Parse all the ordinary blanks
-      while result=~/(.*)<bl \/>(.*)/m
-        result=$1+%Q[<input type="text" class="span1 focused" />]+$2
       end
 
       result

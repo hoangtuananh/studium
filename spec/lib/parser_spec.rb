@@ -75,18 +75,13 @@ describe String do
   end
 
   ######### Underline ############
-  it "should parse ordinary underline markups" do
-    test = "This text contains some <ul 0> ordinary underline markup. </ul 0>"
-    test.underline(1,1).should eql(%Q[This text contains some <span id="question_1_underline"><ul> ordinary underline markup. </ul></span>])
-  end 
-
   it "should parse a single underline markup" do
-    test = "This text contains an <ul 5> underline markup. </ul 5>"
-    test.underline(1,5).should eql(%Q[This text contains an <span id="question_1_underline_5"><ul> underline markup. </ul></span>])
+    test = "This text contains an <un> underline markup. </un>"
+    test.underline(1).should eql(%Q[This text contains an <span id="question_1_underline_A"><u> underline markup. </u></span>])
   end
 
   it "should parse multiple underline markups" do
-    test = "This <ul 1>contains</ul 1> <ul 2>multiple</ul 2> <ul 3>underline</ul 3> <ul 4>markups.</ul 4>"
-    test.underline(1,1).underline(1,2).underline(1,3).underline(1,4).should eql(%Q[This <span id="question_1_underline_1"><ul>contains</ul></span> <span id="question_1_underline_2"><ul>multiple</ul></span> <span id="question_1_underline_3"><ul>underline</ul></span> <span id="question_1_underline_4"><ul>markups.</ul></span>])
+    test = "This <un>contains</un> <un>multiple</un> <un>underline</un> <un>markups</un> to be <un>chosen from.</un>"
+    test.underline(1).should eql(%Q[This <span id="question_1_underline_A"><u>contains</u></span> <span id="question_1_underline_B"><u>multiple</u></span> <span id="question_1_underline_C"><u>underline</u></span> <span id="question_1_underline_D"><u>markups</u></span> to be <span id="question_1_underline_E"><u>chosen from.</u></span>])
   end
 end

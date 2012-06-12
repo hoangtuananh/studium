@@ -65,20 +65,21 @@ class String
   def clue(choice_id)
   end
 
-  def underline(question_id,choice_id)
-    if question_id and choice_id
+  def underline(question_id)
+    if question_id
       count=1
       result=self
 
       #Underline tags associated with specific choices, used in error identification questions
-      while result=~/(.*?)<ul #{choice_id}>(.*)<\/ul #{choice_id}>(.*)/m
-        result=$1+%Q[<span id="question_#{question_id}_underline_#{choice_id}"><ul>]+$2+%Q[</ul></span>]+$3
+      while result=~/(.*?)<un>(.*?)<\/un>(.*)/m
+        choice_letter="A"
+        choice_letter="B" if count==2
+        choice_letter="C" if count==3
+        choice_letter="D" if count==4
+        choice_letter="E" if count==5
+
+        result=$1+%Q[<span id="question_#{question_id}_underline_#{choice_letter}"><u>]+$2+%Q[</u></span>]+$3
         count+=1
-      end
-      
-      #Ordinary underline tags, used in sentence improvement questions
-      while result=~/(.*?)<ul 0>(.*)<\/ul 0>(.*)/m
-        result=$1+%Q[<span id="question_#{question_id}_underline"><ul>]+$2+"</ul></span>"+$3
       end
 
       result

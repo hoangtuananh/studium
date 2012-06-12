@@ -17,7 +17,7 @@ Feature: Create Questions
 
 	################## Sentence Completion questions ###################
 	Scenario: Create sentence completion questions with valid attributes
-		When I select "CR" from "Category"
+		When I select "Critical Reading" from "Category"
 		And I select "Sentence Completion" from "Question Type"
 		And I press "Proceed"
 		When I fill in "Question Title" with "Testing SC Question"
@@ -35,7 +35,7 @@ Feature: Create Questions
 		And I should see "There had been a..."
 		
 	Scenario: Create setence completion questions with invalid attributes
-		When I select "CR" from "Category"
+		When I select "Critical Reading" from "Category"
 		And I select "Sentence Completion" from "Question Type"
 		And I press "Proceed"
 		When I fill in "Question Title" with ""

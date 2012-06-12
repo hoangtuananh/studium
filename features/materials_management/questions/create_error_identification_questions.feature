@@ -1,7 +1,7 @@
 Feature: Create Questions
-	In order to create new sentence improvement questions
+	In order to create new error identification questions
 	As an admin
-	I want to be able to create new sentence improvement questions in my material ms page
+	I want to be able to create new error identification questions in my material ms page
 
 	Background:
 		Given the following users exist:
@@ -15,28 +15,28 @@ Feature: Create Questions
 		Then I should be on the index page for materials/questions
 		Given I follow "Add Question"
 
-	################## Sentence Improvement questions #################
-	Scenario: Create sentence improvement questions with valid attributes
+	################## Error Identification questions #################
+	Scenario: Create error identification questions with valid attributes
 		When I select "Writing (Multiple Choice)" from "Category"
-		And I select "Sentence improvement" from "Question Type"
+		And I select "Error Identification" from "Question Type"
 		And I press "Proceed"
-		When I fill in "Question Title" with "Testing SI Question"
-		And I fill in "Question Prompt" with "Research has shown that <ul 0>chilren, born with the ability to learn</ul 0> any human language, even several laguages at the same time." 
-		And I fill in "A" with "children, born with the ability to learn"
-		And I fill in "B" with "chilren, when born with the ability for learning"
-		And I fill in "C" with "children, they are born with the ability to learn"
-		And I fill in "D" with "children born with the ability to be learning"
-		And I fill in "E" with "children are born with the ability to learn"
-		And I check "question_choice_e_checkbox"
+		When I fill in "Question Title" with "Testing EI Question"
+		And I fill in "Question Prompt" with "Something <un>about</un> the project <un>must have</un> energized the bureaucrats; only six months <un>after</un> plans <un>are submitted</un>, the playground was complete." 
+		And I fill in "A" with "about"
+		And I fill in "B" with "must have"
+		And I fill in "C" with "after"
+		And I fill in "D" with "are submitted"
+		And I fill in "E" with "No Error"
+		And I check "question_choice_d_checkbox"
 		And I fill in "Experience" with "100"
 		And I press "Add Question"
 		Then I should be on the index page for materials/questions
-		And I should see "Testing SI Question"
-		And I should see "Research has shown that..."
+		And I should see "Testing EI Question"
+		And I should see "Something about the project must have..."
 		
-	Scenario: Create Sentence Improvement questions with invalid attributes
+	Scenario: Create Error Identification questions with invalid attributes
 		When I select "Writing (Multiple Choice)" from "Category"
-		And I select "Sentence improvement" from "Question Type"
+		And I select "Error Identification" from "Question Type"
 		And I press "Proceed"
 		When I fill in "Question Title" with ""
 		And I fill in "Question Prompt" with "" 

@@ -1,4 +1,16 @@
 Studium::Application.routes.draw do
+  get "paragraphs/show"
+
+  get "paragraphs/new"
+
+  get "paragraphs/create"
+
+  get "paragraphs/edit"
+
+  get "paragraphs/update"
+
+  get "paragraphs/destroy"
+
   get "users/index"
 
   get "/awaiting_confirmation",to: "users#dashboard",as: :confirm_user

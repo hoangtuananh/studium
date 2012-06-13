@@ -1,4 +1,4 @@
-Feature: Create Questions
+Feature: Create Sentence Improvement Questions
 	In order to create new sentence improvement questions
 	As an admin
 	I want to be able to create new sentence improvement questions in my material ms page

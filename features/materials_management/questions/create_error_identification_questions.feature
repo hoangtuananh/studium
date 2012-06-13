@@ -1,4 +1,4 @@
-Feature: Create Questions
+Feature: Create Error Identification Questions
 	In order to create new error identification questions
 	As an admin
 	I want to be able to create new error identification questions in my material ms page

@@ -1,7 +1,7 @@
-Feature: Create Questions
-	In order to create new questions
+Feature: Create Sentence Completion Questions
+	In order to create new sentence completion questions
 	As an admin
-	I want to be able to create new questions in my material ms page
+	I want to be able to create new sc questions in my material ms page
 
 	Background:
 		Given the following users exist:

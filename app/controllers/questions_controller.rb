@@ -16,4 +16,7 @@ class QuestionsController < ApplicationController
 
   def destroy
   end
+
+  def category_selection
+  end
 end

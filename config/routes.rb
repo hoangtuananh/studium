@@ -1,16 +1,4 @@
 Studium::Application.routes.draw do
-  get "paragraphs/show"
-
-  get "paragraphs/new"
-
-  get "paragraphs/create"
-
-  get "paragraphs/edit"
-
-  get "paragraphs/update"
-
-  get "paragraphs/destroy"
-
   get "users/index"
 
   get "/awaiting_confirmation",to: "users#dashboard",as: :confirm_user
@@ -21,6 +9,8 @@ Studium::Application.routes.draw do
   put "/users/:user_id/profile",to: "profiles#update"
 
   get "/admin",to: "homepage#admin",as: "admin_index"
+  get "/admin/materials",to: "homepage#materials",as: "admin_materials"
+  get "/admin/materials/questions/add_question",to: "questions#category_selection",as: "add_new_materials_question" 
 
   namespace :admin do
     namespace :materials do

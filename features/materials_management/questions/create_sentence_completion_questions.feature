@@ -31,6 +31,7 @@ Feature: Create Questions
 		And I fill in "Experience" with "100"
 		And I press "Add Question"
 		Then I should be on the index page for materials/questions
+		And I should see "Question has been created."
 		And I should see "Testing SC Question"
 		And I should see "There had been a..."
 		

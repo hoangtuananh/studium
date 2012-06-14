@@ -5,6 +5,6 @@ class QuestionType < ActiveRecord::Base
     self.type_name=="Sentence Completion"
   end
   def is_sentence_improvement?
-    self.type_name=="Sentece Improvement"
+    self.type_name=="Sentence Improvement"
   end
 end

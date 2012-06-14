@@ -1,3 +1,5 @@
+= @question_type[:id]
+= @question[:question_type_id]
 = form_for([:admin, :materials, @question]) do |f|
   - if @question.errors.any?
     %ul
@@ -9,6 +11,7 @@
   %div.well.form-inline
     = f.fields_for :choices do |builder|
       = render "choices_fields", :f => builder
-  = f.hidden_field :exp, {exp: 1400} 
+  = f.hidden_field :exp, {value: "1400"} 
+  = f.hidden_field :question_type_id, {value: @question_type[:id]}
   %div
     = f.submit

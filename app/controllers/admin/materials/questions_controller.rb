@@ -1,28 +1,28 @@
 class Admin::Materials::QuestionsController < Admin::Materials::BaseController
-  before_filter :find_question_type, except: [:index,:category_selection, :update, :destroy]
+  before_filter :find_question_type, except: [:index,:category_selection,:destroy]
+
   def index
   end
 
   def new
+    # Create a question prototype for the form
     @question = @question_type.questions.new
-    if @question_type.need_paragraph
-      #render "form_with_paragraph" 
-    else
-      @choiceA = @question.choices.build({choice_letter: "A"})
-      @choiceB = @question.choices.build({choice_letter: "B"})
-      @choiceC = @question.choices.build({choice_letter: "C"})
-      @choiceD = @question.choices.build({choice_letter: "D"})
-      @choiceE = @question.choices.build({choice_letter: "E"})
-      render "form_without_paragraph"
-    end
+
+    # Get the correct form (as a partial view)
+    determine_form_for_question
   end
 
   def create
     @question = @question_type.questions.new(params[:question])
+
+    # Get the correct form (as a partial view)
+    determine_form_for_question
+
     if @question.save
       redirect_to admin_materials_questions_path, notice: "Question has been created." 
     else
       flash[:alert] = "Invalid Question Information. Question has not been created."
+      render "new"
     end
   end
 
@@ -45,11 +45,21 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
 private
+  # Get the question_type
   def find_question_type
     if params[:question_type]
       @question_type = QuestionType.find(params[:question_type][:id])
     elsif params[:question]
       @question_type = QuestionType.find(params[:question][:question_type_id])
+    end
+  end
+
+  # This method determines which form to render based on question_type and store that in @partial
+  def determine_form_for_question
+    if @question_type.need_paragraph
+      @partial="form_with_paragraph"
+    else
+      @partial="form_without_paragraph"
     end
   end
 end

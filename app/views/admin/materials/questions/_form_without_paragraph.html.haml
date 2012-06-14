@@ -1,0 +1,28 @@
+- # Create 5 choices (for prototyping). 
+- # No point in doing this in the new action since the instance variables are lost in the next request
+- 5.times {@question.choices.build(choice_letter: cycle("A","B","C","D","E"))}
+
+= form_for([:admin, :materials, @question]) do |f|
+  - if @question.errors.any?
+    %ul
+    - @question.errors.full_messages.each do |msg|
+      %li=msg
+
+  %div.control-group
+    = f.label :title,"Question Title"
+    = f.text_field :title
+
+  %div.control-group
+    = f.label :prompt,"Question Prompt"
+    = f.text_field :prompt
+
+  %div.well.form-inline
+    - index=1
+    = f.fields_for :choices do |builder|
+      = render "choices_fields", f: builder,index: index
+      - index+=1
+
+  = f.hidden_field :exp, {value: "1400"} 
+  = f.hidden_field :question_type_id, {value: @question_type[:id]}
+  %div
+    = f.submit

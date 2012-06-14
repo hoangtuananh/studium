@@ -4,11 +4,11 @@
 = form_tag({controller: "admin/materials/questions",action: "new"},method: "get") do
   %div.control-group
     = label :category_type,:category_name,"Category"
-    = select :category_type,:category_name,@category_names
+    = select :category_type,:category_name,@category_types
 
   %div.control-group
     = label :question_type,:type_name,"Question Type"
-    = select :question_type,:type_name,QuestionType.all.collect {|question_type| question_type.type_name}
+    = select :question_type,:type_name,@question_types
 
   %div
     = submit_tag "Proceed",class: "btn btn-primary"

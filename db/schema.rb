@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120614100228) do
+ActiveRecord::Schema.define(:version => 20120614102843) do
 
   create_table "category_types", :force => true do |t|
     t.string   "category_name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20120614100228) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type_name"
+    t.boolean  "need_paragraph"
   end
 
   create_table "questions", :force => true do |t|

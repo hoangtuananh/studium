@@ -12,3 +12,8 @@ en:
           last_name: "Last name"
           school: "School"
           date_of_birth: "Date of birth"
+
+      question:
+        prompt: "Question prompt"
+        title: "Question title"
+        choices: ""

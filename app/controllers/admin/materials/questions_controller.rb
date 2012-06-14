@@ -25,9 +25,15 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
     @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
 
-    if @question.save
+    is_correct_choice_selected=false
+    @question.choices.each do |choice|
+      is_correct_choice_selected=true if choice.correct? 
+    end
+
+    if @question.save and is_correct_choice_selected
       redirect_to admin_materials_questions_path, notice: "Question has been created." 
     else
+      @question.errors.add :choices,"You haven't selected the correct choice" unless is_correct_choice_selected
       flash[:alert] = "Invalid Question Information. Question has not been created."
       render "new"
     end

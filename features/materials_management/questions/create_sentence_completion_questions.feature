@@ -28,6 +28,7 @@ Feature: Create Sentence Completion Questions
 		And I fill in "Content # 3" with "restive"
 		And I fill in "Content # 4" with "superlative"
 		And I fill in "Content # 5" with "innovative"
+		And I check "#1 Correct?"
 		# And I fill in "Experience" with "100"
 		And I press "Create Question"
 		And I should see "Question has been created."
@@ -48,4 +49,4 @@ Feature: Create Sentence Completion Questions
 		# And I should see "Choice D can't be blank"
 		# And I should see "Choice E can't be blank"
 		# And I should see "Experience can't be blank"
-		# And I should see "You haven't selected the correct choice"
+		And I should see "You haven't selected the correct choice"

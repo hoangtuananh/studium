@@ -1,5 +1,9 @@
 %p
   = f.label :choice_letter
   = f.text_field :choice_letter, size:3
+  
   = f.label :content,"Content # #{index}"
   = f.text_field :content
+
+  = f.label :correct,"##{index} Correct?"
+  = f.check_box :correct

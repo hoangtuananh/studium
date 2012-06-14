@@ -1,7 +1,7 @@
 = javascript "../question_types/dynamic_question_types"
 %h1 Select Category and Question Type
 
-= form_tag controller: "admin/materials/questions",action: "new",method: "get" do
+= form_tag({controller: "admin/materials/questions",action: "new"},method: "get") do
   %div.control-group
     = label :category_type,:category_name,"Category"
     = select :category_type,:category_name,@category_names

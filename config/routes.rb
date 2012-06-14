@@ -9,13 +9,13 @@ Studium::Application.routes.draw do
   put "/users/:user_id/profile",to: "profiles#update"
 
   get "/admin",to: "homepage#admin",as: "admin_index"
-  get "/admin/materials",to: "homepage#materials",as: "admin_materials"
-  get "/admin/materials/questions/add_question",to: "questions#category_selection",as: "add_new_materials_question" 
+  get "/admin/materials",to: "admin/materials/base#index",as: "admin_materials"
+  get "/admin/materials/questions/add_question",to: "admin/materials/questions#category_selection",as: "add_new_materials_question" 
 
   get ":controller/:action.:format"
 
-  namespace :admin do
-    namespace :materials do
+  namespace "admin" do
+    namespace "materials" do
       resources :questions
       resources :paragraphs
     end

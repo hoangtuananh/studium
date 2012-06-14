@@ -1,6 +1,4 @@
-class QuestionsController < ApplicationController
-  before_filter :authenticate_admin!
-
+class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def index
   end
 

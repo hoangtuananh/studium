@@ -10,7 +10,4 @@ class HomepageController < ApplicationController
 
   def admin
   end
-
-  def materials
-  end
 end

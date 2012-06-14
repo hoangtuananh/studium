@@ -3,9 +3,9 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def new
-    @question_type=params[:question_type][:type_name]
+    @question_type_id=params[:question_type][:id]
 
-    if @question_type=="Reading" or @question_type=="Paragraph Improvement"
+    if @question_type_id==QuestionType.find_by_title!("Reading").id or @question_type_id==QuestionType.find_by_title!("Paragraph Improvement").id 
       render "form_with_paragraph" 
     else
       render "form_without_paragraph"

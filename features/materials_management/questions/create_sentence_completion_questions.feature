@@ -13,6 +13,7 @@ Feature: Create Sentence Completion Questions
 		When I follow "Admin Page"
 		And I follow "Materials"
 		And I follow "Questions"
+		# And I follow "Add Question"
 
 	################## Sentence Completion questions ###################
 	@javascript
@@ -27,7 +28,7 @@ Feature: Create Sentence Completion Questions
 		And I fill in "Content # 3" with "restive"
 		And I fill in "Content # 4" with "superlative"
 		And I fill in "Content # 5" with "innovative"
-		#And I fill in "Experience" with "100"
+		# And I fill in "Experience" with "100"
 		And I press "Create Question"
 		And I should see "Question has been created."
 		# And I should see "Testing SC Question"
@@ -41,3 +42,10 @@ Feature: Create Sentence Completion Questions
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
 		And I should see "Prompt can't be blank"
+		# And I should see "Choice A can't be blank"
+		# And I should see "Choice B can't be blank"
+		# And I should see "Choice C can't be blank"
+		# And I should see "Choice D can't be blank"
+		# And I should see "Choice E can't be blank"
+		# And I should see "Experience can't be blank"
+		# And I should see "You haven't selected the correct choice"

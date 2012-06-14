@@ -14,7 +14,7 @@
 
   %div.control-group
     = f.label :prompt,"Question Prompt"
-    = f.text_field :prompt
+    = f.text_area :prompt,{cols: 30,rows: 7}
 
   %div.well.form-inline
     - index=1

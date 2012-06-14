@@ -33,8 +33,8 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     end
   end
 
+private
   def find_question_type
     @question_type = QuestionType.find(params[:question_type])
   end
-
 end

@@ -8,16 +8,16 @@ var question_types=new Array();
 <% end -%>
 
 function categorySelected() {
-  category_id=$("select#category_type_category_name").val();
-  $("select#question_type_type_name option").remove();
+  category_id=$("select#category_type_id").val();
+  $("select#question_type_id option").remove();
   question_types.forEach(function(question_type){
     if (question_type[0]==category_id) {
-      $("<option value=\""+question_type[2]+"\">"+question_type[3]+"</option>").appendTo("select#question_type_type_name");
+      $("<option value=\""+question_type[2]+"\">"+question_type[3]+"</option>").appendTo("select#question_type_id");
     }
   });
 }
 
 $(document).ready(function() {
   categorySelected();
-  $("select#category_type_category_name").change(categorySelected);
+  $("select#category_type_id").change(categorySelected);
 });

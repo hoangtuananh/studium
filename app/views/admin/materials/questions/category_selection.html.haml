@@ -3,12 +3,12 @@
 
 = form_tag({controller: "admin/materials/questions",action: "new"},method: "get") do
   %div.control-group
-    = label :category_type,:category_name,"Category"
-    = select :category_type,:category_name,@category_types
+    = label :category_type,:id,"Category"
+    = select :category_type,:id,@category_types
 
   %div.control-group
-    = label :question_type,:type_name,"Question Type"
-    = select :question_type,:type_name,@question_types
+    = label :question_type,:id,"Question Type"
+    = select :question_type,:id,@question_types
 
   %div
     = submit_tag "Proceed",class: "btn btn-primary"

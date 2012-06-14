@@ -1,18 +1,27 @@
 class Admin::Materials::QuestionsController < Admin::Materials::BaseController
+  before_filter :find_question_type, except: [:create, :update, :destroy]
   def index
   end
 
   def new
-    @question_type=params[:question_type][:type_name]
-
-    if @question_type=="Reading" or @question_type=="Paragraph Improvement"
-      render "form_with_paragraph" 
+    @question = @question_type.questions.new
+    if @question_type.need_paragraph
+      #render "form_with_paragraph" 
     else
+      5.times do
+        choice = @question.choices.build
+      end
       render "form_without_paragraph"
     end
   end
 
   def create
+    @question = Question.new(params[:question])
+    if @question.save
+      redirect_to admin_materials_questions_path, notice: "Question has been created." 
+    else
+      render "new", alert: "Invalid Question Information. Question has not been created."
+    end
   end
 
   def edit
@@ -34,7 +43,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def find_question_type
-    @question_type = QuestionType.find(params[:question_type])
+    @question_type = QuestionType.find(params[:question_type][:id])
   end
 
 end

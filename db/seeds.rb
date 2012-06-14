@@ -1,7 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Add Category types to categories table
+CategoryType.create! category_name: "Critical Reading"
+CategoryType.create! category_name: "Math"
+CategoryType.create! category_name: "Writing (Multiple Choice)"
+
+QuestionType.create! type_name: "Sentence Completion",category_type: CategoryType.find_by_category_name!("Critical Reading")
+QuestionType.create! type_name: "Reading",category_type: CategoryType.find_by_category_name!("Critical Reading")
+QuestionType.create! type_name: "Sentence Improvement",category_type: CategoryType.find_by_category_name!("Writing (Multiple Choice)")
+QuestionType.create! type_name: "Error Identification",category_type: CategoryType.find_by_category_name!("Writing (Multiple Choice)")
+QuestionType.create! type_name: "Paragraph Improvement",category_type: CategoryType.find_by_category_name!("Writing (Multiple Choice)")

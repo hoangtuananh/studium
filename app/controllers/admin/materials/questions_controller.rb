@@ -1,5 +1,5 @@
 class Admin::Materials::QuestionsController < Admin::Materials::BaseController
-  before_filter :find_question_type, except: [:index,:category_selection,:create, :update, :destroy]
+  before_filter :find_question_type, except: [:index,:category_selection, :update, :destroy]
   def index
   end
 

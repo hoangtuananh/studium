@@ -8,9 +8,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     if @question_type.need_paragraph
       #render "form_with_paragraph" 
     else
-      5.times do
-        choice = @question.choices.build
-      end
+      choiceA = @question.choices.build({choice_letter: "A"})
+      choiceB = @question.choices.build({choice_letter: "B"})
+      choiceC = @question.choices.build({choice_letter: "C"})
+      choiceD = @question.choices.build({choice_letter: "D"})
+      choiceE = @question.choices.build({choice_letter: "E"})
       render "form_without_paragraph"
     end
   end

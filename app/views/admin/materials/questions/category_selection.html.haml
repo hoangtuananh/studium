@@ -8,7 +8,7 @@
 
   %div.control-group
     = label :question_type,:type_name,"Question Type"
-    = select :question_type,:type_name,QuestionType.all.collect {|question_type| question_type.type_name}
+    = select :question_type,:type_name,QuestionType.all.collect {|question_type| [question_type.type_name, question_type.id]}
 
   %div
     = submit_tag "Proceed",class: "btn btn-primary"

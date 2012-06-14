@@ -27,7 +27,12 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def category_selection
     @categories=CategoryType.order :category_name
     @category_names=@categories.collect do |category|
-      category.category_name
+      [category.category_name, category.id]
     end
   end
+
+  def find_question_type
+    @question_type = QuestionType.find(params[:question_type])
+  end
+
 end

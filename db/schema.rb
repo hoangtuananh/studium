@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120614102843) do
+ActiveRecord::Schema.define(:version => 20120614165056) do
 
   create_table "category_types", :force => true do |t|
     t.string   "category_name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20120614102843) do
     t.string   "choice_letter"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "correct"
   end
 
   create_table "paragraphs", :force => true do |t|
@@ -64,7 +65,6 @@ ActiveRecord::Schema.define(:version => 20120614102843) do
 
   create_table "questions", :force => true do |t|
     t.text     "prompt"
-    t.integer  "correct_choice_id"
     t.integer  "exp"
     t.datetime "created_at"
     t.datetime "updated_at"

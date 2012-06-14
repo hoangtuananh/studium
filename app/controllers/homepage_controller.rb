@@ -1,6 +1,5 @@
 class HomepageController < ApplicationController
-  before_filter :authenticate_user!,only: [:admin]
-  before_filter :authenticate_admin!,only: [:admin]
+  before_filter :authenticate_admin!,only: [:admin,:materials]
 
   def index
     # If user has already signed in, redirect to dashboard

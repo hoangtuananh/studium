@@ -9,10 +9,10 @@ Feature: Create Reading Questions
 			| admin@ticketee.com | password | true  |
 		And I am signed in as "admin@ticketee.com" with password "password"
 		And I am on the home page
+		And I have run the seed task
 		When I follow "Admin Page"
 		And I follow "Materials"
 		And I follow "Questions"
-		Given I follow "Add Question"
 
 	################ Single Paragraph Reading question ################
 	@javascript

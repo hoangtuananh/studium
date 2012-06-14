@@ -7,15 +7,15 @@ Feature: Create Reading Questions
 		Given the following users exist:
 			| email							 | password | admin |
 			| admin@ticketee.com | password | true  |
-		And I am signed in as "admin@ticktee.com" with password "password"
+		And I am signed in as "admin@ticketee.com" with password "password"
 		And I am on the home page
 		When I follow "Admin Page"
-		And I follow "Material Management Page"
+		And I follow "Materials"
 		And I follow "Questions"
-		Then I should be on the index page for materials/questions
 		Given I follow "Add Question"
 
 	################ Single Paragraph Reading question ################
+	@javascript
 	Scenario: Create Single Paragraph Reading questions with valid attributes
 		When I select "Critical Reading" from "Category"
 		And I select "Reading" from "Question Type"
@@ -39,6 +39,7 @@ Feature: Create Reading Questions
 		And I should see "The primary purpose of the passage..."
 
 	################ Double Paragraph Reading question ################
+	@javascript
 	Scenario: Create Double Paragraph Reading questions with valid attributes
 		When I select "Critical Reading" from "Category"
 		And I select "Reading" from "Question Type"
@@ -67,6 +68,7 @@ Feature: Create Reading Questions
 		And I should see "The primary purpose of the passage..."
 
 	############# Reading questioni with existing paragragh ###########
+	@javascript
 	Scenario: Create Single Paragraph Reading questions and add an existing paragraph to it
 		Given the following paragraphs exist:
 			| title 					| content 														|
@@ -93,6 +95,7 @@ Feature: Create Reading Questions
 		And I should see "Testing Reading Question"
 		And I should see "The primary purpose of the passage..."
 		
+	@javascript
 	Scenario: Create Reading questions with invalid attributes
 		When I select "Writing (Multiple Choice)" from "Category"
 		And I select "reading" from "Question Type"

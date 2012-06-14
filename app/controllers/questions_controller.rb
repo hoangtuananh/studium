@@ -18,5 +18,9 @@ class QuestionsController < ApplicationController
   end
 
   def category_selection
+    @categories=CategoryType.order :category_name
+    @category_names=@categories.collect do |category|
+      category.category_name
+    end
   end
 end

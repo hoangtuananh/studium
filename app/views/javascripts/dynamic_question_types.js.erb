@@ -1,0 +1,20 @@
+var question_types=new Array();
+
+<% for question_type in @question_types -%>
+  question_types.push(new Array('<%= question_type.category_type.category_name %>','<%= question_type.type_name %>'));
+<% end -%>
+
+function categorySelected() {
+  category_name=$("select#category_type_category_name").val();
+  $("select#question_type_type_name option").remove();
+  question_types.forEach(function(question_type){
+    if (question_type[0]==category_name) {
+      $("<option value=\""+question_type[1]+"\">"+question_type[1]+"</option>").appendTo("select#question_type_type_name");
+    }
+  });
+}
+
+$(document).ready(function() {
+  categorySelected();
+  $("select#category_type_category_name").change(categorySelected);
+});

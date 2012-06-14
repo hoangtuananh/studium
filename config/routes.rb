@@ -12,6 +12,10 @@ Studium::Application.routes.draw do
   get "/admin/materials",to: "homepage#materials",as: "admin_materials"
   get "/admin/materials/questions/add_question",to: "questions#category_selection",as: "add_new_materials_question" 
 
+  get "/question_types/question_types_for_category_type/:category_name",to: "question_types#question_types_for_category_type"
+
+  get ":controller/:action.:format"
+
   namespace :admin do
     namespace :materials do
       resources :questions

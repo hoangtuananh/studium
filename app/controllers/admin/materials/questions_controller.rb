@@ -3,6 +3,13 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def new
+    @question_type=params[:question_type][:type_name]
+
+    if @question_type=="Reading" or @question_type=="Paragraph Improvement"
+      render "form_with_paragraph" 
+    else
+      render "form_without_paragraph"
+    end
   end
 
   def create

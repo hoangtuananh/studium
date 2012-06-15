@@ -1,12 +1,17 @@
 class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
   def new
-    @question_type_id = params[:question_type_id]
-    @paragraph = Paragraph.new
-    6.times do
-      @question = @paragraph.questions.build(question_type_id: params[:question_type_id])
-      5.times do
-        @choice = @question.choices.build
-      end
+    respond_to do |format|
+      # Render a normal form for HTML request
+      format.html {
+        @paragraph = Paragraph.new
+        6.times do
+          @paragraph.questions.build(question_type_id: params[:question_type_id])
+        end
+      }
+
+      # Respond to a json request
+      format.json {
+      }
     end
   end
 

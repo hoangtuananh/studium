@@ -13,7 +13,7 @@ Feature: Create Sentence Improvement Questions
 		When I follow "Admin Page"
 		And I follow "Materials"
 		And I follow "Questions"
-		# And I follow "Create Question"
+		And I follow "Add Question"
 
 	################## Sentence Improvement questions #################
 	@javascript
@@ -28,11 +28,12 @@ Feature: Create Sentence Improvement Questions
 		And I fill in "Content # 3" with "children, they are born with the ability to learn"
 		And I fill in "Content # 4" with "children born with the ability to be learning"
 		And I fill in "Content # 5" with "children are born with the ability to learn"
+		And I check "#5 Correct?"
 		# And I fill in "Experience" with "100"
 		And I press "Create Question"
 		Then I should see "Question has been created."
-		# And I should see "Testing SI Question"
-		# And I should see "Research has shown that..."
+		And I should see "Testing SI Question"
+		And I should see "Research has shown that"
 		
 	@javascript
 	Scenario: Create Sentence Improvement questions with invalid attributes
@@ -41,11 +42,11 @@ Feature: Create Sentence Improvement Questions
 		And I press "Proceed"
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
-		And I should see "Prompt can't be blank"
+		And I should see "Question prompt can't be blank"
 		# And I should see "Choice A can't be blank"
 		# And I should see "Choice B can't be blank"
 		# And I should see "Choice C can't be blank"
 		# And I should see "Choice D can't be blank"
 		# And I should see "Choice E can't be blank"
 		# And I should see "Experience can't be blank"
-		# And I should see "You haven't selected the correct choice"
+		And I should see "You haven't selected the correct choice"

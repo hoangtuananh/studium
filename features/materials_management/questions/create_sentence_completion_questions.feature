@@ -13,7 +13,7 @@ Feature: Create Sentence Completion Questions
 		When I follow "Admin Page"
 		And I follow "Materials"
 		And I follow "Questions"
-		# And I follow "Add Question"
+		And I follow "Add Question"
 
 	################## Sentence Completion questions ###################
 	@javascript
@@ -32,8 +32,8 @@ Feature: Create Sentence Completion Questions
 		# And I fill in "Experience" with "100"
 		And I press "Create Question"
 		And I should see "Question has been created."
-		# And I should see "Testing SC Question"
-		# And I should see "There had been a..."
+		And I should see "Testing SC Question"
+		And I should see "There had been a"
 		
 	@javascript
 	Scenario: Create setence completion questions with invalid attributes

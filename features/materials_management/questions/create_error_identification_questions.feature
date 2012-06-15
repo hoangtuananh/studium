@@ -13,7 +13,7 @@ Feature: Create Error Identification Questions
 		When I follow "Admin Page"
 		And I follow "Materials"
 		And I follow "Questions"
-		# Given I follow "Add Question"
+		Given I follow "Add Question"
 
 	################## Error Identification questions #################
 	@javascript
@@ -28,11 +28,12 @@ Feature: Create Error Identification Questions
 		And I fill in "Content # 3" with "after"
 		And I fill in "Content # 4" with "are submitted"
 		And I fill in "Content # 5" with "No Error"
+		And I check "#4 Correct?"
 		# And I fill in "Experience" with "100"
 		And I press "Create Question"
 		And I should see "Question has been created."
-		# And I should see "Testing EI Question"
-		# And I should see "Something about the project must have..."
+		And I should see "Testing EI Question"
+		And I should see "Something about the project must have"
 		
 	@javascript
 	Scenario: Create Error Identification questions with invalid attributes
@@ -41,11 +42,11 @@ Feature: Create Error Identification Questions
 		And I press "Proceed"
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
-		And I should see "Prompt can't be blank"
+		And I should see "Question prompt can't be blank"
 		# And I should see "Choice A can't be blank"
 		# And I should see "Choice B can't be blank"
 		# And I should see "Choice C can't be blank"
 		# And I should see "Choice D can't be blank"
 		# And I should see "Choice E can't be blank"
 		# And I should see "Experience can't be blank"
-		# And I should see "You haven't selected the correct choice"
+		And I should see "You haven't selected the correct choice"

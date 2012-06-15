@@ -69,7 +69,7 @@ private
     if !@question_type.need_paragraph
       @partial="form_without_paragraph"
     else
-      #@partial="form_without_paragraph"
+      #@partial="form_with_paragraph"
       redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
     end
   end

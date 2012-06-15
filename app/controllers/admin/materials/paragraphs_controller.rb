@@ -4,9 +4,6 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
       # Render a normal form for HTML request
       format.html {
         @paragraph = Paragraph.new
-        6.times do
-          @paragraph.questions.build(question_type_id: params[:question_type_id])
-        end
       }
 
       # Respond to a json request

@@ -1,19 +1,26 @@
-= form_for([:admin, :materials, @paragraph]) do |f|
-  - if @paragraph.errors.any?
-    %ul
-      - @paragraph.errors.full_messages.each do |msg|
-        %li=msg
-  %div.control-group
-    = f.label :title, "Paragraph Title"
-    = f.text_field :title
+%div.container-fluid
+  = form_for([:admin, :materials, @paragraph]) do |f|
+    %div.row-fluid
+      %div.span4.well.text-center
+        - 6.times do
+          - @question = @paragraph.questions.build(question_type_id: params[:question_type_id])
+          - 5.times {@question.choices.build(choice_letter: cycle("A","B","C","D","E"))} unless @question.choices.any? 
+        - if @paragraph.errors.any?
+          %ul
+            - @paragraph.errors.full_messages.each do |msg|
+              %li=msg
+        %div.control-group
+          = f.label :title, "Paragraph Title"
+          = f.text_field :title
 
-  %div.control-group
-    = f.label :content, "Paragraph Content"
-    = f.text_area :content
-  %div.control-group
-    - index = 1
-    = f.fields_for :questions do |builder|
-      = render "questions_fields", f: builder, index: index, question_type_id: @question_type_id
-      - index+=1
-  %div
-    = f.submit
+        %div.control-group
+          = f.label :content, "Paragraph Content"
+          = f.text_area :content
+      %div.span8.well.text-center
+        %div.control-group
+          - index = 1
+          = f.fields_for :questions do |builder|
+            = render "questions_fields", f: builder, index: index, question_type_id: @question_type_id
+            - index+=1
+        %div
+          = f.submit "class"=> "btn btn-success"

@@ -8,6 +8,6 @@
     - deep_index = 1
     = f.fields_for :choices do |builder|
       = render "choices_fields", f:builder, deep_index:deep_index
-      - index+=1
+      - deep_index+=1
   = f.hidden_field :exp, value: 1400
   = f.hidden_field :question_type_id, value: question_type_id

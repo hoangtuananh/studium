@@ -57,4 +57,4 @@ gem "will_paginate"
 gem "paperclip"
 
 # Work around; default to rake 0.8.7 because 0.9 breaks rails
-gem "rake","0.8.7"
+#gem "rake","0.8.7"

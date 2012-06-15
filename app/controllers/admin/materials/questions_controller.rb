@@ -12,15 +12,14 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
     # Get the correct form (as a partial view)
     determine_form_for_question
+
   end
 
   def create
     @question = @question_type.questions.new(params[:question])
 
     # Get the correct form (as a partial view)
-    #determine_form_for_question
-
-    render "form_without_paragraph"
+    determine_form_for_question
 
     # Determine if the question is correct
     @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
@@ -74,7 +73,7 @@ private
   # This method determines which form to render based on question_type and store that in @partial
   def determine_form_for_question
     if !@question_type.need_paragraph
-      @partial="form_with_paragraph"
+      @partial="form_without_paragraph"
     else
       #@partial="form_without_paragraph"
       redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])

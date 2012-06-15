@@ -1,4 +1,4 @@
-%div.container-fluid
+%div.container-fluid:
   = form_for([:admin, :materials, @paragraph]) do |f|
     %div.row-fluid
       %div.span4.well.text-center
@@ -22,5 +22,5 @@
           = f.fields_for :questions do |builder|
             = render "questions_fields", f: builder, index: index, question_type_id: @question_type_id
             - index+=1
-        %div
-          = f.submit "class"=> "btn btn-success"
+          %p= link_to_add_question "Add Question", f, index, @question_type_id, @paragraph
+        = f.submit "class"=> "btn btn-success"

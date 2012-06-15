@@ -3,7 +3,7 @@ class Question < ActiveRecord::Base
   belongs_to :paragraph
   belongs_to :question_type
   has_many :choices
-  accepts_nested_attributes_for :choices, :reject_if => lambda { |c| c[:content].blank?}
+  accepts_nested_attributes_for :choices, :reject_if => lambda { |c| c[:content].blank?}, :allow_destroy => true
   validate :contains_correct_choice
   def contains_correct_choice
     choices = self.choices

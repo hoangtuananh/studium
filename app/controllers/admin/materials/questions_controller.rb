@@ -1,7 +1,9 @@
 class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   before_filter :find_question_type, except: [:index,:category_selection,:destroy]
+  require "parser"
 
   def index
+    @questions=Question.order :title
   end
 
   def new

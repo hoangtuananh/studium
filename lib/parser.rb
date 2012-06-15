@@ -1,18 +1,17 @@
 class String
   def parse(options={})
     # Parse all the markups
-    self.highlight(options[:question_id])
+    self.highlight_render(options[:question_id])
         .blank(options[:question_id])
         .linebreak(options[:is_passage])
-        .clue(options[:question_id],options[:choice_id])
-        .underline(options[:question_id],options[:choice_id])
+        .underline(options[:question_id])
   end
 
-  def highlight(question_id)
+  def highlight_render(question_id)
+    result = self
+    
     # If question_id is not nil, parse the highlight markup
     if question_id
-      result = self
-
       # Parse all the highlight markups that match question_id
       while result=~/(.*)<hl #{question_id}>(.*?)<\/hl #{question_id}>(.*)/m
         result = $1 + "<b>" + $2 + "</b>" + $3
@@ -22,25 +21,25 @@ class String
       while result=~/(.*)<hl (\d+)>(.*?)<\/hl (\d+)>(.*)/m
         result = $1 + $3 + $5
       end
-
-      result
     end
+
+    result
   end
 
   def blank(question_id)
+    result=self
+
     # If question_id is not nil
     if question_id
-      result=self
-
       # Parse all the blank markups that match question_id
       count=0
       while result=~/(.*?)<bl \/>(.*)/m
         count+=1
         result=$1+%Q[<input type="text" id="question_#{question_id}_blank_#{count}" class="span1 focused" />]+$2
       end
-
-      result
     end
+    
+    result
   end
 
   def linebreak(is_passage)
@@ -59,16 +58,16 @@ class String
       end
 
       array.join
+    else
+      self
     end
   end
 
-  def clue(choice_id)
-  end
-
   def underline(question_id)
+    result=self
+
     if question_id
       count=1
-      result=self
 
       #Underline tags associated with specific choices, used in error identification questions
       while result=~/(.*?)<un>(.*?)<\/un>(.*)/m
@@ -81,8 +80,8 @@ class String
         result=$1+%Q[<span id="question_#{question_id}_underline_#{choice_letter}"><u>]+$2+%Q[</u></span>]+$3
         count+=1
       end
-
-      result
     end
+
+    result
   end
 end

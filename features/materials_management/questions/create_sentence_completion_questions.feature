@@ -42,7 +42,7 @@ Feature: Create Sentence Completion Questions
 		And I press "Proceed"
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
-		And I should see "Prompt can't be blank"
+		And I should see "Question prompt can't be blank"
 		# And I should see "Choice A can't be blank"
 		# And I should see "Choice B can't be blank"
 		# And I should see "Choice C can't be blank"

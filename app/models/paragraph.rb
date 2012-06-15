@@ -1,3 +1,4 @@
 class Paragraph < ActiveRecord::Base
-  belongs_to :question
+  has_many :questions
+  accepts_nested_attributes_for :questions
 end

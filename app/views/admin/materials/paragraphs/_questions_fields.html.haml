@@ -1,0 +1,13 @@
+%div
+  = f.label :title, "Question ##{index} Title"
+  = f.text_field :title
+
+  = f.label :prompt, "Question ##{index} Prompt"
+  = f.text_area :prompt, {cols:30, rows: 7}
+  %div.well.form-inline
+    - deep_index = 1
+    = f.fields_for :choices do |builder|
+      = render "choices_fields", f:builder, deep_index:deep_index
+      - index+=1
+  = f.hidden_field :exp, value: 1400
+  = f.hidden_field :question_type_id, value: question_type_id

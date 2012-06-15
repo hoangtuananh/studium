@@ -1,0 +1,19 @@
+= form_for([:admin, :materials, @paragraph]) do |f|
+  - if @paragraph.errors.any?
+    %ul
+      - @paragraph.errors.full_messages.each do |msg|
+        %li=msg
+  %div.control-group
+    = f.label :title, "Paragraph Title"
+    = f.text_field :title
+
+  %div.control-group
+    = f.label :content, "Paragraph Content"
+    = f.text_area :content
+  %div.control-group
+    - index = 1
+    = f.fields_for :questions do |builder|
+      = render "questions_fields", f: builder, index: index, question_type_id: @question_type_id
+      - index+=1
+  %div
+    = f.submit

@@ -1,8 +1,12 @@
 class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
   def new
+    @question_type_id = params[:question_type_id]
     @paragraph = Paragraph.new
     6.times do
-      @paragraph.questions.build(question_type_id: params[:question_type_id])
+      @question = @paragraph.questions.build(question_type_id: params[:question_type_id])
+      5.times do
+        @choice = @question.choices.build
+      end
     end
   end
 

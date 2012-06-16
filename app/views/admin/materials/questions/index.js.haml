@@ -2,3 +2,5 @@
 
 $(".questions-accordion").remove();
 $(".questions-index").append("#{escape_javascript(questions_accordion)}");
+$(".notice-alert div").remove();
+$(".notice-alert").prepend("<div class=\"alert alert-success\"><button class=\"close\" data-dismiss=\"alert\">x</button><p>#{escape_javascript(@notice)}</p></div>");

@@ -82,6 +82,8 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         # Query for questions
         @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
 
+        @notice="Question has been deleted."
+
         render "index.js.haml"
       }
     end

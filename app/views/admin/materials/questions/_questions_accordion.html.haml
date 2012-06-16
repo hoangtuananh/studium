@@ -11,7 +11,7 @@
                 = question.title
             %div.span3
               %button.btn.btn-success Edit
-              %button.btn.btn-danger Delete
+              = link_to "Delete",{controller: "admin/materials/questions",action: "destroy",id: question.id,question_type_id: params[:question_type] ? params[:question_type][:id] : 0,category_type_id: params[:category_type] ? params[:category_type][:id] : 0},{method: :delete,remote: true,class: "btn btn-danger"}
         %div{id: "collapse#{count}",class: "accordion-body collapse",style: "height: 0px;"}
           %div.accordion-inner
             %div.row

@@ -29,20 +29,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def new
-    # Respond to different formats
-    respond_to do |format|
-      format.html {
-        # Create a question prototype for the form
-        @question = @question_type.questions.new
+    # Create a question prototype for the form
+    @question = @question_type.questions.new
 
-        # Get the correct form (as a partial view)
-        determine_form_for_question
-      }
-
-      format.json {
-      }
-    end
-
+    # Get the correct form (as a partial view)
+    determine_form_for_question
   end
 
   def create
@@ -73,6 +64,28 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def destroy
+    @question=Question.find params[:id]
+    @question.destroy
+
+    # Respond to different request formats
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+        # Get question_type_id from the submitted form on index.html.haml
+        @question_type_id=params[:category_type_id]!="0" && params[:question_type_id] ? params[:question_type_id] : 0
+        
+        # Determine the filter for the query
+        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
+
+        # Query for questions
+        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
+
+        render "index.js.haml"
+      }
+    end
+
   end
 
   def category_selection

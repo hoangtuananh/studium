@@ -1,11 +1,16 @@
-%div.fields
-  = link_to_remove_question "Remove", f
-  = f.label :title, "Question ##{index} Title"
+%fieldset.fields.hero-unit.padding-5px
+  %legend= "Question # #{index}"
+  %div.row
+    %div.pull-right
+      = link_to_remove_question "Remove", f
+    
+  = f.label :title, "Question # #{index} Title"
   = f.text_field :title
 
-  = f.label :prompt, "Question ##{index} Prompt"
+  = f.label :prompt, "Question # #{index} Prompt"
   = f.text_area :prompt, {cols:30, rows: 7}
-  %div.well.form-inline
+
+  %div.form-inline
     - deep_index = 1
     = f.fields_for :choices do |builder|
       = render "choices_fields", f:builder, deep_index:deep_index

@@ -12,11 +12,18 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         category_selection
 
         # Add "All" option to category type
-        @category_types.insert 0,"All"
+        @category_types.insert 0,["All",0]
       end
 
       format.js do
-        @questions=Question.order :prompt
+        # Get question_type_id from the submitted form on index.html.haml
+        @question_type_id=params[:category_type][:id]!=0 && params[:question_type] ? params[:question_type][:id] : 0
+        
+        # Determine the filter for the query
+        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
+
+        # Query for questions
+        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
       end
     end
   end

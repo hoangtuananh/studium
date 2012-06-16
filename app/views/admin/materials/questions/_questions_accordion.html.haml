@@ -26,4 +26,6 @@
                 %br
             - if question.paragraph
               %h3= "Paragraph: #{question.paragraph.title}"
+              %div.hero-unit.text-center
+                %p= question.paragraph.content.parse(question_id: question.id,is_passage: true).html_safe
         - count+=1

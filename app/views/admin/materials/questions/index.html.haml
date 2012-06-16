@@ -1,49 +1,36 @@
-%h1 Question Index Page
+= javascript "../question_types/dynamic_question_types"
 
-%script{type: "text/javascript"}
-  :plain
-    $(document).ready(functio() {
-      $(".collapse").collapse({
-        toggle: false
+%div.container-fluid.questions-index
+  %h1 Question Index Page
+
+  %script{type: "text/javascript"}
+    :plain
+      $(document).ready(function() {
+        $(".collapse").collapse({
+          toggle: false
+        });
       });
-    }
 
-%div.row
-  %div.span9
-  %div.span3
-    =link_to "Add Question",add_new_materials_question_path,class: "white-text btn btn-primary"
-    
-%div.row
+  %div.row
+    %div.span8
+    %div.span4
+      %span.label.label-info Filter
+      %div.filter-form.well.form-inline
+        = form_tag admin_materials_questions_path,method: "get",remote: true do
+          %div.control-group
+            = label :category_type,:id,"Category"
+            = select :category_type,:id,@category_types
 
-  %div.span3
-  %div.accordion.span6{id: "accordion2"}
-    %div.accordion-group
-      - count=1
-      - @questions.each do |question|
-        %div.row
-          %div.accordion-heading.text-center
-            %div.span9
-              %a.accordion-toggle{:"data-toggle"=>"collapse", :"data-parent"=>"#accordion2", href: "#collapse#{count}"}
-                = question.title
-            %div.span3
-              %button.btn.btn-success Edit
-              %button.btn.btn-danger Delete
-        %div{id: "collapse#{count}",class: "accordion-body collapse",style: "height: 0px;"}
-          %div.accordion-inner
-            %div.row
-              %div.span1
-              %div.span5
-                %span Prompt:
-            %div.row.well
-              %p= question.prompt.parse(question_id: question.id,is_passage: false).html_safe
-              - question.choices.each do |choice|
-                = check_box_tag :question,:choice,choice.correct?,disabled: true
-                = choice.choice_letter+": "+choice.content
-                %br
-            - if question.paragraph
-              %h3= "Paragraph: #{question.paragraph.title}"
-              %div.row.well.paragraph
-                %p= question.paragraph.content.parse(question_id: question.id,is_passage: true).html_safe
+          %div.control-group
+            = label :question_type,:id,"Question Type"
+            = select :question_type,:id,@question_types
 
-      
-        - count+=1
+          %div.pull-right
+            = submit_tag "Update",class: "btn btn-primary"
+
+  %div.row
+    %div.span9
+    %div.span3
+      =link_to "Add Question",add_new_materials_question_path,class: "white-text btn btn-primary"
+
+  = render "questions_accordion",questions: @questions

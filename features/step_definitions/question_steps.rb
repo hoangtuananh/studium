@@ -1,5 +1,3 @@
-Given /^the following questions exist:$/ do |table|
-  table.hashes.each do |attr|
-    Question.create! attr
-  end
+Given /^the following questions with the following titles exist:$/ do |table|
+  FactoryGirl.
 end

@@ -3,15 +3,38 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   require "parser"
 
   def index
-    @questions=Question.order :title
+    # Respond to different formats
+    respond_to do |format|
+      format.html do 
+        @questions=Question.order :title
+
+        # Get the category and question types for the filter
+        category_selection
+
+        # Add "All" option to category type
+        @category_types.insert 0,"All"
+      end
+
+      format.js do
+        @questions=Question.order :prompt
+      end
+    end
   end
 
   def new
-    # Create a question prototype for the form
-    @question = @question_type.questions.new
+    # Respond to different formats
+    respond_to do |format|
+      format.html {
+        # Create a question prototype for the form
+        @question = @question_type.questions.new
 
-    # Get the correct form (as a partial view)
-    determine_form_for_question
+        # Get the correct form (as a partial view)
+        determine_form_for_question
+      }
+
+      format.json {
+      }
+    end
 
   end
 

@@ -1,0 +1,4 @@
+- questions_accordion=render "questions_accordion",questions: @questions
+
+$(".questions-accordion").remove();
+$(".questions-index").append("#{escape_javascript(questions_accordion)}");

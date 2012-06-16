@@ -5,6 +5,7 @@ class Question < ActiveRecord::Base
   has_many :choices
   accepts_nested_attributes_for :choices, :reject_if => lambda { |c| c[:content].blank?}, :allow_destroy => true
   validate :contains_correct_choice
+
   def contains_correct_choice
     choices = self.choices
     if choices.empty?

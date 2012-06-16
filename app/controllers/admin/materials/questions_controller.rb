@@ -60,6 +60,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def edit
     @question=Question.find params[:id]
     @question_type=@question.question_type
+    @ajax=true
 
     # Respond to different request formats
     respond_to do |format|
@@ -84,7 +85,15 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
     @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
 
-    redirect_to admin_materials_questions_path, notice: "Question has been updated." 
+    respond_to do |format|
+      format.html {
+        redirect_to admin_materials_questions_path, notice: "Question has been updated." 
+      }
+      
+      format.js {
+
+      }
+    end
 
   rescue
     flash[:alert] = "Invalid Question Information. Question has not been updated."

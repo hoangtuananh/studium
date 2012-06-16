@@ -4,7 +4,7 @@
     %div.accordion-group
       - count=1
       - questions.each do |question|
-        %div.row
+        %div.row.hero-unit.padding-5px
           %div.accordion-heading.text-center
             %div.span9
               %a.accordion-toggle{:"data-toggle"=>"collapse", :"data-parent"=>"#accordion2", href: "#collapse#{count}"}

@@ -8,11 +8,11 @@
     - @question.errors.full_messages.each do |msg|
       %li=msg
 
-  %div.control-group
+  %div.control-group.text-center
     = f.label :title,"Question Title"
     = f.text_field :title
 
-  %div.control-group
+  %div.control-group.text-center
     = f.label :prompt,"Question Prompt"
     = f.text_area :prompt,{cols: 30,rows: 7}
 

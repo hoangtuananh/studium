@@ -58,6 +58,19 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def edit
+    @question=Question.find params[:id]
+    @question_type=@question.question_type
+
+    # Respond to different request formats
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+        # Get the correct form (as a partial view)
+        determine_form_for_question
+      }
+    end
   end
 
   def update

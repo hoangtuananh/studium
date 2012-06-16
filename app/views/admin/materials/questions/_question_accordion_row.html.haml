@@ -1,0 +1,24 @@
+%div.row.hero-unit.padding-5px
+  %div.accordion-heading.text-center
+    %div.span9
+      %a.accordion-toggle{:"data-toggle"=>"collapse", :"data-parent"=>"#accordion2", href: "#collapse#{count}"}
+        = question.title
+    %div.span3
+      = link_to "Edit",edit_admin_materials_question_path(question),{class: "btn btn-success",remote: true}
+      = link_to "Delete",{controller: "admin/materials/questions",action: "destroy",id: question.id,question_type_id: params[:question_type] ? params[:question_type][:id] : 0,category_type_id: params[:category_type] ? params[:category_type][:id] : 0},{method: :delete,remote: true,class: "btn btn-danger"}
+%div{id: "collapse#{count}",class: "accordion-body collapse question-row-#{question.id}",style: "height: 0px;"}
+  %div.accordion-inner
+    %div.row
+      %div.span1
+      %div.span5
+        %span Prompt:
+    %div.row.well
+      %p= question.prompt.parse(question_id: question.id,is_passage: false).html_safe
+      - question.choices.each do |choice|
+        = check_box_tag :question,:choice,choice.correct?,disabled: true
+        = choice.choice_letter+": "+choice.content
+        %br
+    - if question.paragraph
+      %h3= "Paragraph: #{question.paragraph.title}"
+      %div.hero-unit.text-center
+        %p= question.paragraph.content.parse(question_id: question.id,is_passage: true).html_safe

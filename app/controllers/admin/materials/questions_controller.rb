@@ -74,6 +74,21 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def update
+    @question = Question.find params[:id]
+    @question.update_attributes! params[:question]
+
+    # Determine if the question is correct
+    @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
+    @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
+    @question.choices[2].update_attributes! correct: true if params[:question][:choices_attributes][2]
+    @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
+    @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
+
+    redirect_to admin_materials_questions_path, notice: "Question has been updated." 
+
+  rescue
+    flash[:alert] = "Invalid Question Information. Question has not been updated."
+    render "edit"
   end
 
   def destroy

@@ -9,7 +9,7 @@
     <![endif]-->
 
     = stylesheet_link_tag "application",media: "all"
-    = javascript_include_tag "application"
+    = javascript_include_tag :rails,:application
     = csrf_meta_tags
     = yield(:head)
 
@@ -37,7 +37,7 @@
                 %li= link_to "Sign in",new_user_session_path
                 %li= link_to "Sign up",new_user_registration_path
     %div.container-fluid
-      %div.row-fluid
+      %div.row-fluid.notice-alert
         -# Notifications
         - if notice
           %div.alert.alert-success

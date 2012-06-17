@@ -1,0 +1,4 @@
+- edit_form=render "form"
+
+$(".paragraph-edit-group > .control-group").remove();
+$(".paragraph-edit-group > legend").after("#{escape_javascript(edit_form)}");

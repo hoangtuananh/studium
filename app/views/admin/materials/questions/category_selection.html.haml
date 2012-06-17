@@ -1,7 +1,7 @@
 = javascript "../question_types/dynamic_question_types"
 %h1 Select Category and Question Type
 
-= form_tag new_admin_materials_path,method: "get",remote: true do
+= form_tag new_admin_materials_question_path,method: "get" do
   %div.control-group
     = label :category_type,:id,"Category"
     = select :category_type,:id,@category_types

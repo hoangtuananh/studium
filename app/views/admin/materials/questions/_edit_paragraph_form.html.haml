@@ -1,0 +1,10 @@
+%div.control-group
+  = label_tag :paragraph_title,"Paragraph Title"
+  = text_field_tag :title
+
+%div.control-group
+  = label_tag :content,"Paragraph Content"
+  = text_area_tag :content
+
+%div.control-group
+  = hidden_field :question_id,{value: @question.id}

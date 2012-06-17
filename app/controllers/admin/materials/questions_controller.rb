@@ -12,30 +12,28 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         category_selection
 
         # Add "All" option to category type
-        @category_types.insert 0,"All"
+        @category_types.insert 0,["All",0]
       end
 
       format.js do
-        @questions=Question.order :prompt
+        # Get question_type_id from the submitted form on index.html.haml
+        @question_type_id=params[:category_type][:id]!=0 && params[:question_type] ? params[:question_type][:id] : 0
+        
+        # Determine the filter for the query
+        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
+
+        # Query for questions
+        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
       end
     end
   end
 
   def new
-    # Respond to different formats
-    respond_to do |format|
-      format.html {
-        # Create a question prototype for the form
-        @question = @question_type.questions.new
+    # Create a question prototype for the form
+    @question = @question_type.questions.new
 
-        # Get the correct form (as a partial view)
-        determine_form_for_question
-      }
-
-      format.json {
-      }
-    end
-
+    # Get the correct form (as a partial view)
+    determine_form_for_question
   end
 
   def create
@@ -60,12 +58,91 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def edit
+    @question=Question.find params[:id]
+    @question_type=@question.question_type
+    @ajax=true
+
+    # Respond to different request formats
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+        # Get the correct form (as a partial view)
+        determine_form_for_question
+      }
+    end
   end
 
   def update
+    @question = Question.find params[:id]
+    @question.update_attributes! params[:question]
+
+    # Update paragraph
+    if params[:paragraph_title] && params[:paragraph_content]
+      @paragraph=@question.paragraph
+      @paragraph.title=params[:paragraph_title]
+      @paragraph.content=params[:paragraph_content]
+      @paragraph.save
+    end
+
+    # Determine if the question is correct
+    @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
+    @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
+    @question.choices[2].update_attributes! correct: true if params[:question][:choices_attributes][2]
+    @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
+    @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
+
+    respond_to do |format|
+      format.html {
+        redirect_to admin_materials_questions_path, notice: "Question has been updated." 
+      }
+      
+      format.js {
+        @notice="Question has been updated."
+        @error=false
+      }
+      @question.paragraph.title=params[:paragraph_title]
+    end
+
+  rescue
+    respond_to do |format|
+      format.html {
+        flash[:alert] = "Invalid Question Information. Question has not been updated."
+        render "edit"
+      }
+
+      format.js {
+        @error=true
+      }
+    end
   end
 
   def destroy
+    @question=Question.find params[:id]
+    @question.destroy
+
+    # Respond to different request formats
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+        # Get question_type_id from the submitted form on index.html.haml
+        @question_type_id=params[:category_type_id]!="0" && params[:question_type_id] ? params[:question_type_id] : 0
+        
+        # Determine the filter for the query
+        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
+
+        # Query for questions
+        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
+
+        @notice="Question has been deleted."
+
+        render "index.js.haml"
+      }
+    end
+
   end
 
   def category_selection
@@ -92,8 +169,15 @@ private
     if !@question_type.need_paragraph
       @partial="form_without_paragraph"
     else
-      #@partial="form_with_paragraph"
-      redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
+      respond_to do |format|
+        format.html {
+          redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
+        }
+
+        format.js {
+          @partial="form_with_paragraph"
+        }
+      end
     end
   end
 end

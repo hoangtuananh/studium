@@ -17,3 +17,4 @@ en:
         prompt: "Question prompt"
         title: "Question title"
         choices: ""
+        choice: ""

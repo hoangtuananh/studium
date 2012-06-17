@@ -4,16 +4,9 @@ Feature: Delete Questions
 	I want to be able to delete questions
 
 	Background:
-		Given the following questions exist:
-			| title 	 			| prompt		 				 | exp  |
-			| Test Question | What do you want? | 1400 |
-		And the followng choices exist:
-			| choice_letter | content | correct |
-			| A							| A is A	| false		|
-			| B							| B is B	| false		|
-			| C							| C is C	| true		|
-			| D							| D is D	| false		|
-			| E							| E is E	| false		|
+		Given the questions with the following titles exist:
+			| title 	 			|
+			| Test Question |
 		Given the following users exist:
 			| email							 | password | admin |
 			| admin@ticketee.com | password | true  |
@@ -25,7 +18,7 @@ Feature: Delete Questions
 		And I follow "Questions"
 		And I follow "Test Question"
 
+	@javascript
 	Scenario: Delete Quesitons
 		When I follow "Delete"
-		Then I should see "Question has been deleted."
-		And I should not see "Test Question"
+		Then I should not see "Test Question"

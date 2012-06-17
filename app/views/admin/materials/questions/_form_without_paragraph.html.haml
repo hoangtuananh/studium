@@ -2,17 +2,17 @@
 - # No point in doing this in the new action since the instance variables are lost in the next request
 - 5.times {@question.choices.build(choice_letter: cycle("A","B","C","D","E"))} unless @question.choices.any? 
 
-= form_for([:admin, :materials, @question]) do |f|
+= form_for([:admin, :materials, @question],remote: @ajax || false) do |f|
   - if @question.errors.any?
     %ul
     - @question.errors.full_messages.each do |msg|
       %li=msg
 
-  %div.control-group
+  %div.control-group.text-center
     = f.label :title,"Question Title"
     = f.text_field :title
 
-  %div.control-group
+  %div.control-group.text-center
     = f.label :prompt,"Question Prompt"
     = f.text_area :prompt,{cols: 30,rows: 7}
 
@@ -24,5 +24,5 @@
 
   = f.hidden_field :exp, {value: "1400"} 
   = f.hidden_field :question_type_id, {value: @question_type[:id]}
-  %div
-    = f.submit
+  %div.pull-right
+    = f.submit class: "btn btn-primary"

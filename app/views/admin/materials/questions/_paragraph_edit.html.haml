@@ -1,0 +1,11 @@
+%div.control-group
+  = label_tag "Paragraph Title"
+  = text_field_tag :paragraph_title,@question.paragraph.title
+
+%div.control-group
+  = label_tag "Paragraph Content"
+  = text_area_tag :paragraph_content,@question.paragraph.content.parse(question_id: @question.id,is_passage: true)
+
+%div.control-group.pull-right
+  %button.btn.btn-danger Delete
+  %button.btn.btn-inverse Remove

@@ -1,20 +1,13 @@
-Feature: Edit Questions that have no associated paragraphs
-	In order to edit questions that have no associated paragraphs
+Feature: Edit Questions that have associated paragraphs
+	In order to edit questions that have associated paragraphs
 	As an admin
 	I want to be able to edit questions like that in the question index page
 
 	Background:
-		Given the questions with the following titles exist:
-			| title 	 			|
-			| Test Question |
-		And the following choices exist:
-			| choice_letter | content | correct |
-			| A							| A is A	| false		|
-			| B							| B is B	| false		|
-			| C							| C is C	| true		|
-			| D							| D is D	| false		|
-			| E							| E is E	| false		|
-		Given the following users exist:
+		Given the following paragraphs exist:
+			| title	 						| content 						|
+			|	Testing Paragragh | Paragraph Paragraph |
+		And the following users exist:
 			| email							 | password | admin |
 			| admin@ticketee.com | password | true  |
 		And I am signed in as "admin@ticketee.com" with password "password"

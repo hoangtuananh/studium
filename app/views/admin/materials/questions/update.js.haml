@@ -1,0 +1,25 @@
+- unless @error
+  - question_update_form=render "question_accordion_inner",question: @question
+  - question_new_title=@question.title
+
+  //Update the question's title
+  $(".question-accordion-group-#{escape_javascript("#{@question.id}")} a.accordion-toggle").html("#{escape_javascript(question_new_title)}");
+
+  //Remove the form
+  $(".question-row-#{escape_javascript("#{@question.id}")} .accordion-inner").remove();
+
+  //Update the content of the inner accordion
+  $(".question-row-#{escape_javascript("#{@question.id}")}").append("#{escape_javascript(question_update_form)}");
+
+- else
+  - @notice="<ul>"
+  - @question.errors.full_messages.each do |msg|
+    - @notice << "<li>#{msg}</li>"
+  - @notice << "</ul>"
+  - @notice=@notice.html_safe
+
+//Remove the old notice and add the new one
+- alert_class= @error ? "alert-error" : "alert-success"
+$(".notice-alert div").remove();
+$(".alert").remove();
+$(".question-row-#{escape_javascript("#{@question.id}")}").prepend("<div class=\"alert #{escape_javascript(alert_class)}\"><button class=\"close\" data-dismiss=\"alert\">x</button><p>#{escape_javascript(@notice)}</p></div>");

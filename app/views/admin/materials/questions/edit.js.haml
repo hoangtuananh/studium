@@ -1,4 +1,8 @@
 - question_edit_form=render @partial
 
+//Render the form
 $(".question-row-#{escape_javascript("#{@question.id}")} .accordion-inner div").remove();
 $(".question-row-#{escape_javascript("#{@question.id}")} .accordion-inner").append("<div class=\"row well\">#{escape_javascript(question_edit_form)}</div>");
+
+//Remove all alerts
+$(".alert").remove();

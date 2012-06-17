@@ -1,9 +1,9 @@
-%div.accordion-inner
+%div.accordion-inner.border-1px.text-center
   %div.row
     %div.span1
     %div.span5
       %span Prompt:
-  %div.row.well
+  %div.hero-unit.border-1px
     %p= question.prompt.parse(question_id: question.id,is_passage: false).html_safe
     - question.choices.each do |choice|
       = check_box_tag :question,:choice,choice.correct?,disabled: true
@@ -11,5 +11,5 @@
       %br
   - if question.paragraph
     %h3= "Paragraph: #{question.paragraph.title}"
-    %div.hero-unit.text-center
+    %div.hero-unit.border-1px
       %p= question.paragraph.content.parse(question_id: question.id,is_passage: true).html_safe

@@ -78,8 +78,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question = Question.find params[:id]
     @question.update_attributes! params[:question]
 
-    debugger
-
     # Update paragraph
     if @question.paragraph && params[:paragraph_title] && params[:paragraph_content]
       @paragraph=@question.paragraph
@@ -141,6 +139,18 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     end
     @question_types = QuestionType.all.collect do |question_type| 
       [question_type.type_name, question_type.id]
+    end
+  end
+
+  def cancel_edit_question
+    @question=Question.find params[:question_id]
+
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+      }
     end
   end
 

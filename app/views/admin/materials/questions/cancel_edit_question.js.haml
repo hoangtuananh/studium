@@ -1,0 +1,12 @@
+- question_update_form = render "question_accordion_inner",question: @question
+//Update the question's title
+$(".question-accordion-group-#{escape_javascript("#{@question.id}")} a.accordion-toggle").html("#{escape_javascript(@question.title)}");
+
+//Remove the form
+$(".question-row-#{escape_javascript("#{@question.id}")} .accordion-inner").remove();
+
+//Update the content of the inner accordion
+$(".question-row-#{escape_javascript("#{@question.id}")}").append("#{escape_javascript(question_update_form)}");
+
+//Remove all alerts
+$(".alert").remove();

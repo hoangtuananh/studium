@@ -24,6 +24,64 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
     end
   end
 
+  def edit
+    @paragraph=Paragraph.find params[:id]
+    @question=@paragraph.questions.find params[:question_id]
+    @ajax=true
+
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js { 
+      }
+    end
+
+  rescue
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+      }
+    end
+  end
+
+  def update
+    @paragraph=Paragraph.find params[:id]
+    @question=@paragraph.questions.find params[:paragraph][:question_id]
+
+    params[:paragraph].delete(:question_id)
+    @paragraph.update_attributes! params[:paragraph]
+
+    respond_to do |format|
+      format.html {
+        redirect_to admin_materials_paragraphs_path,notice: "Paragraph has been updated."
+      }
+
+      format.js {
+        @notice="Paragraph has been updated."
+      }
+
+    end
+  rescue
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+      }
+    end
+  end
+
+  def remove
+    
+  end
+
+  def destroy
+    
+  end
+
 private
   def get_question_type_id
     @question_type_id=params[:question_type_id]

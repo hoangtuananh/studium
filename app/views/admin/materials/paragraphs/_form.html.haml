@@ -1,0 +1,16 @@
+= form_for([:admin,:materials, @paragraph],remote: @ajax || false,method: "put") do |f|
+
+  %div.control-group
+    = f.label :title,"Paragraph Title"
+    = f.text_field :title
+
+  %div.control-group
+    = f.label :content,"Paragraph Content"
+    = f.text_area :content
+
+  %div.control-group
+    = f.hidden_field :question_id,{value: @question.id}
+
+  %div.pull-right
+    = link_to "Cancel",{controller: "admin/materials/questions",action: "cancel_edit_paragraph",question_id: @question.id},{class: "btn btn-danger",remote: true}
+    = f.submit class: "btn btn-success"

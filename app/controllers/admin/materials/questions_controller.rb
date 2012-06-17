@@ -78,6 +78,14 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question = Question.find params[:id]
     @question.update_attributes! params[:question]
 
+    # Update paragraph
+    if params[:paragraph_title] && params[:paragraph_content]
+      @paragraph=@question.paragraph
+      @paragraph.title=params[:paragraph_title]
+      @paragraph.content=params[:paragraph_content]
+      @paragraph.save
+    end
+
     # Determine if the question is correct
     @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
     @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
@@ -94,6 +102,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         @notice="Question has been updated."
         @error=false
       }
+      @question.paragraph.title=params[:paragraph_title]
     end
 
   rescue
@@ -160,8 +169,15 @@ private
     if !@question_type.need_paragraph
       @partial="form_without_paragraph"
     else
-      #@partial="form_with_paragraph"
-      redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
+      respond_to do |format|
+        format.html {
+          redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
+        }
+
+        format.js {
+          @partial="form_with_paragraph"
+        }
+      end
     end
   end
 end

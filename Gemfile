@@ -43,7 +43,7 @@ group :development,:test do
   gem "ruby-debug19"
   gem "sqlite3"
   gem "simplecov"
-  gem "factory_girl_rails"
+  gem "factory_girl"
 end
 
 group :production do

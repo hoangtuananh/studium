@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-  validates :prompt, :question_type_id, presence: true
+  validates :title,:prompt, :question_type_id, presence: true
   belongs_to :paragraph
   belongs_to :question_type
   has_many :choices

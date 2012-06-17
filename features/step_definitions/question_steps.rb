@@ -4,3 +4,9 @@ Given /^the questions with the following titles exist:$/ do |table|
     @question.save(validate: false)
   end
 end
+
+Given /^the following choices exist:$/ do |table|
+  table.hashes.each do |attr|
+    FactoryGirl.create :choice,attr.merge!(question_id: @question.id)
+  end
+end

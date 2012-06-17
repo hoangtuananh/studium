@@ -4,10 +4,10 @@ Feature: Edit Questions that have no associated paragraphs
 	I want to be able to edit questions like that in the question index page
 
 	Background:
-		Given the following questions exist:
-			| title 	 			| prompt		 				 | exp  |
-			| Test Question | What do you want? | 1400 |
-		And the followng choices exist:
+		Given the questions with the following titles exist:
+			| title 	 			|
+			| Test Question |
+		And the following choices exist:
 			| choice_letter | content | correct |
 			| A							| A is A	| false		|
 			| B							| B is B	| false		|
@@ -30,39 +30,39 @@ Feature: Edit Questions that have no associated paragraphs
 		Given I follow "Edit"
 		When I fill in "Title" with "Question Olala"
 		And I fill in "Prompt" with "I do not want anything from you."
-		And I fill in "Content A" with "A is not A"
-		And I fill in "Content B" with "B is not B"
-		And I fill in "Content C" with "C is not C"
-		And I fill in "Content D" with "D is not D"
-		And I fill in "Content E" with "E is not E"
-		And I select "B"
-		And I press "Update"
+		And I fill in "Content # 1" with "A is not A"
+		And I fill in "Content # 2" with "B is not B"
+		And I fill in "Content # 3" with "C is not C"
+		And I fill in "Content # 4" with "D is not D"
+		And I fill in "Content # 5" with "E is not E"
+		And I check "#2 Correct?"
+		And I uncheck "#3 Correct?"
+		And I press "Update Question"
 		Then I should see "Question Olala"
 		And I should not see "Test Question"
 		And I should see "Question has been updated."
-		When I follow "Question Olala"
-		Then I should not see "A is A"
+		And I should not see "A is A"
 		But I should see "A is not A"
-		Then I should not see "B is B"
-		Then I should not see "B is B"
+		And I should not see "B is B"
+		But I should see "B is not B"
+		And I should not see "C is C"
 		But I should see "C is not C"
-		But I should see "C is not C"
-		Then I should not see "D is D"
+		And I should not see "D is D"
 		But I should see "D is not D"
-		Then I should not see "E is E"
+		And I should not see "E is E"
 		But I should see "E is not E"	
 
 	@javascript
 	Scenario: Edit with invalid attributes
 		Given I follow "Edit"
-		When I fill in "Title" with ""
-		And I fill in "Prompt" with ""
-		And I fill in "Content A" with ""
-		And I fill in "Content B" with ""
-		And I fill in "Content C" with ""
-		And I fill in "Content D" with ""
-		And I fill in "Content E" with ""
-		And I press "Update"
-		Then I should see "Question has not been updated. Invalid Information."
-		And I should see "Question title can't be blank."
-		And I should see "Question prompt can't be blank."
+		When I fill in "Question Title" with ""
+		And I fill in "Question Prompt" with ""
+		And I fill in "Content # 1" with ""
+		And I fill in "Content # 2" with ""
+		And I fill in "Content # 3" with ""
+		And I fill in "Content # 4" with ""
+		And I fill in "Content # 5" with ""
+		And I uncheck "#3 Correct?"
+		And I press "Update Question"
+		Then I should see "Question title can't be blank"
+		And I should see "Question prompt can't be blank"

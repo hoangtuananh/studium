@@ -91,13 +91,22 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       }
       
       format.js {
-
+        @notice="Question has been updated."
+        @error=false
       }
     end
 
   rescue
-    flash[:alert] = "Invalid Question Information. Question has not been updated."
-    render "edit"
+    respond_to do |format|
+      format.html {
+        flash[:alert] = "Invalid Question Information. Question has not been updated."
+        render "edit"
+      }
+
+      format.js {
+        @error=true
+      }
+    end
   end
 
   def destroy

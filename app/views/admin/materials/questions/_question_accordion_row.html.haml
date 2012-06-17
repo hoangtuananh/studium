@@ -4,7 +4,7 @@
       %a.accordion-toggle{:"data-toggle"=>"collapse", :"data-parent"=>"#accordion2", href: "#collapse#{count}"}
         = question.title
     %div.span3
-      = link_to "Edit",edit_admin_materials_question_path(question),{class: "btn btn-success",remote: true}
+      = link_to "Edit",edit_admin_materials_question_path(question),{class: "btn btn-success edit-question",remote: true}
       = link_to "Delete",{controller: "admin/materials/questions",action: "destroy",id: question.id,question_type_id: params[:question_type] ? params[:question_type][:id] : 0,category_type_id: params[:category_type] ? params[:category_type][:id] : 0},{method: :delete,remote: true,class: "btn btn-danger",confirm: "Are you sure you want to delete this question?"}
 %div{id: "collapse#{count}",class: "accordion-body collapse question-row-#{question.id}",style: "height: 0px;"}
   = render "question_accordion_inner",question: question

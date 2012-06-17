@@ -9,6 +9,10 @@
         $(".collapse").collapse({
           toggle: false
         });
+
+        $(".edit-question").click(function(){
+          $(this).parent().parent().parent().next().collapse('toggle');
+        });
       });
 
   %div.row

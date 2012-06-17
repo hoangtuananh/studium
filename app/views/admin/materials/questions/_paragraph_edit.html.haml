@@ -4,7 +4,7 @@
 
 %div.control-group
   = label_tag "Paragraph Content"
-  = text_area_tag :paragraph_content,@question.paragraph.content.parse(question_id: @question.id,is_passage: true)
+  = text_area_tag :paragraph_content,@question.paragraph.content
 
 %div.control-group.pull-right
   = link_to "Remove Paragraph",{controller: "admin/materials/questions",action: "remove_paragraph",question_id: @question.id},{class: "btn btn-inverse",remote: true,confirm: "Are you sure you want to remove the paragraph from this question?"}

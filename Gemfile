@@ -43,7 +43,7 @@ group :development,:test do
   gem "ruby-debug19"
   gem "sqlite3"
   gem "simplecov"
-  gem "factory_girl_rails"
+  gem "factory_girl"
 end
 
 group :production do
@@ -58,4 +58,4 @@ gem "will_paginate"
 gem "paperclip"
 
 # Work around; default to rake 0.8.7 because 0.9 breaks rails
-gem "rake","0.8.7"
+#gem "rake","0.8.7"

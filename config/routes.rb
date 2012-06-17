@@ -16,7 +16,8 @@ Studium::Application.routes.draw do
 
   get ":controller/:action.:format"
 
-  get "/admin/materials/questions/cancel_edit_question",to: "admin/materials/questions#cancel_edit_question",as: "cancel_edit_question"
+  get "/admin/materials/questions/cancel_edit_question",to: "admin/materials/questions#cancel_edit_question"
+  get "/admin/materials/questions/remove_paragraph",to: "admin/materials/questions#remove_paragraph"
 
   namespace "admin" do
     namespace "materials" do

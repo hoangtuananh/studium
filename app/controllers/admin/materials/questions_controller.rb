@@ -154,6 +154,27 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     end
   end
 
+  def disassociate_paragraph(question)
+    paragraph=question.paragraph
+    question.paragraph=nil
+  end
+
+  def remove_paragraph
+    @question=Question.find params[:question_id]
+    disassociate_paragraph(@question)
+
+    respond_to do |format|
+      format.html {
+      }
+
+      format.js {
+        @question_type=@question.question_type
+        determine_form_for_question
+        render "edit.js.haml"
+      }
+    end
+  end
+
 private
   # Get the question_type
   def find_question_type
@@ -166,18 +187,18 @@ private
 
   # This method determines which form to render based on question_type and store that in @partial
   def determine_form_for_question
-    if !@question_type.need_paragraph
-      @partial="form_without_paragraph"
-    else
+    if @question_type.need_paragraph
       respond_to do |format|
         format.html {
           redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
         }
 
         format.js {
-          @partial="form_with_paragraph"
+          @partial=@question.paragraph ? "form_with_paragraph" : "form_without_paragraph"
         }
       end
+    else
+      @partial="form_without_paragraph"
     end
   end
 end

@@ -4,9 +4,7 @@ Feature: Edit Questions that have associated paragraphs
 	I want to be able to edit questions like that in the question index page
 
 	Background:
-		Given the following paragraphs exist:
-			| title	 						| content 						|
-			|	Testing Paragragh | Paragraph Paragraph |
+		Given a paragraph for testing purpose exists
 		And the following users exist:
 			| email							 | password | admin |
 			| admin@ticketee.com | password | true  |
@@ -29,9 +27,12 @@ Feature: Edit Questions that have associated paragraphs
 		And I fill in "Content # 4" with "D is not D"
 		And I fill in "Content # 5" with "E is not E"
 		And I check "#2 Correct?"
-		And I uncheck "#3 Correct?"
+		And I uncheck "#1 Correct?"
+		And I fill in "Paragraph title" with "What the hell?"
+		And I fill in "Paragraph content" with "What the heck?" 
 		And I press "Update Question"
-		Then I should see "Question Olala"
+		Then I should see "Question has been updated."
+		And I should see "Question Olala"
 		And I should not see "Test Question"
 		And I should see "Question has been updated."
 		And I should not see "A is A"
@@ -44,6 +45,10 @@ Feature: Edit Questions that have associated paragraphs
 		But I should see "D is not D"
 		And I should not see "E is E"
 		But I should see "E is not E"	
+		And I should see "What the hell?"
+		But I should not see "Manhanden Fish"
+		And I should see "What the heck?"
+		But I should not see "Your life may very well"
 
 	@javascript
 	Scenario: Edit with invalid attributes

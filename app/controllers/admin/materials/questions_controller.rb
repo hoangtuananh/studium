@@ -78,8 +78,10 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question = Question.find params[:id]
     @question.update_attributes! params[:question]
 
+    debugger
+
     # Update paragraph
-    if params[:paragraph_title] && params[:paragraph_content]
+    if @question.paragraph && params[:paragraph_title] && params[:paragraph_content]
       @paragraph=@question.paragraph
       @paragraph.title=params[:paragraph_title]
       @paragraph.content=params[:paragraph_content]
@@ -102,20 +104,8 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         @notice="Question has been updated."
         @error=false
       }
-      @question.paragraph.title=params[:paragraph_title]
     end
 
-  rescue
-    respond_to do |format|
-      format.html {
-        flash[:alert] = "Invalid Question Information. Question has not been updated."
-        render "edit"
-      }
-
-      format.js {
-        @error=true
-      }
-    end
   end
 
   def destroy

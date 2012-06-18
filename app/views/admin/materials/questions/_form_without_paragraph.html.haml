@@ -25,5 +25,8 @@
   = f.hidden_field :exp, {value: "1400"} 
   = f.hidden_field :question_type_id, {value: @question_type[:id]}
   %div.pull-right
-    = link_to "Cancel",{controller: "admin/materials/questions", action: "cancel_edit_question",question_id: @question.id},{class: "btn btn-danger",remote: true}
+    - if @ajax
+      = link_to "Cancel",{controller: "admin/materials/questions", action: "cancel_edit_question",question_id: @question.id},{class: "btn btn-danger",remote: true}
+    - else
+      = link_to "Cancel",admin_materials_questions_path,{class: "btn btn-danger"}
     = f.submit class: "btn btn-primary"

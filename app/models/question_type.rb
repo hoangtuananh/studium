@@ -1,9 +1,11 @@
 class QuestionType < ActiveRecord::Base
   belongs_to :category_type
-  has_many :questions
+  has_many :questions,dependent: :nullify
+
   def is_sentence_completion?
     self.type_name=="Sentence Completion"
   end
+
   def is_sentence_improvement?
     self.type_name=="Sentence Improvement"
   end

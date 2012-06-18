@@ -4,12 +4,12 @@ Feature: Edit Questions that have associated paragraphs
 	I want to be able to edit questions like that in the question index page
 
 	Background:
-		Given a paragraph for testing purpose exists
-		And the following users exist:
+		Given the following users exist:
 			| email							 | password | admin |
 			| admin@ticketee.com | password | true  |
 		And I am signed in as "admin@ticketee.com" with password "password"
 		And I have run the seed task
+		And a paragraph for testing purpose exists
 		And I am on the home page
 		When I follow "Admin Page"
 		And I follow "Materials"
@@ -19,8 +19,8 @@ Feature: Edit Questions that have associated paragraphs
 	@javascript
 	Scenario: Edit with valid attributes
 		Given I follow "Edit"
-		When I fill in "Title" with "Question Olala"
-		And I fill in "Prompt" with "I do not want anything from you."
+		When I fill in "Question Title" with "Question Olala"
+		And I fill in "Question Prompt" with "I do not want anything from you."
 		And I fill in "Content # 1" with "A is not A"
 		And I fill in "Content # 2" with "B is not B"
 		And I fill in "Content # 3" with "C is not C"
@@ -28,8 +28,8 @@ Feature: Edit Questions that have associated paragraphs
 		And I fill in "Content # 5" with "E is not E"
 		And I check "#2 Correct?"
 		And I uncheck "#1 Correct?"
-		And I fill in "Paragraph title" with "What the hell?"
-		And I fill in "Paragraph content" with "What the heck?" 
+		And I fill in "Paragraph Title" with "What the hell?"
+		And I fill in "Paragraph Content" with "What the heck?" 
 		And I press "Update Question"
 		Then I should see "Question has been updated."
 		And I should see "Question Olala"

@@ -76,34 +76,46 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
   def update
     @question = Question.find params[:id]
-    @question.update_attributes! params[:question]
 
     # Update paragraph
-    if @question.paragraph && params[:paragraph_title] && params[:paragraph_content]
+    if @question.paragraph
       @paragraph=@question.paragraph
-      @paragraph.title=params[:paragraph_title]
-      @paragraph.content=params[:paragraph_content]
-      @paragraph.save
+      unless @paragraph.update_attributes title: params[:paragraph_title],content: params[:paragraph_content]
+        @error=true
+      end
     end
 
-    # Determine if the question is correct
-    @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
-    @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
-    @question.choices[2].update_attributes! correct: true if params[:question][:choices_attributes][2]
-    @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
-    @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
-
-    respond_to do |format|
-      format.html {
-        redirect_to admin_materials_questions_path, notice: "Question has been updated." 
-      }
+    if @question.update_attributes params[:question] and !@error
+      respond_to do |format|
+        format.html {
+          redirect_to admin_materials_questions_path, notice: "Question has been updated." 
+        }
       
-      format.js {
-        @notice="Question has been updated."
-        @error=false
-      }
-    end
+        format.js {
+          @notice="Question has been updated."
+          @error=false
+        }
+      end
+    else
+      respond_to do |format|
+        format.js {
+          @error=true
+          @notice="<ul>"
+          @question.errors.full_messages.each do |msg|
+            @notice << "<li>#{msg}</li>"
+          end
 
+          if @paragraph && @paragraph.errors.any?
+            @paragraph.errors.full_messages.each do |msg|
+              @notice << "<li>Paragraph #{msg}</li>"
+            end
+          end
+
+          @notice << "</ul>"
+          @notice=@notice.html_safe
+        }
+      end
+    end
   end
 
   def destroy

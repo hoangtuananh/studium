@@ -21,6 +21,7 @@ Studium::Application.routes.draw do
 
   namespace "admin" do
     namespace "materials" do
+      root to: "base#index",as: "admin_materials_index"
       resources :questions
       resources :paragraphs
     end

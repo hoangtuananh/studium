@@ -14,7 +14,11 @@ en:
           date_of_birth: "Date of birth"
 
       question:
-        prompt: "Question prompt"
-        title: "Question title"
+        paragraph:
+          title: "Title"
+          content: "Content"
+        prompt: "Question Prompt"
+        title: "Question Title"
         choices: ""
         choice: ""
+

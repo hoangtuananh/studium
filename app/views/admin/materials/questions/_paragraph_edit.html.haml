@@ -1,9 +1,9 @@
 %div.control-group
-  = label_tag "Paragraph Title"
+  = label_tag :paragraph_title,"Paragraph Title"
   = text_field_tag :paragraph_title,@question.paragraph.title
 
 %div.control-group
-  = label_tag "Paragraph Content"
+  = label_tag :paragraph_content,"Paragraph Content"
   = text_area_tag :paragraph_content,@question.paragraph.content
 
 %div.control-group.pull-right

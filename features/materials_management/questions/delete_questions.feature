@@ -21,4 +21,5 @@ Feature: Delete Questions
 	@javascript
 	Scenario: Delete Quesitons
 		When I follow "Delete"
+		And I confirm popup
 		Then I should not see "Test Question"

@@ -9,15 +9,22 @@ class Question < ActiveRecord::Base
 
   def contains_correct_choice
     choices = self.choices
-    if choices.empty?
-      errors.add(:choice, "Question must have at least one choice")
-    end
-    has_correct= false
+    is_choice_blank=false
     choices.each do |choice|
-      has_correct = true if choice.correct
+      if choice.blank?
+        is_choice_blank=true
+      end
     end
-    if !has_correct
-      errors.add(:choice, "Question must have at least one correct choice")
+    if is_choice_blank
+      errors.add(:choice, "Question must have at least one choice")
+    else
+      has_correct= false
+      choices.each do |choice|
+        has_correct = true if choice.correct
+      end
+      if !has_correct
+        errors.add(:choice, "Question must have at least one correct choice")
+      end
     end
   end
 end

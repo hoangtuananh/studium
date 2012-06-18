@@ -9,7 +9,7 @@ Feature: Edit Questions that have associated paragraphs
 			| admin@ticketee.com | password | true  |
 		And I am signed in as "admin@ticketee.com" with password "password"
 		And I have run the seed task
-		And a paragraph for testing purpose exists
+		And a question with paragraph for testing purpose exists
 		And I am on the home page
 		When I follow "Admin Page"
 		And I follow "Materials"
@@ -55,12 +55,17 @@ Feature: Edit Questions that have associated paragraphs
 		Given I follow "Edit"
 		When I fill in "Question Title" with ""
 		And I fill in "Question Prompt" with ""
-		And I fill in "Content # 1" with ""
-		And I fill in "Content # 2" with ""
-		And I fill in "Content # 3" with ""
-		And I fill in "Content # 4" with ""
-		And I fill in "Content # 5" with ""
-		And I uncheck "#3 Correct?"
+		# And I fill in "Content # 1" with ""
+		# And I fill in "Content # 2" with ""
+		# And I fill in "Content # 3" with ""
+		#	And I fill in "Content # 4" with ""
+		# And I fill in "Content # 5" with ""
+		And I uncheck "#1 Correct?"
+		And I fill in "Paragraph Title" with ""
+		And I fill in "Paragraph Content" with "" 
 		And I press "Update Question"
-		Then I should see "Question title can't be blank"
-		And I should see "Question prompt can't be blank"
+		Then I should see "Question Title can't be blank"
+		And I should see "Question Prompt can't be blank"
+		And I should see "Paragraph Title can't be blank"
+		And I should see "Paragraph Content can't be blank"
+		And I should see "Question must have at least one correct choice"

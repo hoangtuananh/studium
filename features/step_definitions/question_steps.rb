@@ -1,3 +1,6 @@
+When /^I confirm popup$/ do
+  page.driver.browser.switch_to.alert.accept
+end
 Given /^the questions with the following titles exist:$/ do |table|
   table.hashes.each do |attr|
     @question=FactoryGirl.build :question,title: attr[:title]
@@ -11,7 +14,7 @@ Given /^the following choices exist:$/ do |table|
   end
 end
 
-Given /^a paragraph for testing purpose exists$/ do
+Given /^a question with paragraph for testing purpose exists$/ do
   step %Q[I am on the home page]
   step %Q[I follow "Admin Page"]
   step %Q[I follow "Materials"]
@@ -31,4 +34,24 @@ Given /^a paragraph for testing purpose exists$/ do
   step %Q[I fill in "Content # 5" with "E is E"]
   step %Q[I check "#1 Correct?"]
   step %Q[I press "Create Paragraph"]
+end
+
+Given /^a question without paragraph for testing purpose exists$/ do
+  step %Q[I am on the home page]
+  step %Q[I follow "Admin Page"]
+  step %Q[I follow "Materials"]
+  step %Q[I follow "Questions"]
+  step %Q[I follow "Add Question"]
+  step %Q[I select "Critical Reading" from "Category"]
+  step %Q[I select "Sentence Completion" from "Question Type"]
+  step %Q[I press "Proceed"]
+  step %Q[I fill in "Question Title" with "Test Question"]
+  step %Q[I fill in "Question Prompt" with "Test Question Prompt"]
+  step %Q[I fill in "Content # 1" with "A is A"]
+  step %Q[I fill in "Content # 2" with "B is B"]
+  step %Q[I fill in "Content # 3" with "C is C"]
+  step %Q[I fill in "Content # 4" with "D is D"]
+  step %Q[I fill in "Content # 5" with "E is E"]
+  step %Q[I check "#1 Correct?"]
+  step %Q[I press "Create Question"]
 end

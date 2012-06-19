@@ -14,4 +14,4 @@
   = f.check_box :correct
 
   - if @question.id
-    = link_to "Remove",{action: "remove_choice",question_id: question.id,choice_letter: f.object.choice_letter},{class: "btn btn-danger pull-right",remote: true}
+    = link_to "Remove # #{index}",{action: "remove_choice",question_id: question.id,choice_letter: f.object.choice_letter},{class: "btn btn-danger pull-right",remote: true}

@@ -1,9 +1,17 @@
-%p
+- if @question.id
+  %script
+    :plain
+      $(".small-text-field").css({width:"20px"});
+
+%div.row{class: "choice-row-#{f.object.choice_letter}"}
   = f.label :choice_letter
-  = f.text_field :choice_letter, size:3
+  = f.text_field :choice_letter,class: "small-text-field"
   
   = f.label :content,"Content # #{index}"
   = f.text_field :content
 
   = f.label :correct,"##{index} Correct?"
   = f.check_box :correct
+
+  - if @question.id
+    = link_to "Remove",{action: "remove_choice",question_id: question.id,choice_letter: f.object.choice_letter},{class: "btn btn-danger pull-right",remote: true}

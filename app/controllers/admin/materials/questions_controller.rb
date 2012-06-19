@@ -77,6 +77,18 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def update
     @question = Question.find params[:id]
 
+    @notice="<ul>"
+
+    # There must be at least one non-blank choice
+    has_choice=false
+    params[:question][:choices_attributes].values.each do |choice| 
+      has_choice=true unless choice[:content].blank? 
+    end
+    unless has_choice
+      @error=true
+      @notice << "<li>Question must have at least one choice.</li>"
+    end
+
     # Update paragraph
     if @question.paragraph
       @paragraph=@question.paragraph
@@ -100,7 +112,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       respond_to do |format|
         format.js {
           @error=true
-          @notice="<ul>"
           @question.errors.full_messages.each do |msg|
             @notice << "<li>#{msg}</li>"
           end
@@ -183,6 +194,24 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         @question_type=@question.question_type
         determine_form_for_question
         render "edit.js.haml"
+      }
+    end
+  end
+
+  def remove_choice
+    @question=Question.find params[:question_id]
+    @choice=@question.choices.find_by_choice_letter!(params[:choice_letter])
+    if @question.choices.count>1
+      @question.choices.delete @choice
+      @choice.destroy
+      @notice="Choice #{@choice.choice_letter} has been deleted.".html_safe
+    else
+      @error=true
+      @notice="<ul><li>Choice cannot be deleted. Question must have at least one choice.</li></ul>".html_safe
+    end
+
+    respond_to do |format|
+      format.js {
       }
     end
   end

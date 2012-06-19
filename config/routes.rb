@@ -12,12 +12,7 @@ Studium::Application.routes.draw do
   get "/admin/materials",to: "admin/materials/base#index",as: "admin_materials"
   get "/admin/materials/questions/add_question",to: "admin/materials/questions#category_selection",as: "add_new_materials_question" 
 
-  get "/admin/materials/questions/edit_paragraph",to: "admin/materials/questions#edit_paragraph",as: "admin_materials_question_edit_paragraph"
-
-  get ":controller/:action.:format"
-
-  get "/admin/materials/questions/cancel_edit_question",to: "admin/materials/questions#cancel_edit_question"
-  get "/admin/materials/questions/remove_paragraph",to: "admin/materials/questions#remove_paragraph"
+  get ":controller/:action"
 
   namespace "admin" do
     namespace "materials" do

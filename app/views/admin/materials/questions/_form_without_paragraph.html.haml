@@ -19,7 +19,7 @@
   %div.well.form-inline
     - index=1
     = f.fields_for :choices do |builder|
-      = render "choices_fields", f: builder,index: index
+      = render "choices_fields", f: builder,index: index,question: @question
       - index+=1
 
   = f.hidden_field :exp, {value: "1400"} 

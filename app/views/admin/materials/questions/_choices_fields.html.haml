@@ -7,11 +7,11 @@
   = f.label :choice_letter
   = f.text_field :choice_letter,class: "small-text-field"
   
-  = f.label :content,"Content # #{choice_index}"
+  = f.label :content,"Content # #{index}"
   = f.text_field :content
 
-  = f.label :correct,"##{choice_index} Correct?"
+  = f.label :correct,"##{index} Correct?"
   = f.check_box :correct
 
   - if @question.id
-    = link_to "Remove # #{choice_index}",{action: "remove_choice",question_id: question.id,choice_letter: f.object.choice_letter},{class: "btn btn-danger pull-right",remote: true}
+    = link_to "Remove # #{index}",{action: "remove_choice",question_id: question.id,choice_letter: f.object.choice_letter},{class: "btn btn-danger pull-right",remote: true}

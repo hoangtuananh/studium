@@ -11,7 +11,7 @@ Feature: Remove Choices From Existing Questions
 		And I have run the seed task
 
 	@javascript
-	Scenario: Edit with valid attributes
+	Scenario: Remove choices from a question with paragraph
 		Given a question with paragraph for testing purpose exists
 		And I am on the home page
 		Given I follow "Admin Page"
@@ -26,6 +26,7 @@ Feature: Remove Choices From Existing Questions
 		And I fill in "Content # 3" with "C is not C"
 		And I fill in "Content # 4" with "D is not D"
 		And I follow "Remove # 5"
+		And I confirm popup
 		And I check "#2 Correct?"
 		And I uncheck "#1 Correct?"
 		And I fill in "Paragraph Title" with "What the hell?"
@@ -50,7 +51,7 @@ Feature: Remove Choices From Existing Questions
 		But I should not see "Your life may very well"
 
 	@javascript
-	Scenario: Edit with valid attributes
+	Scenario: Remove choices from a question without paragraph
 		Given a question without paragraph for testing purpose exists
 		And I am on the home page
 		Given I follow "Admin Page"
@@ -63,8 +64,10 @@ Feature: Remove Choices From Existing Questions
 		And I fill in "Content # 1" with "A is not A"
 		And I fill in "Content # 2" with "B is not B"
 		And I fill in "Content # 3" with "C is not C"
-		And I fill in "Content # 4" with "D is not D"
+		And I follow "Remove # 4"
+		And I confirm popup
 		And I follow "Remove # 5"
+		And I confirm popup
 		And I check "#2 Correct?"
 		And I uncheck "#1 Correct?"
 		And I press "Update Question"
@@ -79,5 +82,4 @@ Feature: Remove Choices From Existing Questions
 		And I should not see "C is C"
 		But I should see "C is not C"
 		And I should not see "D is D"
-		But I should see "D is not D"
 		And I should not see "E is E"

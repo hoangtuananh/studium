@@ -2,6 +2,10 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
   before_filter :get_question_type_id,only: [:new]
 
   def new
+    @num_questions = 6
+    if params[:num_questions]
+      @num_questions = params[:num_questions].to_i
+    end
     respond_to do |format|
       # Render a normal form for HTML request
       format.html {

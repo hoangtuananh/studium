@@ -1,10 +1,18 @@
 %div.container-fluid:
   - index=1
+  %div.row
+    %div.pull-right
+      -#%p= link_to_add_question @question_type_id, @num_questions+1
+      = form_tag "", method: "get" do
+        %div.control-group
+          = label :num_questions,:num_questions, "# Questions"
+          = number_field_tag :num_questions, @num_questions, :in => 1..15
+          = submit_tag "Update", class: "btn btn-primary"
   = form_for([:admin, :materials, @paragraph]) do |f|
     %div.row-fluid
       %div.span4.well.text-center
         %div.pull-right
-        - 6.times do
+        - @num_questions.times do
           - @question = @paragraph.questions.build(question_type_id: params[:question_type_id])
           - 5.times {@question.choices.build(choice_letter: cycle("A","B","C","D","E"))} unless @question.choices.any? 
         - if @paragraph.errors.any?
@@ -19,13 +27,10 @@
           = f.label :content, "Paragraph Content"
           = f.text_area :content
       %div.span8.well.text-center
-        %div.row
-          %div.pull-right
-            %p= link_to_add_question "Add Question", f, index, @question_type_id, @paragraph
-        %div.control-group
-          - index+=1
+        %div.control-group.question_fields
           = f.fields_for :questions do |builder|
             = render "questions_fields", f: builder, index: index, question_type_id: @question_type_id
+            - index+=1
         %div.pull-right
           = link_to "Cancel",admin_materials_paragraphs_path,class: "btn btn-danger"
           = f.submit class: "btn btn-success"

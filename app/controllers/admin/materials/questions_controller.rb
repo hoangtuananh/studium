@@ -30,10 +30,19 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
   def new
     # Create a question prototype for the form
-    @question = @question_type.questions.new
-
-    # Get the correct form (as a partial view)
-    determine_form_for_question
+    respond_to do |format|
+      format.html do
+        @question = @question_type.questions.new
+        # Get the correct form (as a partial view)
+        determine_form_for_question
+      end
+      format.js do
+        @paragraph = Paragraph.new
+        @question = @paragraph.questions.new
+        @index = params[:index]
+        5.times { @question.choices.build }
+      end
+    end
   end
 
   def create
@@ -223,6 +232,8 @@ private
       @question_type = QuestionType.find(params[:question_type][:id])
     elsif params[:question]
       @question_type = QuestionType.find(params[:question][:question_type_id])
+    elsif params[:question_type_id]
+      @question_type = QuestionType.find(params[:question_type_id])
     end
   end
 

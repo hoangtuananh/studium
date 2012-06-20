@@ -1,5 +1,5 @@
 class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
-  before_filter :get_question_type_id,only: [:new]
+  before_filter :get_question_type_id,only: [:new, :create]
 
   def new
     @num_questions = 6

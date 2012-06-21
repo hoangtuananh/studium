@@ -11,13 +11,5 @@
   //Update the content of the inner accordion
   $(".question-row-#{escape_javascript("#{@question.id}")}").append("#{escape_javascript(question_update_form)}");
 
-//Remove the old notice and add the new one
-- alert_class= @error ? "alert-error" : "alert-success"
-$(".notice-alert div").remove();
-$(".alert").remove();
-$(".question-row-#{escape_javascript("#{@question.id}")}").prepend("<div class=\"alert #{escape_javascript(alert_class)}\"><button class=\"close\" data-dismiss=\"alert\">x</button><p>#{escape_javascript(@notice)}</p></div>");
-
-// Focus on the alert
-$("body,html").animate({
-scrollTop: $(".alert").offset().top-$(".alert").height()
-});
+//Render view to show the notice/alert
+= render "render_notice_and_alert",error: @error,question: @question,notice: @notice

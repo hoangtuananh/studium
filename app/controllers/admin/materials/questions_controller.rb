@@ -35,15 +35,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         # Get the correct form (as a partial view)
         determine_form_for_question
       end
-
-      format.js do
-      end
     end
   end
 
   def create
     @question = @question_type.questions.new(params[:question])
-
 
     # Get the correct form (as a partial view)
     determine_form_for_question
@@ -74,18 +70,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def update
     @question = Question.find params[:id]
 
-    # The notice to be displayed after update
+    # The notice to be displayed after update (either for error or success)
     @notice="<ul>"
 
-    # There must be at least one non-blank choice
-    has_choice=false
-    params[:question][:choices_attributes].values.each do |choice| 
-      has_choice=true unless choice[:content].blank? 
-    end
-    unless has_choice
-      @error=true
-      @notice << "<li>Question must have at least one choice.</li>"
-    end
+    # Validate blank choices (@error'd be true if all choices are blank)
+    validate_blank_choices(params[:question][:choices_attributes].values)
 
     # Update paragraph
     if @question.paragraph
@@ -98,33 +87,33 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     # If no error occured and @question updates fine
     if @question.update_attributes params[:question] and !@error
       respond_to do |format|
-        format.html {
-          redirect_to admin_materials_questions_path, notice: "Question has been updated." 
-        }
-      
         format.js {
           @notice="Question has been updated."
         }
       end
+
+    # If any errors occurred while updating the paragraph or question
     else
       respond_to do |format|
         format.js {
-          # Copy the question's error messages into the notice
-          @question.errors.full_messages.each do |msg|
-            @notice << "<li>#{msg}</li>"
-          end
+          # Set @error to be true so the edit form will be rendered again
+          @error=true
 
-
-          # Copy the paragraph's error messages into the notice
+          # Copy the paragraph's errors into the question's errors
           if @paragraph && @paragraph.errors.any?
-            @paragraph.errors.full_messages.each do |msg|
-              @notice << "<li>Paragraph #{msg}</li>"
+            @paragraph.errors.full_messages.each do |error_msg|
+              @question.errors.add :paragraph,error_msg
             end
           end
 
-          # Make @notice ready to be rendered as HTML
-          @notice << "</ul>"
-          @notice=@notice.html_safe
+        # Add errors in question to @notice (will be rendered by js)
+        @question.errors.full_messages.each do |msg|
+          @notice << "<li>#{msg}</li>"
+        end
+        @notice << "</ul>"
+
+        # Prepare @notice to be rendered as html
+        @notice=@notice.html_safe
         }
       end
     end
@@ -148,6 +137,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
         # Set up the notice
         @notice="Question has been deleted."
 
+        # Rerender index.js.haml to get the accordion right
         render "index.js.haml"
       }
     end
@@ -176,12 +166,15 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     end
   end
 
+  # Handles when user clicks remove paragraph while editing a question
   def remove_paragraph
+    # Disassociate the paragraph from question
     @question=Question.find params[:question_id]
     @question.paragraph=nil
 
     respond_to do |format|
       format.js {
+        # Rerender the inner of the corresponding accordion group
         @question_type=@question.question_type
         determine_form_for_question
         render "edit.js.haml"
@@ -189,13 +182,19 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     end
   end
 
+  # Handles when user clicks remove choice while editing a question
   def remove_choice
+    # Get the choices
     @question=Question.find params[:question_id]
     @choice=@question.choices.find_by_choice_letter!(params[:choice_letter])
+
+    # Only remove choice if the question stil has more than one choice
     if @question.choices.count>1
       @question.choices.delete @choice
       @choice.destroy
       @notice="Choice #{@choice.choice_letter} has been deleted.".html_safe
+
+    # User is trying to remove the very last choice, raise error
     else
       @error=true
       @notice="<ul><li>Choice cannot be deleted. Question must have at least one choice.</li></ul>".html_safe
@@ -247,5 +246,19 @@ private
 
     # Query for questions and return the results
     query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
+  end
+
+  # Accepts an array of choice hashes. Set @error to true
+  # And add error message to @notice if contents of all choices in the hashes are blank
+  def validate_blank_choices(choice_hashes)
+    # There must be at least one non-blank choice
+    has_choice=false
+    choice_hashes.each do |choice| 
+      has_choice=true unless choice[:content].blank? 
+    end
+    unless has_choice
+      @error=true
+      @notice << "<li>Question must have at least one choice.</li>"
+    end
   end
 end

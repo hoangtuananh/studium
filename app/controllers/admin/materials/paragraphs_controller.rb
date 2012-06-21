@@ -90,6 +90,10 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
 
 private
   def get_question_type_id
-    @question_type_id=params[:question_type_id]
+    if params[:question_type_id]
+      @question_type_id=params[:question_type_id]
+    elsif params[:question_type]
+      @question_type_id = params[:question_type][:id]
+    end
   end
 end

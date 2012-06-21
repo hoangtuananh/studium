@@ -19,7 +19,6 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
   end
 
   def create
-    debugger
     @paragraph = Paragraph.new(params[:paragraph])
     @num_questions = 0
     params[:paragraph][:questions_attributes].each do |question|

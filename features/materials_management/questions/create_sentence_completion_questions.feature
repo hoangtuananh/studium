@@ -36,17 +36,26 @@ Feature: Create Sentence Completion Questions
 		And I should see "There had been a"
 		
 	@javascript
-	Scenario: Create setence completion questions with invalid attributes
+	Scenario: Create setence completion questions with no choice filled
 		When I select "Critical Reading" from "Category"
 		And I select "Sentence Completion" from "Question Type"
 		And I press "Proceed"
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
 		And I should see "Question Prompt can't be blank"
-		# And I should see "Choice A can't be blank"
-		# And I should see "Choice B can't be blank"
-		# And I should see "Choice C can't be blank"
-		# And I should see "Choice D can't be blank"
-		# And I should see "Choice E can't be blank"
-		# And I should see "Experience can't be blank"
+		And I should see "Question must have at least one choice"
+
+	@javascript
+	Scenario: Create setence completion questions with no correct choice
+		When I select "Critical Reading" from "Category"
+		And I select "Sentence Completion" from "Question Type"
+		And I press "Proceed"
+		And I fill in "Content # 1" with "cumulative"
+		And I fill in "Content # 2" with "digressive"
+		And I fill in "Content # 3" with "restive"
+		And I fill in "Content # 4" with "superlative"
+		And I fill in "Content # 5" with "innovative"
+		And I press "Create Question"
+		Then I should see "Invalid Question Information. Question has not been created."
+		And I should see "Question Prompt can't be blank"
 		And I should see "Question must have at least one correct choice"

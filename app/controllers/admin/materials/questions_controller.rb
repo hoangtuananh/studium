@@ -214,7 +214,7 @@ private
     end
   end
 
-  # Find question and set @question
+  # Find question and set @question for some actions
   def find_question
     @question=params[:question_id] ? Question.find(params[:question_id]) : Question.find(params[:id])
 

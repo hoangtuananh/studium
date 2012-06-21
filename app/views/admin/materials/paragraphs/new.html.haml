@@ -7,6 +7,7 @@
         %div.control-group
           = label :num_questions,:num_questions, "# Questions"
           = number_field_tag :num_questions, @num_questions, :in => 1..15
+          = hidden_field :question_type, :id, value: @question_type_id
           = submit_tag "Update", class: "btn btn-primary"
   = form_for([:admin, :materials, @paragraph]) do |f|
     %div.row-fluid

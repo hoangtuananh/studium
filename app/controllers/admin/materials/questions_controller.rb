@@ -216,8 +216,9 @@ private
 
   # Find question and set @question
   def find_question
-    @question=params[:question_id] ? Question.find params[:question_id] : Question.find params[:id]
+    @question=params[:question_id] ? Question.find(params[:question_id]) : Question.find(params[:id])
 
+  # If question cannot be found, redirect to question index page if html request
   rescue
     respond_to do |format|
       format.html {

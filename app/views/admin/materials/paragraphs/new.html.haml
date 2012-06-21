@@ -3,7 +3,7 @@
   %div.row
     %div.pull-right
       -#%p= link_to_add_question @question_type_id, @num_questions+1
-      = form_tag "", method: "get" do
+      = form_tag new_admin_materials_paragraph_path, method: "get" do
         %div.control-group
           = label :num_questions,:num_questions, "# Questions"
           = number_field_tag :num_questions, @num_questions, :in => 1..15

@@ -19,9 +19,13 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
   end
 
   def create
+    debugger
     @paragraph = Paragraph.new(params[:paragraph])
-    @num_questions = params[:paragraph][:questions_attributes].length
-    @question_type_id = params[:paragraph][:questions_attributes]
+    @num_questions = 0
+    params[:paragraph][:questions_attributes].each do |question|
+      @num_questions+=1 if question[1][:title].blank? and question[1][:prompt].blank?
+    end
+    @question_type_id = params[:paragraph][:questions_attributes]["0"][:question_type_id]
     if @paragraph.save
       redirect_to admin_materials_questions_path, notice: "Question has been created."
     else

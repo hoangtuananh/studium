@@ -12,4 +12,4 @@
   $(".question-row-#{escape_javascript("#{@question.id}")}").append("#{escape_javascript(question_update_form)}");
 
 //Render view to show the notice/alert
-= render "render_notice_and_alert",error: @error,question: @question,notice: @notice
+= render "render_notice_and_alert",error: @error,notice: @notice,notice_container: ".question-row-#{@question.id}"

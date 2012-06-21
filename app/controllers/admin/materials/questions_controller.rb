@@ -5,6 +5,9 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   # Get the question type for some actions
   before_filter :find_question_type, except: [:index,:category_selection,:destroy]
 
+  # Get the question for some actions
+  before_filter :find_question,only: [:remove_paragraph,:remove_choice,:cancel_edit_question,:destroy,:update,:edit]
+
   def index
     # Respond to different formats
     respond_to do |format|
@@ -53,7 +56,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def edit
-    @question=Question.find params[:id]
     @question_type=@question.question_type
     
     # Get the correct form (as a partial view)
@@ -68,8 +70,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def update
-    @question = Question.find params[:id]
-
     # The notice to be displayed after update (either for error or success)
     @notice="<ul>"
 
@@ -121,7 +121,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
   def destroy
     # Find and destroy the question
-    @question=Question.find params[:id]
     @question.destroy
 
     # Respond to different request formats
@@ -159,7 +158,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
   # Handles when user clicks cancel while editing a question
   def cancel_edit_question
-    @question=Question.find params[:question_id]
     respond_to do |format|
       format.js {
       }
@@ -169,7 +167,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   # Handles when user clicks remove paragraph while editing a question
   def remove_paragraph
     # Disassociate the paragraph from question
-    @question=Question.find params[:question_id]
     @question.paragraph=nil
 
     respond_to do |format|
@@ -185,7 +182,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   # Handles when user clicks remove choice while editing a question
   def remove_choice
     # Get the choices
-    @question=Question.find params[:question_id]
     @choice=@question.choices.find_by_choice_letter!(params[:choice_letter])
 
     # Only remove choice if the question stil has more than one choice
@@ -215,6 +211,18 @@ private
       @question_type = QuestionType.find(params[:question][:question_type_id])
     elsif params[:question_type_id]
       @question_type = QuestionType.find(params[:question_type_id])
+    end
+  end
+
+  # Find question and set @question
+  def find_question
+    @question=params[:question_id] ? Question.find params[:question_id] : Question.find params[:id]
+
+  rescue
+    respond_to do |format|
+      format.html {
+        redirect_to admin_materials_questions_path,alert: "The page you were looking for could not be found."
+      }
     end
   end
 

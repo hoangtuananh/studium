@@ -1,5 +1,5 @@
 class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
-  before_filter :get_question_type_id,only: [:new]
+  before_filter :get_question_type_id,only: [:new, :create]
 
   def new
     @num_questions = 6
@@ -20,6 +20,8 @@ class Admin::Materials::ParagraphsController < Admin::Materials::BaseController
 
   def create
     @paragraph = Paragraph.new(params[:paragraph])
+    @num_questions = params[:paragraph][:questions_attributes].length
+    @question_type_id = params[:paragraph][:questions_attributes]
     if @paragraph.save
       redirect_to admin_materials_questions_path, notice: "Question has been created."
     else

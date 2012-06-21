@@ -37,10 +37,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       end
 
       format.js do
-        @paragraph = Paragraph.new
-        @question = @paragraph.questions.new
-        @index = params[:index]
-        5.times { @question.choices.build }
       end
     end
   end

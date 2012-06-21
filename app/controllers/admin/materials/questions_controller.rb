@@ -48,12 +48,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def create
     @question = @question_type.questions.new(params[:question])
 
-    # Determine if the question is correct
-    @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
-    @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
-    @question.choices[2].update_attributes! correct: true if params[:question][:choices_attributes][2]
-    @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
-    @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
 
     # Get the correct form (as a partial view)
     determine_form_for_question

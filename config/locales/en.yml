@@ -14,7 +14,7 @@ en:
           date_of_birth: "Date of birth"
 
       question:
-        paragraph:
+        paragraphs:
           title: "Title"
           content: "Content"
         prompt: "Question Prompt"

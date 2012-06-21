@@ -1,6 +1,9 @@
 class Admin::Materials::QuestionsController < Admin::Materials::BaseController
-  before_filter :find_question_type, except: [:index,:category_selection,:destroy]
+  # Require parser in the library to parse text
   require "parser"
+
+  # Get the question type for some actions
+  before_filter :find_question_type, except: [:index,:category_selection,:destroy]
 
   def index
     # Respond to different formats
@@ -16,14 +19,9 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       end
 
       format.js do
-        # Get question_type_id from the submitted form on index.html.haml
-        @question_type_id=params[:category_type][:id]!=0 && params[:question_type] ? params[:question_type][:id] : 0
-        
-        # Determine the filter for the query
-        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
-
-        # Query for questions
-        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
+        # Query question with filter
+        @question_type_id=params[:question_type] ? params[:question_type][:id] : nil;
+        @questions=query_with_question_type_id(@question_type_id)
       end
     end
   end
@@ -33,9 +31,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     respond_to do |format|
       format.html do
         @question = @question_type.questions.new
+        
         # Get the correct form (as a partial view)
         determine_form_for_question
       end
+
       format.js do
         @paragraph = Paragraph.new
         @question = @paragraph.questions.new
@@ -48,15 +48,15 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def create
     @question = @question_type.questions.new(params[:question])
 
-    # Get the correct form (as a partial view)
-    determine_form_for_question
-
     # Determine if the question is correct
     @question.choices[0].update_attributes! correct: true if params[:question][:choices_attributes][0]
     @question.choices[1].update_attributes! correct: true if params[:question][:choices_attributes][1]
     @question.choices[2].update_attributes! correct: true if params[:question][:choices_attributes][2]
     @question.choices[3].update_attributes! correct: true if params[:question][:choices_attributes][3]
     @question.choices[4].update_attributes! correct: true if params[:question][:choices_attributes][4]
+
+    # Get the correct form (as a partial view)
+    determine_form_for_question
 
     if @question.save
       redirect_to admin_materials_questions_path, notice: "Question has been created." 
@@ -69,16 +69,14 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def edit
     @question=Question.find params[:id]
     @question_type=@question.question_type
-    @ajax=true
+    
+    # Get the correct form (as a partial view)
+    determine_form_for_question
 
     # Respond to different request formats
     respond_to do |format|
-      format.html {
-      }
-
       format.js {
-        # Get the correct form (as a partial view)
-        determine_form_for_question
+        @ajax=true
       }
     end
   end
@@ -86,6 +84,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def update
     @question = Question.find params[:id]
 
+    # The notice to be displayed after update
     @notice="<ul>"
 
     # There must be at least one non-blank choice
@@ -101,11 +100,12 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     # Update paragraph
     if @question.paragraph
       @paragraph=@question.paragraph
-      unless @paragraph.update_attributes title: params[:paragraph_title],content: params[:paragraph_content]
-        @error=true
-      end
+
+      # Should report validation errors if @paragraph fails to update its attibutes
+      @error=true unless @paragraph.update_attributes title: params[:paragraph_title],content: params[:paragraph_content]
     end
 
+    # If no error occured and @question updates fine
     if @question.update_attributes params[:question] and !@error
       respond_to do |format|
         format.html {
@@ -114,23 +114,25 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       
         format.js {
           @notice="Question has been updated."
-          @error=false
         }
       end
     else
       respond_to do |format|
         format.js {
-          @error=true
+          # Copy the question's error messages into the notice
           @question.errors.full_messages.each do |msg|
             @notice << "<li>#{msg}</li>"
           end
 
+
+          # Copy the paragraph's error messages into the notice
           if @paragraph && @paragraph.errors.any?
             @paragraph.errors.full_messages.each do |msg|
               @notice << "<li>Paragraph #{msg}</li>"
             end
           end
 
+          # Make @notice ready to be rendered as HTML
           @notice << "</ul>"
           @notice=@notice.html_safe
         }
@@ -139,66 +141,56 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def destroy
+    # Find and destroy the question
     @question=Question.find params[:id]
     @question.destroy
 
     # Respond to different request formats
     respond_to do |format|
-      format.html {
-      }
-
       format.js {
         # Get question_type_id from the submitted form on index.html.haml
-        @question_type_id=params[:category_type_id]!="0" && params[:question_type_id] ? params[:question_type_id] : 0
+        @question_type_id=params[:question_type_id]
+        @question_type_id=nil if @question_type_id=="0"
         
-        # Determine the filter for the query
-        query_filter=@question_type_id==0 ? nil : "question_type_id=#@question_type_id"
+        # Get the questions with filter
+        @questions=query_with_question_type_id(@question_type_id)
 
-        # Query for questions
-        @questions=query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
-
+        # Set up the notice
         @notice="Question has been deleted."
 
         render "index.js.haml"
       }
     end
-
   end
 
+  # The intermediate page between index and questions#new
+  # Can be used to get the category and question types ready for select tags
   def category_selection
+    # Get the category types
     @category_types=(CategoryType.order :category_name).collect do |category_type|
       [category_type.category_name, category_type.id]
     end
+
+    # Get the question types
     @question_types = QuestionType.all.collect do |question_type| 
       [question_type.type_name, question_type.id]
     end
   end
 
+  # Handles when user clicks cancel while editing a question
   def cancel_edit_question
     @question=Question.find params[:question_id]
-
     respond_to do |format|
-      format.html {
-      }
-
       format.js {
       }
     end
   end
 
-  def disassociate_paragraph(question)
-    paragraph=question.paragraph
-    question.paragraph=nil
-  end
-
   def remove_paragraph
     @question=Question.find params[:question_id]
-    disassociate_paragraph(@question)
+    @question.paragraph=nil
 
     respond_to do |format|
-      format.html {
-      }
-
       format.js {
         @question_type=@question.question_type
         determine_form_for_question
@@ -239,18 +231,31 @@ private
 
   # This method determines which form to render based on question_type and store that in @partial
   def determine_form_for_question
+    # If the question type is reading or para improvement
     if @question_type.need_paragraph
       respond_to do |format|
+
+        # Redirect to paragraphs#new and handle stuff there
         format.html {
           redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
         }
 
         format.js {
-          @partial=@question.paragraph ? "form_with_paragraph" : "form_without_paragraph"
+          @partial="form_with_paragraph"
         }
       end
     else
       @partial="form_without_paragraph"
     end
+  end
+
+  # Query for questions of specific question type or all if the specified
+  # question_type_id is nil
+  def query_with_question_type_id(question_type_id)
+    # Determine the filter for the query
+    query_filter=question_type_id ? "question_type_id=#{question_type_id}" : nil
+
+    # Query for questions and return the results
+    query_filter ? Question.where(query_filter).order(:title) : Question.order(:title)
   end
 end

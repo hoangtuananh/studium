@@ -2,13 +2,5 @@
   $('[value="#{escape_javascript("#{@choice.id}")}"]').remove();
   $(".choice-row-#{escape_javascript(@choice.choice_letter)}").remove();
 
-//Remove the old notice and add the new one
-- alert_class= @error ? "alert-error" : "alert-success"
-$(".notice-alert div").remove();
-$(".alert").remove();
-$(".question-row-#{escape_javascript("#{@question.id}")}").prepend("<div class=\"alert #{escape_javascript(alert_class)}\"><button class=\"close\" data-dismiss=\"alert\">x</button><p>#{escape_javascript(@notice)}</p></div>");
-
-// Focus on the alert
-$("body,html").animate({
-scrollTop: $(".alert").offset().top-$(".alert").height()
-});
+//Render view to show the notice/alert
+= render "render_notice_and_alert",error: @error,notice: @notice,notice_container: ".question-row-#{@question.id}"

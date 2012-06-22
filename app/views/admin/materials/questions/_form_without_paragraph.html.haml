@@ -1,6 +1,5 @@
 - # Create 5 choices (for prototyping). 
 - # No point in doing this in the new action since the instance variables are lost in the next request
-- 5.times {@question.choices.build(choice_letter: cycle("A","B","C","D","E"))} unless @question.choices.any? 
 
 = form_for([:admin, :materials, @question],remote: @ajax || false) do |f|
   - if @question.errors.any?

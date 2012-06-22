@@ -31,9 +31,13 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
 
   def new
     # Create a question prototype for the form
+    @question = @question_type.questions.new
+    choices = ["A","B","C","D","E"]
+    choices.each do |choice|
+      @question.choices.build({choice_letter: choice})
+    end
     respond_to do |format|
       format.html do
-        @question = @question_type.questions.new
         
         # Get the correct form (as a partial view)
         determine_form_for_question
@@ -44,6 +48,7 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def create
     @question = @question_type.questions.new(params[:question])
 
+    flash[:notice] = params[:question][:choices_attributes]
     # Get the correct form (as a partial view)
     determine_form_for_question
 
@@ -51,6 +56,11 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       redirect_to admin_materials_questions_path, notice: "Question has been created." 
     else
       flash[:alert] = "Invalid Question Information. Question has not been created."
+      params[:question][:choices_attributes].each do |choice|
+        if choice[1][:content].blank?
+          @question.choices.build({choice_letter: choice[1][:choice_letter]})
+        end
+      end
       render "new"
     end
   end

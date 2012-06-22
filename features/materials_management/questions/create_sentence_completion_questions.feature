@@ -43,7 +43,7 @@ Feature: Create Sentence Completion Questions
 		And I press "Create Question"
 		Then I should see "Invalid Question Information. Question has not been created."
 		And I should see "Question Prompt can't be blank"
-		And I should see "Question must have at least one choice"
+		And I should see "Question must have at least one correct choice"
 
 	@javascript
 	Scenario: Create setence completion questions with no correct choice

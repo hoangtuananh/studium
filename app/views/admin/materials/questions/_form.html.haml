@@ -1,6 +1,3 @@
-- # Create 5 choices (for prototyping). 
-- # No point in doing this in the new action since the instance variables are lost in the next request
-
 = form_for([:admin, :materials, @question],remote: @ajax || false) do |f|
   - if @question.errors.any?
     %ul
@@ -23,6 +20,12 @@
 
   = f.hidden_field :exp, {value: "1400"} 
   = f.hidden_field :question_type_id, {value: @question_type[:id]}
+
+  - if @question.paragraph
+    %fieldset.hero-unit.paragraph-edit-group.padding-3px.text-center
+      %legend Paragraph:
+      = render "paragraph_edit"
+
   %div.pull-right
     - if @ajax
       = link_to "Cancel",{controller: "admin/materials/questions", action: "cancel_edit_question",question_id: @question.id},{class: "btn btn-danger",remote: true}

@@ -30,17 +30,19 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   end
 
   def new
-    # Create a question prototype for the form
-    @question = @question_type.questions.new
-    choices = ["A","B","C","D","E"]
-    choices.each do |choice|
-      @question.choices.build({choice_letter: choice})
-    end
+
     respond_to do |format|
       format.html do
-        
-        # Get the correct form (as a partial view)
-        determine_form_for_question
+        if @question_type.need_paragraph?
+          redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type.id)
+        else
+          # Create a question prototype for the form
+          @question = @question_type.questions.new
+          choices = ["A","B","C","D","E"]
+          choices.each do |choice|
+            @question.choices.build({choice_letter: choice})
+          end
+        end
       end
     end
   end
@@ -49,8 +51,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
     @question = @question_type.questions.new(params[:question])
 
     flash[:notice] = params[:question][:choices_attributes]
-    # Get the correct form (as a partial view)
-    determine_form_for_question
 
     if @question.save
       redirect_to admin_materials_questions_path, notice: "Question has been created." 
@@ -68,9 +68,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
   def edit
     @question_type=@question.question_type
     
-    # Get the correct form (as a partial view)
-    determine_form_for_question
-
     # Respond to different request formats
     respond_to do |format|
       format.js {
@@ -183,7 +180,6 @@ class Admin::Materials::QuestionsController < Admin::Materials::BaseController
       format.js {
         # Rerender the inner of the corresponding accordion group
         @question_type=@question.question_type
-        determine_form_for_question
         render "edit.js.haml"
       }
     end
@@ -234,26 +230,6 @@ private
       format.html {
         redirect_to admin_materials_questions_path,alert: "The page you were looking for could not be found."
       }
-    end
-  end
-
-  # This method determines which form to render based on question_type and store that in @partial
-  def determine_form_for_question
-    # If the question type is reading or para improvement
-    if @question_type.need_paragraph
-      respond_to do |format|
-
-        # Redirect to paragraphs#new and handle stuff there
-        format.html {
-          redirect_to new_admin_materials_paragraph_path(question_type_id: @question_type[:id])
-        }
-
-        format.js {
-          @partial="form_with_paragraph"
-        }
-      end
-    else
-      @partial="form_without_paragraph"
     end
   end
 

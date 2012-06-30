@@ -55,6 +55,6 @@ gem "devise"
 gem "cancan"
 gem "will_paginate"
 gem "paperclip"
-
+gem "faye"
 # Work around; default to rake 0.8.7 because 0.9 breaks rails
 gem "rake","0.9.2.2"

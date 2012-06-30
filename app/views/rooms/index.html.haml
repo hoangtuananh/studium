@@ -1,0 +1,9 @@
+%script{:type => "text/javascript"}
+  :plain
+    $(function() {
+      var faye = new Faye.Client('http://localhost:9292/faye');
+      faye.subscribe("messages/new", function(data) {
+        alert(data);
+      })
+    });
+%h1 Hello Index

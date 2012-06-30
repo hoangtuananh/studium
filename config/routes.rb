@@ -28,6 +28,7 @@ Studium::Application.routes.draw do
     end
   end
 
+  resources :rooms
   devise_for :users,controllers: {registrations: "registrations"}
 
   root to: "homepage#index",as: :index

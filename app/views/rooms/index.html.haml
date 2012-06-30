@@ -1,9 +1,4 @@
-%script{:type => "text/javascript"}
-  :plain
-    $(function() {
-      var faye = new Faye.Client('http://localhost:9292/faye');
-      faye.subscribe("messages/new", function(data) {
-        alert(data);
-      })
-    });
-%h1 Hello Index
+- @rooms.each do |room|
+  = link_to room.title, join_room_path(:room_id => room.id)
+%br
+= link_to "New room", new_room_path, {class: "btn btn-primary"}

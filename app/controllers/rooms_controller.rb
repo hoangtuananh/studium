@@ -21,6 +21,25 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:room_id])
   end
 
+-private
+  # Generate new questions for the input room when it run out of buffer questions
   def generate_questions(room)
+    # Temporarily assign all the questions to each room
+    room.questions = Question.all
+    room.save
+  end
+
+  # Choose new question from buffer questions
+  def choose_question(room)
+    # Temporarily choose a random question from buffer
+    this_questions = room.questions
+    next_question = this_questions[rand(0..this_questions.length)]
+    # Delete the next_question from the buffer
+    QuestionsBuffer
+      .where(room_id: room.id, question_id:next_question.id)
+      .destroy
+    
+    room.question = next_question
+    room.save
   end
 end

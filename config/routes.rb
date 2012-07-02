@@ -20,7 +20,6 @@ Studium::Application.routes.draw do
   get "/admin/materials/questions/remove_paragraph",to: "admin/materials/questions#remove_paragraph"
   get "/admin/materials/questions/remove_choice",to: "admin/materials/questions#remove_choice"
 
-  get "/join/:room_id", to: "rooms#join", as:"join_room"
   namespace "admin" do
     namespace "materials" do
       root to: "base#index",as: "admin_materials_index"
@@ -30,6 +29,10 @@ Studium::Application.routes.draw do
   end
 
   resources :rooms
+  get "/join/:room_id", to: "rooms#join", as:"room_join"
+  get "/choose/:room_id/:choice_id", to: "rooms#choose", as:"room_choose_choice"
+
+
   devise_for :users,controllers: {registrations: "registrations"}
 
   root to: "homepage#index",as: :index

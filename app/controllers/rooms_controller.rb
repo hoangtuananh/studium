@@ -21,7 +21,13 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:room_id])
   end
 
--private
+  def choose
+    respond_to do |format|
+      format.js do
+
+      end
+    end
+  end
   # Generate new questions for the input room when it run out of buffer questions
   def generate_questions(room)
     # Temporarily assign all the questions to each room

@@ -1,0 +1,3 @@
+%h1= question.prompt
+- question.choices.each do |choice|
+  %p= choice.choice_letter+" "+choice.content

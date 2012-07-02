@@ -1,0 +1,5 @@
+var faye = new Faye.Client("http://localhost:9292/faye");
+faye.publish('/rooms/question', {
+  choice_id: <%= @choice_id %>,
+  user_id: <%= current_user.id %>
+});

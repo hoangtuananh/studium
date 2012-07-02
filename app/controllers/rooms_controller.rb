@@ -22,9 +22,11 @@ class RoomsController < ApplicationController
   end
 
   def choose
+    @choice_id = params[:choice_id]
+    @room = Room.find(params[:room_id])
     respond_to do |format|
       format.js do
-        new_history_item = History.new{user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: params[:choice_id]}
+        new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
         new_history_item.save
       end
     end

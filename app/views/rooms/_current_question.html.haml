@@ -1,4 +1,6 @@
-%div
-  %h1= question.prompt
+%div.current_question{user_id: current_user.id, room_id: room_id}
+  %h3= question.prompt
   - question.choices.each do |choice|
-    %div=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
+    %div{class: "choice", id: choice.id.to_s}
+      -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
+      %a= choice.choice_letter+". "+choice.content

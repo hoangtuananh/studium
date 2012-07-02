@@ -28,6 +28,7 @@ class RoomsController < ApplicationController
       format.js do
         new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
         new_history_item.save
+        @next_question = choose_question(@room)
       end
     end
   end
@@ -42,13 +43,15 @@ class RoomsController < ApplicationController
   def choose_question(room)
     # Temporarily choose a random question from buffer
     this_questions = room.questions
-    next_question = this_questions[rand(0..this_questions.length)]
+    r = Random.new
+    next_question = this_questions[r.rand(0..this_questions.length-1)]
     # Delete the next_question from the buffer
-    QuestionsBuffer
-      .where(room_id: room.id, question_id:next_question.id)
-      .destroy
+    #QuestionsBuffer
+    #  .where({room_id: room.id, question_id:next_question.id})
+    #  .destroy_all
     
     room.question = next_question
     room.save
+    return next_question
   end
 end

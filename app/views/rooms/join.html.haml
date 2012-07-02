@@ -1,1 +1,5 @@
-= render "current_question", question:  @room.question, room_id: @room.id
+%div.row-fluid
+  %div.span7
+    = render "current_question", question:  @room.question, room_id: @room.id
+  %div.span5
+    %div.history

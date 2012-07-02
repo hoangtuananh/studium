@@ -24,7 +24,8 @@ class RoomsController < ApplicationController
   def choose
     respond_to do |format|
       format.js do
-
+        new_history_item = History.new{user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: params[:choice_id]}
+        new_history_item.save
       end
     end
   end

@@ -9,7 +9,7 @@ $(->
       alert(data.user_id+" chose "+data.choice_id);
     );
 
-    # Define change_question function that takes a question_id and change HTML content of #current_question
+    # Define the change_question function that takes a question_id and changes HTML content of #current_question
     change_question = (question_id) ->
       $.ajax({
         type: "POST",
@@ -26,7 +26,7 @@ $(->
     current_question_id = $("div#question_container").attr("question_id");
     change_question(current_question_id);
 
-    # When an user choose an answer
+    # When an user chooses an answer
     $("div.current_question .choice a").live("click", ->
       choice_id = $(this).parents(".choice").attr("id");
       user_id = $(this).parents("#question_container").attr("user_id");

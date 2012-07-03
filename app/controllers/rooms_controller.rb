@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
   def index
     @rooms = Room.all
   end
-  
+
   def new
     @room = Room.new
   end
@@ -11,7 +11,7 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(params[:room])
     if @room.save
-      redirect_to join_room_path(:room_id => @room.id)
+      redirect_to room_join_path(:room_id => @room.id)
     else
       redirect_to rooms_path, alert: "Error creating room"
     end
@@ -19,6 +19,10 @@ class RoomsController < ApplicationController
 
   def join
     @room = Room.find(params[:room_id])
+    if (@room.questions.empty?)
+      generate_questions(@room)
+    end
+    choose_question(@room)
   end
 
   def choose

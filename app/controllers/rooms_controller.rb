@@ -24,14 +24,21 @@ class RoomsController < ApplicationController
   def choose
     @choice_id = params[:choice_id]
     @room = Room.find(params[:room_id])
+    new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
+    new_history_item.save
+    @next_question = choose_question(@room)
     respond_to do |format|
-      format.js do
-        new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
-        new_history_item.save
-        @next_question = choose_question(@room)
+      format.json do
+        render :json => @next_question
       end
     end
   end
+  
+  def show_question
+    @question = Question.find(params[:question_id])
+    render :partial => "show_question"
+  end
+
   # Generate new questions for the input room when it run out of buffer questions
   def generate_questions(room)
     # Temporarily assign all the questions to each room

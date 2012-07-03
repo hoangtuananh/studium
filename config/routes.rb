@@ -31,7 +31,8 @@ Studium::Application.routes.draw do
   resources :rooms
   get "/join/:room_id", to: "rooms#join", as:"room_join"
   #get "/choose/:room_id/:choice_id", to: "rooms#choose", as:"room_choose_choice"
-  post "/choose", to: "rooms#choose", as: "room_choose_choice"
+  post "/rooms/choose", to: "rooms#choose", as: "room_choose_choice"
+  post "/rooms/show_question", to: "rooms#show_question", as: "room_show_question"
 
   devise_for :users,controllers: {registrations: "registrations"}
 

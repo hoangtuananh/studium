@@ -7,6 +7,7 @@ $(->
     # Subscribe to the "/rooms/question_choose" channel
     rooms_question = client.subscribe("/rooms/question_choose", (data) ->
       alert(data.user_id+" chose "+data.choice_id);
+      true;
     );
 
     # Define the change_question function that takes a question_id and changes HTML content of #current_question

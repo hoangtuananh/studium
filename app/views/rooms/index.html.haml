@@ -1,4 +1,5 @@
-- @rooms.each do |room|
-  = link_to room.title, room_join_path(:room_id => room.id)
+%ul#room_list
+  - @rooms.each do |room|
+    %li= link_to room.title, room_join_path(:room_id => room.id)
 %br
 = link_to "New room", new_room_path, {class: "btn btn-primary"}

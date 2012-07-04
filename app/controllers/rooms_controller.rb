@@ -12,6 +12,11 @@ class RoomsController < ApplicationController
     @room = Room.new(params[:room])
     if @room.save
       redirect_to room_join_path(:room_id => @room.id)
+      data = JSON.dump({
+        channel: "/rooms/create",
+        data: @room.attributes
+      })
+      Net::HTTP.post_form(URI.parse('http://localhost:9292/faye'), message: data)
     else
       redirect_to rooms_path, alert: "Error creating room"
     end

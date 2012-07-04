@@ -29,7 +29,7 @@ Studium::Application.routes.draw do
   end
 
   resources :rooms
-  get "/join/:room_id", to: "rooms#join", as:"room_join"
+  get "/rooms/join/:room_id", to: "rooms#join", as:"room_join"
   #get "/choose/:room_id/:choice_id", to: "rooms#choose", as:"room_choose_choice"
   post "/rooms/choose", to: "rooms#choose", as: "room_choose_choice"
   post "/rooms/show_question", to: "rooms#show_question", as: "room_show_question"

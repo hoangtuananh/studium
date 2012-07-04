@@ -27,7 +27,6 @@ class RoomsController < ApplicationController
     @user_list = @room.users
     generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
-    flash[:notice] = "/rooms/join/#{@room.id}"
     faye_publish("/rooms/join/#{@room.id}", current_user.profile.attributes)
   end
 
@@ -58,14 +57,15 @@ class RoomsController < ApplicationController
 
   # Choose new question from buffer questions
   def choose_question(room)
+    generate_questions(room) if (room.questions.empty?)
     # Temporarily choose a random question from buffer
     this_questions = room.questions
     r = Random.new
     next_question = this_questions[r.rand(0..this_questions.length-1)]
     # Delete the next_question from the buffer
-    #QuestionsBuffer
-    #  .where({room_id: room.id, question_id:next_question.id})
-    #  .destroy_all
+    QuestionsBuffer
+      .where({room_id: room.id, question_id:next_question.id})
+      .destroy_all
     
     room.question = next_question
     room.save

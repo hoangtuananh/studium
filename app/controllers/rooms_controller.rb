@@ -24,10 +24,8 @@ class RoomsController < ApplicationController
 
   def join
     @room = Room.find(params[:room_id])
-    if (@room.questions.empty?)
-      generate_questions(@room)
-    end
-    choose_question(@room)
+    generate_questions(@room) unless !@room.questions.empty?
+    choose_question(@room) unless @room.question
   end
 
   def choose

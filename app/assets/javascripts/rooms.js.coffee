@@ -4,8 +4,11 @@
 $(->
     client = new Faye.Client("http://localhost:9292/faye");
 
+    user_id = $("#question_container").attr("user_id");
+    room_id = $("#question_container").attr("room_id");
+
     # Subscribe to the "/rooms/question_choose" channel
-    rooms_question = client.subscribe("/rooms/question_choose", (data) ->
+    rooms_question = client.subscribe("/rooms/choose/"+room_id, (data) ->
       alert(data.user_id+" chose "+data.choice_id);
       true;
     );
@@ -30,11 +33,8 @@ $(->
     # When an user chooses an answer
     $("div.current_question .choice a").live("click", ->
       choice_id = $(this).parents(".choice").attr("id");
-      user_id = $(this).parents("#question_container").attr("user_id");
-      room_id = $(this).parents("#question_container").attr("room_id");
-
       # Publish to the channel "/rooms/question_choose"
-      client.publish("/rooms/question_choose", {
+      client.publish("/rooms/choose/"+room_id, {
         choice_id: choice_id,
         user_id: user_id
       });

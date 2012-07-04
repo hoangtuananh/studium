@@ -2,3 +2,7 @@
   %div.span7#question_container{user_id: current_user.id, room_id: @room.id, question_id: @room.question.id}
   %div.span5
     %div.history
+    %div.online
+      %ul
+        - @user_list.each do |user|
+          %li= user.profile.first_name+" "+user.profile.last_name

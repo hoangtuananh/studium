@@ -31,7 +31,7 @@ $(->
       });
       true;
 
-    # Input: a question (JSON) object
+    # Input: question_id and choice_id
     # Effect: render the explanation for the given question
     show_explanation = (question_id,choice_id) ->
       $.ajax({
@@ -83,8 +83,11 @@ $(->
           show_explanation(data.current_question_id,data.choice_id);
         dataTye: "json"
       });
+      # Hide the confirm button
       $(this).hide();
+      # Remove question_active class so that the choices are not clickable
       $("#current_question").removeClass("question_active");
+      # Show the next button
       $("#next").show();
 
       true;

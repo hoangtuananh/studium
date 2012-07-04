@@ -52,11 +52,16 @@ class RoomsController < ApplicationController
     end
   end
   
+  # Input: question_id
+  # Return: HTML of that question
   def show_question
     @question = Question.find(params[:question_id])
     render :partial => "show_question"
   end
 
+  # Request type: POST
+  # Input: question_id, choice_id
+  # Return: HTML of the explanation for that question
   def show_explanation
     @question = Question.find(params[:question_id])
     @selected_choice = Choice.find(params[:choice_id])

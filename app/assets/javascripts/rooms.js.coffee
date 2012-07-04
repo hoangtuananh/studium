@@ -7,12 +7,17 @@ $(->
     user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
-    # Subscribe to the "/rooms/question_choose" channel
+    # Subscribe to the "/rooms/choose/..." channel which keeps track of users choosing answer
     rooms_question = client.subscribe("/rooms/choose/"+room_id, (data) ->
       alert(data.user_id+" chose "+data.choice_id);
       true;
     );
 
+    # Subscribe to the "/rooms/join/.." channel which keeps track of online users
+    rooms_join = client.subscribe("/rooms/join/"+room_id, (data) ->
+      $(".online ul").append("<li>"+data.first_name+" "+data.last_name+"</li>");
+      true;
+    );
     # Define the change_question function that takes a question_id and changes HTML content of #current_question
     change_question = (question_id) ->
       $.ajax({

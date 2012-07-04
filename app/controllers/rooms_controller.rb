@@ -11,12 +11,10 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(params[:room])
     if @room.save
+      # See application_controller for faye_publish method.
+      # @room.attributes returns a hash of the room's attributes
+      faye_publish("/rooms/create", @room.attributes)
       redirect_to room_join_path(:room_id => @room.id)
-      data = JSON.dump({
-        channel: "/rooms/create",
-        data: @room.attributes
-      })
-      Net::HTTP.post_form(URI.parse('http://localhost:9292/faye'), message: data)
     else
       redirect_to rooms_path, alert: "Error creating room"
     end
@@ -29,6 +27,8 @@ class RoomsController < ApplicationController
     @user_list = @room.users
     generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
+    flash[:notice] = "/rooms/join/#{@room.id}"
+    faye_publish("/rooms/join/#{@room.id}", current_user.profile.attributes)
   end
 
   def choose

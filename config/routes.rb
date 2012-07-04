@@ -33,6 +33,7 @@ Studium::Application.routes.draw do
   #get "/choose/:room_id/:choice_id", to: "rooms#choose", as:"room_choose_choice"
   post "/rooms/choose", to: "rooms#choose", as: "room_choose_choice"
   post "/rooms/show_question", to: "rooms#show_question", as: "room_show_question"
+  post "/rooms/show_explanation", to: "rooms#show_explanation", as: "room_show_explanation"
 
   devise_for :users,controllers: {registrations: "registrations"}
 

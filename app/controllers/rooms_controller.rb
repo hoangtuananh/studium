@@ -31,15 +31,23 @@ class RoomsController < ApplicationController
     faye_publish("/rooms/join/#{@room.id}", current_user.profile.attributes)
   end
 
+  # Input params: choice_id, room_id
+  # Effect: create new history item, choose next question
+  # Return: JSON format of next question
   def choose
     @choice_id = params[:choice_id]
     @room = Room.find(params[:room_id])
+    @current_question = @room.question
     new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
     new_history_item.save
     @next_question = choose_question(@room)
     respond_to do |format|
       format.json do
-        render :json => @next_question
+        render :json => {
+          current_question_id: @current_question.id,
+          next_question_id: @next_question.id,
+          choice_id: @choice_id
+        }
       end
     end
   end
@@ -47,6 +55,12 @@ class RoomsController < ApplicationController
   def show_question
     @question = Question.find(params[:question_id])
     render :partial => "show_question"
+  end
+
+  def show_explanation
+    @question = Question.find(params[:question_id])
+    @selected_choice = Choice.find(params[:choice_id])
+    render :partial => "show_explanation"
   end
 
   # Generate new questions for the input room when it run out of buffer questions

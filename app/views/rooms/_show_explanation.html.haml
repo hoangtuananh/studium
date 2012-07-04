@@ -1,0 +1,7 @@
+- message = @selected_choice.correct ? "Right" : "Wrong"
+%h3=message
+- @question.choices.each do |choice|
+  - result = choice.correct ? "correct" : "incorrect"
+  - result+=" selected" if (choice.id == @selected_choice.id)
+  %li{id: choice.id.to_s, class: result}
+    %a= choice.choice_letter+" ."+choice.content

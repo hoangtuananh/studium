@@ -1,4 +1,4 @@
-%div#current_question
+%div.question_active#current_question
   %h3= @question.prompt
   %ul.choices
     - @question.choices.each do |choice|
@@ -7,3 +7,6 @@
         %a{href: "#"}= choice.choice_letter+". "+choice.content
   %div
     %a.btn.btn-primary#confirm Confirm
+    %a.btn.btn-primary#next{style: "display:none"} Next
+  %div
+    %p Bold = selected, Italic = correct

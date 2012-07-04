@@ -23,6 +23,7 @@ class RoomsController < ApplicationController
   def join
     @room = Room.find(params[:room_id])
     current_user.room_id = @room.id
+    current_user.status = 1
     current_user.save
     @user_list = @room.users
     generate_questions(@room) unless !@room.questions.empty?

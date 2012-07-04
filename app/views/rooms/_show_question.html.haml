@@ -1,6 +1,9 @@
-%div.current_question
+%div#current_question
   %h3= @question.prompt
-  - @question.choices.each do |choice|
-    %div{class: "choice", id: choice.id.to_s}
-      -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
-      %a{href: "#"}= choice.choice_letter+". "+choice.content
+  %ul.choices
+    - @question.choices.each do |choice|
+      %li{id: choice.id.to_s}
+        -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
+        %a{href: "#"}= choice.choice_letter+". "+choice.content
+  %div
+    %a.btn.btn-primary#confirm Confirm

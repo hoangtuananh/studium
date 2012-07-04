@@ -35,9 +35,18 @@ $(->
     current_question_id = $("div#question_container").attr("question_id");
     change_question(current_question_id);
 
-    # When an user chooses an answer
-    $("div.current_question .choice a").live("click", ->
-      choice_id = $(this).parents(".choice").attr("id");
+    # User clicking on a choice
+    # Add class "selected" to the chosen choice
+    $("#current_question .choices li").live("click", ->
+      choice_id = $(this).attr("id");
+      $(this).addClass("selected");
+      true;
+    );
+
+    # User confirming the answer
+    $("#current_question #confirm").live("click", ->
+      # Get the choice_id by finding the "selected" class
+      choice_id = $("#current_question li.selected").attr("id");
       # Publish to the channel "/rooms/question_choose"
       client.publish("/rooms/choose/"+room_id, {
         choice_id: choice_id,

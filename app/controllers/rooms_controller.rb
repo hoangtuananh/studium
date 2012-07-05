@@ -65,6 +65,13 @@ class RoomsController < ApplicationController
   def show_explanation
     @question = Question.find(params[:question_id])
     @selected_choice = Choice.find(params[:choice_id])
+    if @selected_choice.correct?
+      @message = "Congratulations! You got the right answer."
+      @class = "alert alert-success"
+    else
+      @message = "Sorry, you got the wrong answer. See explanation below."
+      @class = "alert alert-error"
+    end
     render :partial => "show_explanation"
   end
 

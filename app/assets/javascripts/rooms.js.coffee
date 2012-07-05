@@ -27,7 +27,7 @@ $(->
           question_id: question_id
         },
         success: (data) ->
-          $("div#question_container").html(data);
+          $("#question_container").html(data);
       });
       true;
 
@@ -47,22 +47,22 @@ $(->
 
     
     # Set question the first time
-    current_question_id = $("div#question_container").attr("question_id");
+    current_question_id = $("#question_container").attr("question_id");
     change_question(current_question_id);
 
     # User clicking on a choice
-    # Add class "selected" to the chosen choice
-    $(".question_active#current_question .choices li").live("click", ->
+    # Add class "btn-primary" to the chosen choice
+    $(".question_active#current_question .choices .each_choice").live("click", ->
       choice_id = $(this).attr("id");
-      $(this).siblings().removeClass("selected");
-      $(this).addClass("selected");
+      $(this).siblings().removeClass("btn-primary");
+      $(this).addClass("btn-primary");
       true;
     );
 
     # User confirming the answer
     $(".question_active#current_question #confirm").live("click", ->
-      # Get the choice_id by finding the "selected" class
-      choice_id = $(".question_active#current_question li.selected").attr("id");
+      # Get the choice_id by finding the "btn-primary" class
+      choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
       # Publish to the channel "/rooms/question_choose"
       client.publish("/rooms/choose/"+room_id, {
         choice_id: choice_id,

@@ -1,12 +1,20 @@
 %div.question_active#current_question
-  %h3= @question.prompt
-  %ul.choices
-    - @question.choices.each do |choice|
-      %li{id: choice.id.to_s}
-        -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
-        %a{href: "#"}= choice.choice_letter+". "+choice.content
+  %div.prompt
+    %h4 Question
+    %div.row-fluid
+      %div.span2
+      %div.span10
+        %p.lead= @question.prompt
+  %div.choices
+    %h4 Choices
+    %div.row-fluid
+      %div.span2
+      %div.span4
+        %div.row-fluid
+        - @question.choices.each do |choice|
+          %div.span12.btn.each_choice{id: choice.id.to_s}
+            -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
+            %p{href: "#"}= choice.choice_letter+". "+choice.content
   %div
-    %a.btn.btn-primary#confirm Confirm
-    %a.btn.btn-primary#next{style: "display:none"} Next
-  %div
-    %p Bold = selected, Italic = correct
+    %a.btn.btn-danger#confirm Confirm
+    %a.btn.btn-danger#next{style: "display:none"} Next

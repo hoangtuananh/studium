@@ -1,7 +1,14 @@
-- message = @selected_choice.correct ? "Right" : "Wrong"
-%h3=message
-- @question.choices.each do |choice|
-  - result = choice.correct ? "correct" : "incorrect"
-  - result+=" selected" if (choice.id == @selected_choice.id)
-  %li{id: choice.id.to_s, class: result}
-    %a= choice.choice_letter+" ."+choice.content
+%div.choices
+  %h4 Explanation
+  %div.row-fluid
+    %div.span12
+      %div{class: @class}
+        %p= @message
+  %div.row-fluid
+    %div.span2
+    %div.span4
+      %div.row-fluid
+      - @question.choices.each do |choice|
+        - result = choice.correct ? "btn-success" : ""
+        %div.span12.btn.each_choice{id: choice.id.to_s, class: result}
+          %p{href: "#"}= choice.choice_letter+". "+choice.content

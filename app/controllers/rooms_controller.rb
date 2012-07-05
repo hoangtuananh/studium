@@ -75,6 +75,9 @@ class RoomsController < ApplicationController
     render :partial => "show_explanation"
   end
 
+  # Request type: POST
+  # Input: room_id
+  # Return HTML of the individual room item to be shown on rooms#index (Used for real-time room list)
   def show_new_room_item
     room = Room.find(params[:room_id])
     render :partial => "room_item", :locals => {room: room}

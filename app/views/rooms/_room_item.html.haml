@@ -1,1 +1,21 @@
-%h1= room.question.title
+%div.accordion-group
+  %div.accordion-heading
+    %a.accordion-toggle{"data-toggle" => "collapse", "data-target" => "#room_#{room.id}", "data-parent" => "#room_list"}
+      =room.title
+  %div.accordion-body.collapse{id: "room_#{room.id}"}
+    %div.accordion-inner
+      %div.span6
+        %dl.dl-horizontal
+          %dt Created at
+          %dd= room.created_at.localtime
+          %dt Players
+          %dd
+            %table.table.table-condensed
+              - order = 1
+              - room.users.each do |user|
+                %tr
+                  %td= order
+                  %td= user.profile.first_name+" "+user.profile.last_name
+                  - order+= 1
+      %div.span6
+        = link_to "Join", room_join_path(room_id: room.id), {class: "btn btn-primary"}

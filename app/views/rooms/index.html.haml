@@ -1,5 +1,8 @@
-%ul#room_list
-  - @rooms.each do |room|
-    %li= link_to room.title, room_join_path(:room_id => room.id)
-%br
-= link_to "New room", new_room_path, {class: "btn btn-primary"}
+%div.row-fluid
+  %div.span3
+  %div.span6
+    %div.accordion.text-center#room_list
+      - @rooms.each do |room|
+        = render "room_item", room: room
+    %br
+    = link_to "New room", new_room_path, {class: "btn btn-primary"}

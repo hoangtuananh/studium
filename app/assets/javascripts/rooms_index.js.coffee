@@ -3,7 +3,16 @@ $(->
   
   # Subscribe to the "rooms/create" channel
   rooms_create = client.subscribe("/rooms/create", (data) ->
-    $("#room_list").append("<li><a href='/rooms/join/"+data.id+"'>"+data.title+"</a></li>");
+    $.ajax({
+      type: "POST",
+      url: "/rooms/show_new_room_item/"
+      data: {
+        room_id: data.room_id
+      },
+      success: (data) ->
+        $("#room_list").append(data);
+        true;
+    });
     true;
   );
 );

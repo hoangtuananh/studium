@@ -13,7 +13,7 @@ class RoomsController < ApplicationController
     if @room.save
       # See application_controller for faye_publish method.
       # @room.attributes returns a hash of the room's attributes
-      faye_publish("/rooms/create", @room.attributes)
+      faye_publish("/rooms/create", {room_id: @room.id})
       redirect_to room_join_path(:room_id => @room.id)
     else
       redirect_to rooms_path, alert: "Error creating room"
@@ -68,6 +68,10 @@ class RoomsController < ApplicationController
     render :partial => "show_explanation"
   end
 
+  def show_new_room_item
+    room = Room.find(params[:room_id])
+    render :partial => "room_item", :locals => {room: room}
+  end
   # Generate new questions for the input room when it run out of buffer questions
   def generate_questions(room)
     # Temporarily assign all the questions to each room

@@ -1,3 +1,6 @@
+Pusher.app_id = '22619'
+Pusher.key = '9a81f498ef1031e46675'
+Pusher.secret = 'c90fd082578b9efe4f69'
 class RoomsController < ApplicationController
   before_filter :authenticate_user!
   def index
@@ -18,9 +21,9 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(params[:room])
     if @room.save
-      # See application_controller for faye_publish method.
+      # See application_controller for publish method.
       # @room.attributes returns a hash of the room's attributes
-      faye_publish("/rooms/create", {room_id: @room.id})
+      publish("room", "create", {room_id: @room.id})
       redirect_to room_join_path(:room_id => @room.id)
     else
       redirect_to rooms_path, alert: "Error creating room"
@@ -34,7 +37,7 @@ class RoomsController < ApplicationController
     current_user.save
     generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
-    faye_publish("/rooms/users_change/#{@room.id}", current_user.profile.attributes)
+    publish("room_#{@room.id}","users_change", {})
   end
 
   # Request type: POST
@@ -59,8 +62,8 @@ class RoomsController < ApplicationController
     new_history_item.save
     current_user.status = 2
     current_user.save
-    faye_publish("/rooms/users_change/#{@room.id}",{})
-    faye_publish("/rooms/show_explanation/#{@room.id}",{
+    publish("room_#{@room.id}", "users_change", {})
+    publish("room_#{@room.id}", "show_explanation", {
       choice_id: @choice_id,
       question_id: @current_question.id
     }) if @room.show_explanation?
@@ -78,10 +81,10 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:room_id])
     current_user.status = 3
     current_user.save
-    faye_publish("/rooms/users_change/#{@room.id}", {})
+    publish("room_#{@room.id}","users_change",{})
     if @room.show_next_question?
       @next_question = choose_question(@room)
-      faye_publish("/rooms/next_question/#{@room.id}", {
+      publish("room_#{@room.id}","next_question", {
         question_id: @next_question.id
       })
     end

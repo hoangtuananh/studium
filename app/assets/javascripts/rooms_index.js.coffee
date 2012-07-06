@@ -1,5 +1,6 @@
 $(->
-  client = new Faye.Client("http://localhost:9292/faye");
+  client = new Pusher('9a81f498ef1031e46675');
+  channel = client.subscribe('rooms');
   update_room_list = ->
     $.ajax({
       type: "POST",
@@ -12,7 +13,7 @@ $(->
   
   update_room_list();
   # Subscribe to the "rooms/create" channel
-  rooms_create = client.subscribe("/rooms/create", (data) ->
+  rooms_create = channel.bind("create", (data) ->
     update_room_list();
     true;
   );

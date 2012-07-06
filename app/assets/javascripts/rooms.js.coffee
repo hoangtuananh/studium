@@ -2,25 +2,29 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(->
-    client = new Faye.Client("http://localhost:9292/faye");
-
     user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
+    client = new Pusher("9a81f498ef1031e46675");
+    channel = client.subscribe("room_"+room_id);
+    channel.bind("test", (data) ->
+      alert(data);
+      true;
+    );
     # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
-    rooms_users_change = client.subscribe("/rooms/users_change/"+room_id, (data) ->
+    rooms_users_change = channel.bind("users_change", (data) ->
       update_users();
       true;
     );
 
     # Subscribe to the "/rooms/show_explanation/.." channel which keeps track of whether to show explanation or not
-    rooms_show_explanation = client.subscribe("/rooms/show_explanation/"+room_id, (data) ->
+    rooms_show_explanation = channel.bind("show_explanation", (data) ->
       show_explanation(data.question_id, data.choice_id);
       true;
     );
 
     # Subscribe to the "/rooms/next_question/.." channel which keeps track of whether to show next question
-    rooms_show_next_question = client.subscribe("/rooms/next_question/"+room_id, (data) ->
+    rooms_show_next_question = channel.bind("next_question", (data) ->
       change_question(data.question_id);
       true;
     );

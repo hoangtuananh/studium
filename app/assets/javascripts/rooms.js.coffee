@@ -60,7 +60,7 @@ $(->
         type: "POST",
         url: "/rooms/show_explanation",
         data: {
-          question_id: question_id,
+          room_id: room_id,
           choice_id: choice_id
         },
         success: (data) ->

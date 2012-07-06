@@ -70,6 +70,10 @@ class RoomsController < ApplicationController
     }
   end
   
+  # Request type: POST
+  # Input: room_id
+  # Effect: change user's status to 3 (Ready). 
+  #   If everyone is ready then choose next question and publish to /rooms/next_question
   def ready
     @room = Room.find(params[:room_id])
     current_user.status = 3
@@ -97,7 +101,9 @@ class RoomsController < ApplicationController
   # Input: question_id, choice_id
   # Return: HTML of the explanation for that question
   def show_explanation
-    @question = Question.find(params[:question_id])
+    @room = Room.find(params[:room_id])
+    return if !@room.show_explanation?
+    @question = @room.question
     @selected_choice = Choice.find(params[:choice_id])
     if @selected_choice.correct?
       @message = "Congratulations! You got the right answer."

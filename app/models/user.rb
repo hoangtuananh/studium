@@ -16,4 +16,7 @@ class User < ActiveRecord::Base
   belongs_to :room
   has_one :profile,dependent: :destroy
   accepts_nested_attributes_for :profile
+  def name
+    self.profile.first_name + " " + self.profile.last_name
+  end
 end

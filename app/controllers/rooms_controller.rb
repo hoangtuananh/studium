@@ -1,7 +1,11 @@
 class RoomsController < ApplicationController
   before_filter :authenticate_user!
   def index
+  end
+
+  def room_list
     @rooms = Room.all
+    render partial: "room_list"
   end
 
   def new
@@ -25,12 +29,16 @@ class RoomsController < ApplicationController
     current_user.room_id = @room.id
     current_user.status = 1
     current_user.save
-    @user_list = @room.users
     generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
-    faye_publish("/rooms/join/#{@room.id}", current_user.profile.attributes)
+    faye_publish("/rooms/users_change/#{@room.id}", current_user.profile.attributes)
   end
 
+  def user_list
+    @room = Room.find(params[:room_id])
+    @user_list = @room.users
+    render partial: "user_list"
+  end
   # Input params: choice_id, room_id
   # Effect: create new history item, choose next question
   # Return: JSON format of next question

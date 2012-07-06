@@ -12,11 +12,27 @@ $(->
       true;
     );
 
-    # Subscribe to the "/rooms/join/.." channel which keeps track of online users
-    rooms_join = client.subscribe("/rooms/join/"+room_id, (data) ->
-      $(".online ul").append("<li>"+data.first_name+" "+data.last_name+"</li>");
+    # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
+    rooms_users_change = client.subscribe("/rooms/users_change/"+room_id, (data) ->
+      update_users();
       true;
     );
+
+    # Input:
+    # Effect: update the user list to div#online
+    update_users = ->
+      $.ajax({
+        type: "POST",
+        url: "/rooms/user_list",
+        data: {
+          room_id: room_id
+        },
+        success: (data) ->
+          $("#online").html(data);
+          true;
+      });
+      true;
+
     # Input: question_id
     # Effect: changes HTML content of #current_question to show the new question
     change_question = (question_id) ->
@@ -49,6 +65,8 @@ $(->
     # Set question the first time
     current_question_id = $("#question_container").attr("question_id");
     change_question(current_question_id);
+    # Update the user list the first time
+    update_users();
 
     # User clicking on a choice
     # Add class "btn-primary" to the chosen choice

@@ -2,7 +2,5 @@
   %div.span3
   %div.span6
     %div.accordion.text-center#room_list
-      - @rooms.each do |room|
-        = render "room_item", room: room
     %br
     = link_to "New room", new_room_path, {class: "btn btn-primary"}

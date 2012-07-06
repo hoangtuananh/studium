@@ -34,7 +34,9 @@ Studium::Application.routes.draw do
   post "/rooms/choose", to: "rooms#choose", as: "room_choose_choice"
   post "/rooms/show_question", to: "rooms#show_question", as: "room_show_question"
   post "/rooms/show_explanation", to: "rooms#show_explanation", as: "room_show_explanation"
-  post "/rooms/show_new_room_item", to: "rooms#show_new_room_item"
+  #post "/rooms/show_new_room_item", to: "rooms#show_new_room_item"
+  post "/rooms/room_list", to: "rooms#room_list"
+  post "/rooms/user_list", to: "rooms#user_list"
 
   devise_for :users,controllers: {registrations: "registrations"}
 

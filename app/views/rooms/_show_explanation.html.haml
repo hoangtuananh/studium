@@ -11,4 +11,9 @@
       - @question.choices.each do |choice|
         - result = choice.correct ? "btn-success" : ""
         %div.span12.btn.each_choice.disabled{id: choice.id.to_s, class: result}
-          %p{href: "#"}= choice.choice_letter+". "+choice.content
+          %div.row-fluid
+            %div.span3= choice.choice_letter
+            %div.span8= choice.content
+            - if (choice.correct)
+              %div.span1
+                %i.icon-white.icon-ok

@@ -14,7 +14,9 @@
         - @question.choices.each do |choice|
           %div.span12.btn.each_choice{id: choice.id.to_s}
             -#=link_to choice.choice_letter+". "+choice.content, room_choose_choice_path(room_id, choice.id), remote: true
-            %p{href: "#"}= choice.choice_letter+". "+choice.content
+            %div.row-fluid
+              %div.span3= choice.choice_letter
+              %div.span9= choice.content
   %div
     %a.btn.btn-primary#confirm Confirm
     %a.btn.btn-primary#next{style: "display:none"} Next

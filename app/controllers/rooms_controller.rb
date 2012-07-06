@@ -3,6 +3,9 @@ class RoomsController < ApplicationController
   def index
   end
 
+  # Request type: POST
+  # Return: the room list
+  # Used for dynamically updating the room list
   def room_list
     @rooms = Room.all
     render partial: "room_list"
@@ -34,11 +37,16 @@ class RoomsController < ApplicationController
     faye_publish("/rooms/users_change/#{@room.id}", current_user.profile.attributes)
   end
 
+  # Request type: POST
+  # Input params: room_id
+  # Return: HTML of the user list of that specific room
+  # Used for dynamically updating user list in each room
   def user_list
     @room = Room.find(params[:room_id])
     @user_list = @room.users
     render partial: "user_list"
   end
+  # Request type: POST
   # Input params: choice_id, room_id
   # Effect: create new history item, choose next question
   # Return: JSON format of next question

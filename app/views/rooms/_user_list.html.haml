@@ -1,3 +1,10 @@
-%ul
-  - @user_list.each do |user|
-    %li= user.name
+%table.table.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Exp
+  %tbody
+    - @user_list.each do |user|
+      %tr
+        %td= user.name
+        %td 1400

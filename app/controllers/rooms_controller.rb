@@ -44,30 +44,48 @@ class RoomsController < ApplicationController
   def user_list
     @room = Room.find(params[:room_id])
     @user_list = @room.users
+    @status = ["Not in any room", "Answering", "Confirmed", "Ready"]
     render partial: "user_list"
   end
   # Request type: POST
   # Input params: choice_id, room_id
   # Effect: create new history item, choose next question
-  # Return: JSON format of next question
+  # Return: current question's id, next question's id, selected choice's id 
   def choose
     @choice_id = params[:choice_id]
     @room = Room.find(params[:room_id])
     @current_question = @room.question
     new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
     new_history_item.save
-    @next_question = choose_question(@room)
-    respond_to do |format|
-      format.json do
-        render :json => {
-          current_question_id: @current_question.id,
-          next_question_id: @next_question.id,
-          choice_id: @choice_id
-        }
-      end
-    end
+    current_user.status = 2
+    current_user.save
+    faye_publish("/rooms/users_change/#{@room.id}",{})
+    faye_publish("/rooms/show_explanation/#{@room.id}",{
+      choice_id: @choice_id,
+      question_id: @current_question.id
+    }) if @room.show_explanation?
+    render :json => {
+      current_question_id: @current_question.id,
+      choice_id: @choice_id
+    }
   end
   
+  def ready
+    @room = Room.find(params[:room_id])
+    current_user.status = 3
+    current_user.save
+    faye_publish("/rooms/users_change/#{@room.id}", {})
+    if @room.show_next_question?
+      @next_question = choose_question(@room)
+      faye_publish("/rooms/next_question/#{@room.id}", {
+        question_id: @next_question.id
+      })
+    end
+    render :json => {
+      room_id: @room.id
+    }
+  end
+
   # Input: question_id
   # Return: HTML of that question
   def show_question

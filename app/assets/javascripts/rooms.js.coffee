@@ -7,17 +7,23 @@ $(->
     user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
-    # Subscribe to the "/rooms/choose/..." channel which keeps track of users choosing answer
-    rooms_question = client.subscribe("/rooms/choose/"+room_id, (data) ->
-      true;
-    );
-
     # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
     rooms_users_change = client.subscribe("/rooms/users_change/"+room_id, (data) ->
       update_users();
       true;
     );
 
+    # Subscribe to the "/rooms/show_explanation/.." channel which keeps track of whether to show explanation or not
+    rooms_show_explanation = client.subscribe("/rooms/show_explanation/"+room_id, (data) ->
+      show_explanation(data.question_id, data.choice_id);
+      true;
+    );
+
+    # Subscribe to the "/rooms/next_question/.." channel which keeps track of whether to show next question
+    rooms_show_next_question = client.subscribe("/rooms/next_question/"+room_id, (data) ->
+      change_question(data.question_id);
+      true;
+    );
     # Input:
     # Effect: update the user list to div#online
     update_users = ->
@@ -81,11 +87,6 @@ $(->
     $(".question_active#current_question #confirm").live("click", ->
       # Get the choice_id by finding the "btn-primary" class
       choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
-      # Publish to the channel "/rooms/question_choose"
-      client.publish("/rooms/choose/"+room_id, {
-        choice_id: choice_id,
-        user_id: user_id
-      });
 
       # Send a POST request to "/rooms/choose" (rooms#choose)
       $.ajax({
@@ -93,26 +94,32 @@ $(->
         url: "/rooms/choose/",
         data: {
           choice_id: choice_id,
-          room_id: room_id,
-          user_id: user_id
+          room_id: room_id
         },
         success: (data) ->
           $("#next").attr("question_id",data.next_question_id);
-          show_explanation(data.current_question_id,data.choice_id);
+          #show_explanation(data.current_question_id,data.choice_id);
         dataTye: "json"
       });
       # Hide the confirm button
       $(this).hide();
       # Remove question_active class so that the choices are not clickable
       $("#current_question").removeClass("question_active");
-      # Show the next button
-      $("#next").show();
+      # Show the ready button
+      $("#ready").show();
 
       true;
     );
-    # User clicking "Next"
-    $("#next").live("click", ->
-      change_question($(this).attr("question_id"));
+    # User clicking "ready"
+    $("#ready").live("click", ->
+      $.ajax({
+        type: "POST",
+        url: "/rooms/ready",
+        data: {
+          room_id: room_id,
+        },
+      });
+      true;
     );
     true;
 );

@@ -3,8 +3,10 @@
     %tr
       %th Name
       %th Exp
+      %th Status
   %tbody
     - @user_list.each do |user|
       %tr
         %td= user.name
         %td 1400
+        %td= @status[user.status]

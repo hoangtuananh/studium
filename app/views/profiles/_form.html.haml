@@ -17,6 +17,6 @@
       = f.text_field :school
 
       = f.label :date_of_birth
-      = f.date_select :date_of_birth
+      = f.date_select :date_of_birth, start_year: Time.now.year-100, end_year: Time.now.year
 
       = f.submit

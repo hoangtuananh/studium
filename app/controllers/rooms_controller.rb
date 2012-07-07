@@ -22,7 +22,7 @@ class RoomsController < ApplicationController
     @room = Room.new(params[:room])
     if @room.save
       # See application_controller for publish method.
-      publish("room", "create", {room_id: @room.id})
+      publish("rooms", "create", {room_id: @room.id})
       redirect_to room_join_path(:room_id => @room.id)
     else
       redirect_to rooms_path, alert: "Error creating room"
@@ -36,7 +36,7 @@ class RoomsController < ApplicationController
     current_user.save
     generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
-    publish("room_#{@room.id}","users_change", {})
+    publish("presence-room_#{@room.id}","users_change", {})
   end
 
   # Request type: POST
@@ -61,9 +61,8 @@ class RoomsController < ApplicationController
     new_history_item.save
     current_user.status = 2
     current_user.save
-    publish("room_#{@room.id}", "users_change", {})
-    publish("room_#{@room.id}", "show_explanation", {
-      choice_id: @choice_id,
+    publish("presence-room_#{@room.id}", "users_change", {})
+    publish("presence-room_#{@room.id}", "show_explanation", {
       question_id: @current_question.id
     }) if @room.show_explanation?
     render :json => {
@@ -80,10 +79,10 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:room_id])
     current_user.status = 3
     current_user.save
-    publish("room_#{@room.id}","users_change",{})
+    publish("presence-room_#{@room.id}","users_change",{})
     if @room.show_next_question?
       @next_question = choose_question(@room)
-      publish("room_#{@room.id}","next_question", {
+      publish("presence-room_#{@room.id}","next_question", {
         question_id: @next_question.id
       })
     end
@@ -92,6 +91,20 @@ class RoomsController < ApplicationController
     }
   end
 
+  def quit
+    current_user.room_id = 0
+    current_user.status = 0
+    redirect_to rooms_path
+  end
+
+  def kick
+    user = User.find(params[:user_id])
+    user.room_id = 0
+    user.status = 0
+    user.save
+    publish("presence-room_#{params[:room_id]}", "users_change", {})
+    render :text => "Kicked", :status => '202'
+  end
   # Input: question_id
   # Return: HTML of that question
   def show_question

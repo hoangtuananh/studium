@@ -38,7 +38,10 @@ Studium::Application.routes.draw do
   post "/rooms/room_list", to: "rooms#room_list"
   post "/rooms/user_list", to: "rooms#user_list"
   post "/rooms/ready", to: "rooms#ready"
+  get "/rooms/quit", to: "rooms#quit"
+  post "/rooms/kick", to: "rooms#kick"
 
+  post "/pusher/auth", to: "pusher#auth"
   devise_for :users,controllers: {registrations: "registrations"}
 
   root to: "homepage#index",as: :index

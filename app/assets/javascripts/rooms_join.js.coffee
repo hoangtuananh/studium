@@ -10,21 +10,35 @@ $(->
     # It contains things that are used globally like client Pusher
     # Variables that are specific to rooms#join should be put into the object STUDIUM.rooms.join
     client = new Pusher('9a81f498ef1031e46675');
-    channel = client.subscribe("room_"+room_id);
+    channel = client.subscribe("presence-room_"+room_id);
+    channel.bind('pusher:member_removed', (member) ->
+      $.ajax({
+        type: "POST",
+        url : "/rooms/kick",
+        data: {
+          room_id: room_id,
+          user_id: member.id
+        },
+        success: (data) ->
+          update_users();
+      });
+    );
     # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
-    rooms_users_change = channel.bind("users_change", (data) ->
+    channel.bind("users_change", (data) ->
       update_users();
       true;
     );
 
     # Subscribe to the "/rooms/show_explanation/.." channel which keeps track of whether to show explanation or not
-    rooms_show_explanation = channel.bind("show_explanation", (data) ->
-      show_explanation(data.question_id, data.choice_id);
+    channel.bind("show_explanation", (data) ->
+      # Get the choice_id by finding the "btn-primary" class
+      choice_id = $("#current_question .each_choice.btn-primary").attr("id");
+      show_explanation(data.question_id, choice_id);
       true;
     );
 
     # Subscribe to the "/rooms/next_question/.." channel which keeps track of whether to show next question
-    rooms_show_next_question = channel.bind("next_question", (data) ->
+    channel.bind("next_question", (data) ->
       change_question(data.question_id);
       true;
     );

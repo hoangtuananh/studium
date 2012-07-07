@@ -3,6 +3,7 @@ Pusher.key = '9a81f498ef1031e46675'
 Pusher.secret = 'c90fd082578b9efe4f69'
 class RoomsController < ApplicationController
   before_filter :authenticate_user!
+  protect_from_forgery
   def index
   end
 
@@ -40,11 +41,11 @@ class RoomsController < ApplicationController
   end
 
   # Request type: POST
-  # Input params: room_id
-  # Return: HTML of the user list of that specific room
+  # Input params: none
+  # Return: HTML of the user list of the room the user is in
   # Used for dynamically updating user list in each room
   def user_list
-    @room = Room.find(params[:room_id])
+    @room = current_user.room
     @user_list = @room.users
     @status = ["Not in any room", "Answering", "Confirmed", "Ready"]
     render partial: "user_list"
@@ -55,7 +56,7 @@ class RoomsController < ApplicationController
   # Return: current question's id, next question's id, selected choice's id 
   def choose
     @choice_id = params[:choice_id]
-    @room = Room.find(params[:room_id])
+    @room = current_user.room
     @current_question = @room.question
     new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
     new_history_item.save
@@ -76,7 +77,7 @@ class RoomsController < ApplicationController
   # Effect: change user's status to 3 (Ready). 
   #   If everyone is ready then choose next question and publish to /rooms/next_question
   def ready
-    @room = Room.find(params[:room_id])
+    @room = current_user.room
     current_user.status = 3
     current_user.save
     publish("presence-room_#{@room.id}","users_change",{})
@@ -106,10 +107,11 @@ class RoomsController < ApplicationController
   #         Publish users_change event
   def kick
     user = User.find(params[:user_id])
+    old_room_id = user.room_id
     user.room_id = 0
     user.status = 0
     user.save
-    publish("presence-room_#{params[:room_id]}", "users_change", {})
+    publish("presence-room_#{old_room_id}", "users_change", {})
     render :text => "Kicked", :status => '202'
   end
   # Input: question_id
@@ -120,10 +122,10 @@ class RoomsController < ApplicationController
   end
 
   # Request type: POST
-  # Input: question_id, choice_id
-  # Return: HTML of the explanation for that question
+  # Input: choice_id
+  # Return: HTML of the explanation for the question in the room the user is in
   def show_explanation
-    @room = Room.find(params[:room_id])
+    @room = current_user.room
     return if !@room.show_explanation?
     @question = @room.question
     @selected_choice = Choice.find(params[:choice_id])

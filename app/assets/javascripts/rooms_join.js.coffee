@@ -5,7 +5,6 @@ $(->
   # Define the whole code as the function init. Only execute init when the page is #rooms_join (see the end of the file for this execution)
   init = ->
     # Get room_id and user_id from attributes rendered in the page
-    user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
     client = new Pusher('9a81f498ef1031e46675');
@@ -18,7 +17,6 @@ $(->
         type: "POST",
         url : "/rooms/kick",
         data: {
-          room_id: room_id,
           user_id: member.id
         },
         success: (data) ->
@@ -50,9 +48,6 @@ $(->
       $.ajax({
         type: "POST",
         url: "/rooms/user_list",
-        data: {
-          room_id: room_id
-        },
         success: (data) ->
           $("#online").html(data);
           true;
@@ -80,7 +75,6 @@ $(->
         type: "POST",
         url: "/rooms/show_explanation",
         data: {
-          room_id: room_id,
           choice_id: choice_id
         },
         success: (data) ->
@@ -113,12 +107,10 @@ $(->
         type: "POST",
         url: "/rooms/choose/",
         data: {
-          choice_id: choice_id,
-          room_id: room_id
+          choice_id: choice_id
         },
         success: (data) ->
           $("#next").attr("question_id",data.next_question_id);
-          #show_explanation(data.current_question_id,data.choice_id);
         dataTye: "json"
       });
       # Hide the confirm button
@@ -137,9 +129,6 @@ $(->
       $.ajax({
         type: "POST",
         url: "/rooms/ready",
-        data: {
-          room_id: room_id,
-        },
       });
       true;
     );

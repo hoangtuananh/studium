@@ -2,16 +2,18 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(->
+  # Define the whole code as the function init. Only execute init when the page is #rooms_join (see the end of the file for this execution)
   init = ->
+    # Get room_id and user_id from attributes rendered in the page
     user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
-    # The global object STUDIUM is defined in application.js
-    # It contains things that are used globally like client Pusher
-    # Variables that are specific to rooms#join should be put into the object STUDIUM.rooms.join
     client = new Pusher('9a81f498ef1031e46675');
     channel = client.subscribe("presence-room_"+room_id);
+    # Listen to the "pusher:member_removed" event which keep tracks of user leaving the room
     channel.bind('pusher:member_removed', (member) ->
+      # Send a POST request to rooms#kick, which kick the user from the room
+      # Performance might be not ideal because everyone in the room will kick this member at the same time (we need only one)
       $.ajax({
         type: "POST",
         url : "/rooms/kick",
@@ -23,13 +25,13 @@ $(->
           update_users();
       });
     );
-    # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
+    # Listen to the "users_change" event which keeps track of users joining/leaving the room
     channel.bind("users_change", (data) ->
       update_users();
       true;
     );
 
-    # Subscribe to the "/rooms/show_explanation/.." channel which keeps track of whether to show explanation or not
+    # Listen to the "show_explanation" event which keeps track of whether to show explanation or not
     channel.bind("show_explanation", (data) ->
       # Get the choice_id by finding the "btn-primary" class
       choice_id = $("#current_question .each_choice.btn-primary").attr("id");
@@ -37,12 +39,12 @@ $(->
       true;
     );
 
-    # Subscribe to the "/rooms/next_question/.." channel which keeps track of whether to show next question
+    # Listen to the "next_question" event which keeps track of whether to show next question
     channel.bind("next_question", (data) ->
       change_question(data.question_id);
       true;
     );
-    # Input:
+    # Input: none
     # Effect: update the user list to div#online
     update_users = ->
       $.ajax({
@@ -146,6 +148,7 @@ $(->
 
 
 
+  # Only execute the above code if the page is rooms_join
   if $("#rooms_join").length
     init();
 

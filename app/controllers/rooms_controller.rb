@@ -91,12 +91,19 @@ class RoomsController < ApplicationController
     }
   end
 
+  # Request type: GET
+  # User quiting the room
+  # Note: this is different from kick since it's user clicking the quit button, not closing the window. It's called by the user himself
   def quit
     current_user.room_id = 0
     current_user.status = 0
     redirect_to rooms_path
   end
 
+  # Request type: POST
+  # Other users kicking some user (because he closed his window)
+  # Effect: Kick the user from the room (set room_id and status to 0)
+  #         Publish users_change event
   def kick
     user = User.find(params[:user_id])
     user.room_id = 0

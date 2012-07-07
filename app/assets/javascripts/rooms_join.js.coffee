@@ -2,15 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(->
+  init = ->
     user_id = $("#question_container").attr("user_id");
     room_id = $("#question_container").attr("room_id");
 
-    client = new Pusher("9a81f498ef1031e46675");
+    # The global object STUDIUM is defined in application.js
+    # It contains things that are used globally like client Pusher
+    # Variables that are specific to rooms#join should be put into the object STUDIUM.rooms.join
+    client = new Pusher('9a81f498ef1031e46675');
     channel = client.subscribe("room_"+room_id);
-    channel.bind("test", (data) ->
-      alert(data);
-      true;
-    );
     # Subscribe to the "/rooms/users_change/.." channel which keeps track of users joining/leaving the room
     rooms_users_change = channel.bind("users_change", (data) ->
       update_users();
@@ -128,4 +128,11 @@ $(->
       true;
     );
     true;
+  true;
+
+
+
+  if $("#rooms_join").length
+    init();
+
 );

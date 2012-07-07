@@ -109,6 +109,8 @@ $(->
       $(this).hide();
       # Remove question_active class so that the choices are not clickable
       $("#current_question").removeClass("question_active");
+      # Disable the button for each choice
+      $(".each_choice").addClass("disabled");
       # Show the ready button
       $("#ready").show();
 

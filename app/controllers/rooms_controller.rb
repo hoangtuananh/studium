@@ -22,7 +22,6 @@ class RoomsController < ApplicationController
     @room = Room.new(params[:room])
     if @room.save
       # See application_controller for publish method.
-      # @room.attributes returns a hash of the room's attributes
       publish("room", "create", {room_id: @room.id})
       redirect_to room_join_path(:room_id => @room.id)
     else

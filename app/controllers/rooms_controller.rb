@@ -4,6 +4,7 @@ Pusher.secret = 'c90fd082578b9efe4f69'
 class RoomsController < ApplicationController
   before_filter :authenticate_user!
   protect_from_forgery
+
   def index
   end
 
@@ -24,7 +25,7 @@ class RoomsController < ApplicationController
     if @room.save
       # See application_controller for publish method.
       publish("rooms", "create", {room_id: @room.id})
-      redirect_to room_join_path(:room_id => @room.id)
+      redirect_to room_join_path(@room.id)
     else
       redirect_to rooms_path, alert: "Error creating room"
     end
@@ -35,7 +36,6 @@ class RoomsController < ApplicationController
     current_user.room_id = @room.id
     current_user.status = 1
     current_user.save
-    generate_questions(@room) unless !@room.questions.empty?
     choose_question(@room) unless @room.question
     publish("presence-room_#{@room.id}","users_change", {})
   end
@@ -155,7 +155,7 @@ class RoomsController < ApplicationController
 
   # Choose new question from buffer questions
   def choose_question(room)
-    generate_questions(room) if (room.questions.empty?)
+    generate_questions(room) if room.questions.empty?
     # Temporarily choose a random question from buffer
     this_questions = room.questions
     r = Random.new

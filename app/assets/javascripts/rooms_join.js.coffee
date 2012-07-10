@@ -102,25 +102,27 @@ $(->
       # Get the choice_id by finding the "btn-primary" class
       choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
 
-      # Send a POST request to "/rooms/choose" (rooms#choose)
-      $.ajax({
-        type: "POST",
-        url: "/rooms/choose/",
-        data: {
-          choice_id: choice_id
-        },
-        success: (data) ->
-          $("#next").attr("question_id",data.next_question_id);
-        dataTye: "json"
-      });
-      # Hide the confirm button
-      $(this).hide();
-      # Remove question_active class so that the choices are not clickable
-      $("#current_question").removeClass("question_active");
-      # Disable the button for each choice
-      $(".each_choice").addClass("disabled");
-      # Show the ready button
-      $("#ready").show();
+      # Only if execute if choice_id is not null (user selected a choice)
+      if choice_id
+        # Send a POST request to "/rooms/choose" (rooms#choose)
+        $.ajax({
+          type: "POST",
+          url: "/rooms/choose/",
+          data: {
+            choice_id: choice_id
+          },
+          success: (data) ->
+            $("#next").attr("question_id",data.next_question_id);
+          dataType: "json"
+        });
+        # Hide the confirm button
+        $(this).hide();
+        # Remove question_active class so that the choices are not clickable
+        $("#current_question").removeClass("question_active");
+        # Disable the button for each choice
+        $(".each_choice").addClass("disabled");
+        # Show the ready button
+        $("#ready").show();
 
       true;
     );

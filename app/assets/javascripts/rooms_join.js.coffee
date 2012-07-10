@@ -80,28 +80,12 @@ $(->
         success: (data) ->
           $(".choices").html(data);
       });
+      # Show the ready button
+      $("#ready").show();
+      # Remove the confirm button
+      $("#confirm").remove();
 
-    
-    # Set question the first time
-    current_question_id = $("#question_container").attr("question_id");
-    change_question(current_question_id);
-    # Update the user list the first time
-    update_users();
-
-    # User clicking on a choice
-    # Add class "btn-primary" to the chosen choice
-    $(".question_active#current_question .choices .each_choice").live("click", ->
-      choice_id = $(this).attr("id");
-      $(this).siblings().removeClass("btn-primary");
-      $(this).addClass("btn-primary");
-      true;
-    );
-
-    # User confirming the answer
-    $(".question_active#current_question #confirm").live("click", ->
-      # Get the choice_id by finding the "btn-primary" class
-      choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
-
+    confirm_answer = (choice_id) ->
       # Send a POST request to "/rooms/choose" (rooms#choose)
       $.ajax({
         type: "POST",
@@ -119,9 +103,31 @@ $(->
       $("#current_question").removeClass("question_active");
       # Disable the button for each choice
       $(".each_choice").addClass("disabled");
-      # Show the ready button
-      $("#ready").show();
+    
+    expire = -> confirm_answer(0);
+    # Set question the first time
+    current_question_id = $("#question_container").attr("question_id");
+    change_question(current_question_id);
+    # Update the user list the first time
+    update_users();
 
+    # User clicking on a choice
+    # Add class "btn-primary" to the chosen choice
+    $(".question_active#current_question .choices .each_choice").live("click", ->
+      choice_id = $(this).attr("id");
+      $(this).siblings().removeClass("btn-primary");
+      $(this).addClass("btn-primary");
+      $("#confirm").show();
+      true;
+    );
+
+    # User confirming the answer
+    $(".question_active#current_question #confirm").live("click", ->
+      # Get the choice_id by finding the "btn-primary" class
+      choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
+      confirm_answer(choice_id);
+
+      
       true;
     );
     # User clicking "ready"
@@ -132,7 +138,16 @@ $(->
       });
       true;
     );
+
+    $("#timer").countdown({
+      until: 10,
+      compact: true,
+      format: 'S',
+      description: '',
+      onExpiry: expire
+    });
     true;
+
   true;
 
 

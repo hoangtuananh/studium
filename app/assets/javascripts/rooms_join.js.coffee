@@ -92,6 +92,7 @@ $(->
       $("#confirm").remove();
 
     confirm_answer = (choice_id) ->
+      $("#timer").countdown("destroy");
       # Send a POST request to "/rooms/choose" (rooms#choose)
       $.ajax({
         type: "POST",
@@ -108,6 +109,7 @@ $(->
     # Input: none
     # Effect: send a POST request to ready
     ready = ->
+      $("#timer").countdown("destroy");
       $.ajax({
         type: "POST",
         url: "/rooms/ready",
@@ -116,7 +118,7 @@ $(->
     # Input: time(seconds), callback(function)
     # Effect: Setup the timer with the specified time and callback
     setup_timer = (time, callback) ->
-      $("#timer").countdown('change', {
+      $("#timer").countdown({
         until: time,
         compact: true,
         format: 'S',
@@ -144,19 +146,11 @@ $(->
       # Get the choice_id by finding the "btn-primary" class
       choice_id = $(".question_active#current_question .each_choice.btn-primary").attr("id");
       confirm_answer(choice_id);
-
       true;
     );
     # User clicking "ready"
     $("#ready").live("click", ready);
-    # Initialize a blank countdown
-    $("#timer").countdown({
-      until: 0,
-      compact: true,
-      description: '',
-      format: 'S'
-    });
-
+    
   # Only execute the above code if the page is rooms_join
   if $("#rooms_join").length
     init();

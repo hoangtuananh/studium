@@ -66,6 +66,10 @@ $(->
         },
         success: (data) ->
           $("#question_container").html(data);
+          setup_timer(
+            10,
+            -> confirm_answer()
+          );
       });
       true;
 
@@ -80,6 +84,7 @@ $(->
         },
         success: (data) ->
           $(".choices").html(data);
+          setup_timer(10, ready);
       });
       # Show the ready button
       $("#ready").show();
@@ -93,17 +98,32 @@ $(->
         url: "/rooms/choose/",
         data: {
           choice_id: choice_id
-        },
-        success: (data) ->
-          $("#next").attr("question_id",data.next_question_id);
-        dataType: "json"
+        }
       });
       # Remove question_active class so that the choices are not clickable
       $("#current_question").removeClass("question_active");
       # Disable the button for each choice
       $(".each_choice").addClass("disabled");
     
-    expire = -> confirm_answer(0);
+    # Input: none
+    # Effect: send a POST request to ready
+    ready = ->
+      $.ajax({
+        type: "POST",
+        url: "/rooms/ready",
+      });
+      true;
+    # Input: time(seconds), callback(function)
+    # Effect: Setup the timer with the specified time and callback
+    setup_timer = (time, callback) ->
+      $("#timer").countdown('change', {
+        until: time,
+        compact: true,
+        format: 'S',
+        description: '',
+        onExpiry: callback
+      });
+      true;
     # Set question the first time
     current_question_id = $("#question_container").attr("question_id");
     change_question(current_question_id);
@@ -128,15 +148,14 @@ $(->
       true;
     );
     # User clicking "ready"
-    $("#ready").live("click", ->
-      $.ajax({
-        type: "POST",
-        url: "/rooms/ready",
-      });
-      true;
-    );
-  
-    true;
+    $("#ready").live("click", ready);
+    # Initialize a blank countdown
+    $("#timer").countdown({
+      until: 0,
+      compact: true,
+      description: '',
+      format: 'S'
+    });
 
   # Only execute the above code if the page is rooms_join
   if $("#rooms_join").length

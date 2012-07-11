@@ -55,24 +55,23 @@ class RoomsController < ApplicationController
   # Effect: create new history item, choose next question
   # Return: current question's id, next question's id, selected choice's id 
   def choose
-    @choice_id = params[:choice_id]
     @room = current_user.room
     @current_question = @room.question
-    new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
-    new_history_item.save
+    if params[:choice_id]
+      @choice_id = params[:choice_id]
+      new_history_item = History.new({user_id: current_user.id, room_id: @room.id, question_id: @room.question.id, choice_id: @choice_id})
+      new_history_item.save
+      publish("presence-room_#{@room.id}", "update_histories", {
+        history_id: new_history_item.id
+      })
+    end
     current_user.status = 2
     current_user.save
     publish("presence-room_#{@room.id}", "users_change", {})
-    publish("presence-room_#{@room.id}", "update_histories", {
-      history_id: new_history_item.id
-    })
     publish("presence-room_#{@room.id}", "show_explanation", {
       question_id: @current_question.id
     }) if @room.show_explanation?
-    render :json => {
-      current_question_id: @current_question.id,
-      choice_id: @choice_id
-    }
+    render :text => "OK", :status => "200"
   end
   
   # Request type: POST
@@ -86,6 +85,10 @@ class RoomsController < ApplicationController
     publish("presence-room_#{@room.id}","users_change",{})
     if @room.show_next_question?
       @next_question = choose_question(@room)
+      @room.users.each do |user|
+        user.status = 1
+        user.save
+      end
       publish("presence-room_#{@room.id}","next_question", {
         question_id: @next_question.id
       })
@@ -131,13 +134,22 @@ class RoomsController < ApplicationController
     @room = current_user.room
     return if !@room.show_explanation?
     @question = @room.question
-    @selected_choice = Choice.find(params[:choice_id])
-    if @selected_choice.correct?
-      @message = "Congratulations! You got the right answer."
-      @class = "alert alert-success"
+    messages = {
+      correct: "Congratulations! You got the right answer.",
+      incorrect: "Sorry, you got the wrong answer. See explanation below."
+    }
+    styles = {
+      correct: "alert alert-success",
+      incorrect: "alert alert-error"
+    }
+    # If there's a choice_id (user chose a choice) and that choice is correct
+    if params[:choice_id] and Choice.find(params[:choice_id]).correct?
+      @message = messages[:correct]
+      @style = styles[:correct]
+    # If there's no choice_id (user hasn't chosen a choice) or the chosen choice is incorrect
     else
-      @message = "Sorry, you got the wrong answer. See explanation below."
-      @class = "alert alert-error"
+      @message = messages[:incorrect]
+      @style = styles[:incorrect]
     end
     render :partial => "show_explanation"
   end

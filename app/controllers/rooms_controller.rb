@@ -32,6 +32,7 @@ class RoomsController < ApplicationController
   end
 
   def join
+    
     @room = Room.find(params[:room_id])
     current_user.room_id = @room.id
     current_user.status = 1

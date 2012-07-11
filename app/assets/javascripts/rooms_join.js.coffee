@@ -37,23 +37,6 @@ $(->
       true;
     );
     
-    # Update the histories
-    channel.bind("update_histories", (data) ->
-      update_histories(data.history_id);
-      true;
-    );
-    
-    update_histories=(history_id)->
-      $.ajax({
-        type: "POST",
-        url: "/histories/show_history",
-        data: {
-          history_id: history_id
-        },
-        success: (data) ->
-          $("#history").append(data);
-      });
-      true;
 
     # Listen to the "next_question" event which keeps track of whether to show next question
     channel.bind("next_question", (data) ->
@@ -152,23 +135,6 @@ $(->
       });
       true;
     );
-
-
-
-    # Show all the previous histories
-    update_previous_histories= ->
-      $.ajax({
-        type: "POST",
-        url: "/rooms/show_histories",
-        data: {
-          room_id: room_id
-        },
-        success: (data) ->
-          $("#history").html(data);
-      });
-      true;
-  
-    update_previous_histories();
   
     true;
 

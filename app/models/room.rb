@@ -3,6 +3,7 @@ class Room < ActiveRecord::Base
   has_many :questions_buffers
   has_many :questions, :through => :questions_buffers
   has_many :users
+  has_many :histories
 
   # Input: a number indicating some status
   # Return: true if every user in the room has the given status, false otherwise

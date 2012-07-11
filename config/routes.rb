@@ -40,6 +40,8 @@ Studium::Application.routes.draw do
   post "/rooms/ready", to: "rooms#ready"
   get "/rooms/quit", to: "rooms#quit"
   post "/rooms/kick", to: "rooms#kick"
+  post "/histories/show_history",to: "histories#show_history"
+  post "/rooms/show_histories",to: "rooms#show_histories"
 
   post "/pusher/auth", to: "pusher#auth"
   devise_for :users,controllers: {registrations: "registrations"}

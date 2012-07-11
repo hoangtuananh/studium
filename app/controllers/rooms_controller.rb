@@ -63,6 +63,9 @@ class RoomsController < ApplicationController
     current_user.status = 2
     current_user.save
     publish("presence-room_#{@room.id}", "users_change", {})
+    publish("presence-room_#{@room.id}", "update_histories", {
+      history_id: new_history_item.id
+    })
     publish("presence-room_#{@room.id}", "show_explanation", {
       question_id: @current_question.id
     }) if @room.show_explanation?
@@ -168,5 +171,10 @@ class RoomsController < ApplicationController
     room.question = next_question
     room.save
     return next_question
+  end
+
+  def show_histories
+    @room=Room.find params[:room_id]
+    render @room.histories
   end
 end
